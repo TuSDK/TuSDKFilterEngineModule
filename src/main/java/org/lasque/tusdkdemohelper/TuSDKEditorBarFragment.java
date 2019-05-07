@@ -69,18 +69,25 @@ import static org.lasque.tusdk.video.editor.TuSdkMediaEffectData.TuSdkMediaEffec
  */
 public class TuSDKEditorBarFragment extends TuSdkFragment {
 
-    public static TuSDKEditorBarFragment newInstance(String[] mFilterGroup, String[] mCartoonFilterGroup) {
+    public static TuSDKEditorBarFragment newInstance(String[] mFilterGroup, String[] mCartoonFilterGroup,boolean hasMonsterFace) {
         TuSDKEditorBarFragment fragment = new TuSDKEditorBarFragment();
         Bundle bundle = new Bundle();
         bundle.putStringArray("FilterGroup", mFilterGroup);
         bundle.putStringArray("CartoonFilterGroup", mCartoonFilterGroup);
+        bundle.putBoolean("hasMonsterFace",hasMonsterFace);
         fragment.setArguments(bundle);
         return fragment;
+    }
+
+    public static TuSDKEditorBarFragment newInstance(String[] mFilterGroup, String[] mCartoonFilterGroup){
+        return newInstance(mFilterGroup,mCartoonFilterGroup,false);
     }
 
     private String[] mFilterGroup;
 
     private String[] mCartoonFilterGroup;
+
+    private boolean mHasMonsterFace = false;
 
     public void setmFilterEngine(TuSdkFilterEngine mFilterEngine) {
         this.mFilterEngine = mFilterEngine;
@@ -140,6 +147,7 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
      * 漫画列表Adapter
      */
     private FilterRecyclerAdapter mCartoonAdapter;
+
 
     //微整形布局
     private View mBeautyPlasticBottomView;
@@ -275,6 +283,7 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
         this.setRootViewLayoutId(getLayoutId());
         mFilterGroup = getArguments().getStringArray("FilterGroup");
         mCartoonFilterGroup = getArguments().getStringArray("CartoonFilterGroup");
+        mHasMonsterFace = getArguments().getBoolean("hasMonsterFace",false);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -629,14 +638,13 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
             fragments.add(stickerFragment);
             tabTitles.add(categories.getCategoryName());
         }
-        //哈哈镜选项页
-        MonsterFaceFragment monsterFaceFragment = MonsterFaceFragment.newInstance();
-        monsterFaceFragment.setOnStickerItemClickListener(onMonsterItemClickListener);
-        fragments.add(monsterFaceFragment);
-        mStickerPagerAdapter = new TabViewPagerAdapter(getFragmentManager(), fragments);
-        mViewPager.setAdapter(mStickerPagerAdapter);
-        mTabPagerIndicator.setViewPager(mViewPager, 0);
-        tabTitles.add("哈哈镜");
+        //哈哈镜选项页,仅短视频可使用哈哈镜功能,并需要开启权限
+        if (mHasMonsterFace){
+            MonsterFaceFragment monsterFaceFragment = MonsterFaceFragment.newInstance();
+            monsterFaceFragment.setOnStickerItemClickListener(onMonsterItemClickListener);
+            fragments.add(monsterFaceFragment);
+            tabTitles.add("哈哈镜");
+        }
         mTabPagerIndicator.setDefaultVisibleCounts(tabTitles.size());
         mTabPagerIndicator.setTabItems(tabTitles);
     }
