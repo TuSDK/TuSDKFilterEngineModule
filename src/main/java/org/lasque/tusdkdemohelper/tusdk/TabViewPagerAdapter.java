@@ -1,5 +1,6 @@
 package org.lasque.tusdkdemohelper.tusdk;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
@@ -16,9 +17,9 @@ public class TabViewPagerAdapter extends FragmentPagerAdapter {
     // 默认0 其他为贴纸ID
     public static long mStickerGroupId;
 
-    private List<StickerFragment> mFragments;
+    private List<Fragment> mFragments;
 
-    public TabViewPagerAdapter(FragmentManager fm, List<StickerFragment> fragments) {
+    public TabViewPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
         super(fm);
         mFragments = fragments;
     }
@@ -38,7 +39,7 @@ public class TabViewPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public StickerFragment getItem(int i) {
+    public Fragment getItem(int i) {
         return mFragments.get(i);
     }
 }

@@ -96,12 +96,12 @@ public class TabPagerIndicator extends LinearLayout {
      * 设置Tab数据集
      * @param stickerGroupCategories
      */
-    public void setTabItems(List<StickerGroupCategories> stickerGroupCategories){
+    public void setTabItems(List<String> stickerGroupCategories){
         if(stickerGroupCategories == null)
             return;
         this.removeAllViews();
-        for (StickerGroupCategories categories : stickerGroupCategories){
-            this.addView(generateTitleView(categories.getCategoryName()));
+        for (String categories : stickerGroupCategories){
+            this.addView(generateTitleView(categories));
         }
         setItemClickListener();
         setHighLightText(mViewPager.getCurrentItem());

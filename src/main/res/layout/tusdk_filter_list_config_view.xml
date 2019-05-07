@@ -28,7 +28,6 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:layout_gravity="center_vertical">
-
         </android.support.v7.widget.RecyclerView>
 
     </LinearLayout>

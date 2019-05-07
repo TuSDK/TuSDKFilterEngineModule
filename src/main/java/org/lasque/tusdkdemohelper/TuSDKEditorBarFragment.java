@@ -13,6 +13,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -44,12 +45,14 @@ import org.lasque.tusdk.video.editor.TuSdkMediaStickerEffectData;
 import org.lasque.tusdkdemohelper.tusdk.BeautyPlasticRecyclerAdapter;
 import org.lasque.tusdkdemohelper.tusdk.BeautyRecyclerAdapter;
 import org.lasque.tusdkdemohelper.tusdk.FilterRecyclerAdapter;
+import org.lasque.tusdkdemohelper.tusdk.MonsterFaceFragment;
 import org.lasque.tusdkdemohelper.tusdk.StickerFragment;
 import org.lasque.tusdkdemohelper.tusdk.StickerGroupCategories;
 import org.lasque.tusdkdemohelper.tusdk.TabPagerIndicator;
 import org.lasque.tusdkdemohelper.tusdk.TabViewPagerAdapter;
 import org.lasque.tusdkdemohelper.tusdk.filter.FilterConfigSeekbar;
 import org.lasque.tusdkdemohelper.tusdk.filter.FilterConfigView;
+import org.lasque.tusdkdemohelper.tusdk.model.PropsItemMonster;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -61,6 +64,9 @@ import static org.lasque.tusdk.video.editor.TuSdkMediaEffectData.TuSdkMediaEffec
 import static org.lasque.tusdk.video.editor.TuSdkMediaEffectData.TuSdkMediaEffectDataType.TuSdkMediaEffectDataTypePlasticFace;
 import static org.lasque.tusdk.video.editor.TuSdkMediaEffectData.TuSdkMediaEffectDataType.TuSdkMediaEffectDataTypeSkinFace;
 
+/**
+ * 底部特效编辑栏
+ */
 public class TuSDKEditorBarFragment extends TuSdkFragment {
 
     public static TuSDKEditorBarFragment newInstance(String[] mFilterGroup, String[] mCartoonFilterGroup) {
@@ -609,22 +615,30 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
                 mFilterEngine.removeMediaEffectsWithType(TuSdkMediaEffectData.TuSdkMediaEffectDataType.TuSdKMediaEffectDataTypeSticker);
                 TabViewPagerAdapter.mStickerGroupId = 0;
                 mViewPager.getAdapter().notifyDataSetChanged();
+                mFilterEngine.removeMediaEffectsWithType(TuSdkMediaEffectData.TuSdkMediaEffectDataType.TuSdkMediaEffectDataTypeMonsterFace);
             }
         });
 
         TabViewPagerAdapter.mStickerGroupId = 0;
-        List<StickerFragment> fragments = new ArrayList<>();
+        List<Fragment> fragments = new ArrayList<>();
         mStickerGroupCategoriesList = getRawStickGroupList();
+        List<String> tabTitles = new ArrayList<>();
         for (StickerGroupCategories categories : mStickerGroupCategoriesList) {
             StickerFragment stickerFragment = StickerFragment.newInstance(categories);
             stickerFragment.setOnStickerItemClickListener(onStickerItemClickListener);
             fragments.add(stickerFragment);
+            tabTitles.add(categories.getCategoryName());
         }
+        //哈哈镜选项页
+        MonsterFaceFragment monsterFaceFragment = MonsterFaceFragment.newInstance();
+        monsterFaceFragment.setOnStickerItemClickListener(onMonsterItemClickListener);
+        fragments.add(monsterFaceFragment);
         mStickerPagerAdapter = new TabViewPagerAdapter(getFragmentManager(), fragments);
         mViewPager.setAdapter(mStickerPagerAdapter);
         mTabPagerIndicator.setViewPager(mViewPager, 0);
-        mTabPagerIndicator.setDefaultVisibleCounts(mStickerGroupCategoriesList.size());
-        mTabPagerIndicator.setTabItems(mStickerGroupCategoriesList);
+        tabTitles.add("哈哈镜");
+        mTabPagerIndicator.setDefaultVisibleCounts(tabTitles.size());
+        mTabPagerIndicator.setTabItems(tabTitles);
     }
 
     /**
@@ -681,6 +695,20 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
             if (itemData != null) {
                 TuSdkMediaStickerEffectData stickerEffectData = new TuSdkMediaStickerEffectData(itemData);
                 mFilterEngine.addMediaEffectData(stickerEffectData);
+            }
+        }
+    };
+
+    /**
+     * 哈哈镜点击事件
+     */
+    private MonsterFaceFragment.OnMonsterItemClickListener onMonsterItemClickListener = new MonsterFaceFragment.OnMonsterItemClickListener() {
+        @Override
+        public void onMonsterItemClick(PropsItemMonster itemData) {
+            mFilterEngine.removeMediaEffectsWithType(TuSdkMediaEffectData.TuSdkMediaEffectDataType.TuSdkMediaEffectDataTypeMonsterFace);
+
+            if (itemData!=null){
+                mFilterEngine.addMediaEffectData(itemData.effect());
             }
         }
     };
