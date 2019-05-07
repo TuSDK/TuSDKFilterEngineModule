@@ -645,6 +645,9 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
             fragments.add(monsterFaceFragment);
             tabTitles.add("哈哈镜");
         }
+        mStickerPagerAdapter = new TabViewPagerAdapter(getFragmentManager(),fragments);
+        mViewPager.setAdapter(mStickerPagerAdapter);
+        mTabPagerIndicator.setViewPager(mViewPager,0);
         mTabPagerIndicator.setDefaultVisibleCounts(tabTitles.size());
         mTabPagerIndicator.setTabItems(tabTitles);
     }
