@@ -89,8 +89,8 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
 
     private boolean mHasMonsterFace = false;
 
-    public void setmFilterEngine(TuSdkFilterEngine mFilterEngine) {
-        this.mFilterEngine = mFilterEngine;
+    public void setFilterEngine(TuSdkFilterEngine filterEngine) {
+        this.mFilterEngine = filterEngine;
 
         ThreadHelper.postDelayed(new Runnable() {
             @Override
@@ -746,27 +746,27 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
         }
     };
 
-    public View.OnClickListener getmCartoonButtonClick() {
+    public View.OnClickListener getCartoonButtonClick() {
         return mCartoonButtonClick;
     }
 
-    public View.OnClickListener getmBeautyPlasticButtonClick() {
+    public View.OnClickListener getBeautyPlasticButtonClick() {
         return mBeautyPlasticButtonClick;
     }
 
-    public View.OnClickListener getmFilterButtonClick() {
+    public View.OnClickListener getFilterButtonClick() {
         return mFilterButtonClick;
     }
 
-    public View.OnClickListener getmBeautySkinButtonClick() {
+    public View.OnClickListener getBeautySkinButtonClick() {
         return mBeautySkinButtonClick;
     }
 
-    public View.OnClickListener getmStickerButtonClick() {
+    public View.OnClickListener getStickerButtonClick() {
         return mStickerButtonClick;
     }
 
-    public TuSDKVideoProcesser.TuSDKVideoProcessorMediaEffectDelegate getmMediaEffectDelegate() {
+    public TuSDKVideoProcesser.TuSDKVideoProcessorMediaEffectDelegate getMediaEffectDelegate() {
         return mMediaEffectDelegate;
     }
 
