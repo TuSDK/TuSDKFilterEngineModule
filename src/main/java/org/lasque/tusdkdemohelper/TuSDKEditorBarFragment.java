@@ -25,9 +25,7 @@ import android.widget.RelativeLayout;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import org.lasque.tusdk.api.engine.TuSdkFilterEngine;
-import org.lasque.tusdk.api.video.preproc.filter.TuSDKFilterEngine;
 import org.lasque.tusdk.api.video.preproc.filter.TuSDKVideoProcesser;
 import org.lasque.tusdk.core.TuSdkContext;
 import org.lasque.tusdk.core.activity.TuSdkFragment;
@@ -103,21 +101,16 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
     // TuSDK Filter Engine
     private TuSdkFilterEngine mFilterEngine;
 
-    /**
-     * 参数调节视图
-     */
+    // 参数调节视图
     private FilterConfigView mFilterConfigView;
-    /**
-     * 滤镜栏视图
-     */
+
+    // 滤镜栏视图
     private RecyclerView mFilterRecyclerView;
-    /**
-     * 滤镜列表Adapter
-     */
+
+    // 滤镜列表Adapter
     private FilterRecyclerAdapter mFilterAdapter;
-    /**
-     * 滤镜底部栏
-     */
+
+    // 滤镜底部栏
     private View mFilterBottomView;
 
     // 贴纸视图
@@ -133,21 +126,14 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
     // 贴纸数据
     private List<StickerGroupCategories> mStickerGroupCategoriesList;
 
-
-    /**
-     * 漫画列表视图
-     */
+    // 漫画列表视图
     private RecyclerView mCartoonRecyclerView;
-    /**
-     * 漫画布局
-     */
+
+    // 漫画布局
     private View mCartoonLayout;
 
-    /**
-     * 漫画列表Adapter
-     */
+    // 漫画列表Adapter
     private FilterRecyclerAdapter mCartoonAdapter;
-
 
     //微整形布局
     private View mBeautyPlasticBottomView;
@@ -579,6 +565,7 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
      * 准备滤镜栏视图
      */
     private void prepareFilterViews() {
+
         // 设置滤镜布局方式
         mFilterRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         // 初始化滤镜适配器
@@ -716,7 +703,6 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
     private MonsterFaceFragment.OnMonsterItemClickListener onMonsterItemClickListener = new MonsterFaceFragment.OnMonsterItemClickListener() {
         @Override
         public void onMonsterItemClick(PropsItemMonster itemData) {
-            mFilterEngine.removeMediaEffectsWithType(TuSdkMediaEffectData.TuSdkMediaEffectDataType.TuSdkMediaEffectDataTypeMonsterFace);
 
             if (itemData!=null){
                 mFilterEngine.addMediaEffectData(itemData.effect());
@@ -783,23 +769,24 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
         public void didApplyingMediaEffect(final TuSdkMediaEffectData mediaEffectData) {
 
             ThreadHelper.post(new Runnable() {
+
                 @Override
                 public void run() {
 
-
-                    switch (mediaEffectData.getMediaEffectType()) {
+                    switch (mediaEffectData.getMediaEffectType())
+                    {
 
                         case TuSdkMediaEffectDataTypeFilter: {
+
+                            // 切换滤镜时刷新滤镜参数视图
                             mFilterConfigView.setFilterArgs(mediaEffectData, mediaEffectData.getFilterArgs());
                             mFilterConfigView.setVisibility(View.VISIBLE);
+
                         }
                         break;
 
-//                        case TuSdkMediaEffectDataTypeSkinFace: {
-//                            mBeautyConfigView.setFilterArgs(mediaEffectData,mediaEffectData.getFilterArgs());
-//                            mBeautyConfigView.setVisibility(View.VISIBLE);
-//                            break;
-//                        }
+                        default:
+                            break;
                     }
 
                 }
