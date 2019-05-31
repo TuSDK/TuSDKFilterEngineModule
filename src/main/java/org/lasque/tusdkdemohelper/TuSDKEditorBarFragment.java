@@ -608,7 +608,7 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
             @Override
             public void onClick(View v) {
                 // 取消贴纸
-                mFilterEngine.removeMediaEffectsWithType(TuSdkMediaEffectData.TuSdkMediaEffectDataType.TuSdKMediaEffectDataTypeSticker);
+                mFilterEngine.removeMediaEffectsWithType(TuSdkMediaEffectData.TuSdkMediaEffectDataType.TuSdkMediaEffectDataTypeSticker);
                 TabViewPagerAdapter.mStickerGroupId = 0;
                 mViewPager.getAdapter().notifyDataSetChanged();
                 mFilterEngine.removeMediaEffectsWithType(TuSdkMediaEffectData.TuSdkMediaEffectDataType.TuSdkMediaEffectDataTypeMonsterFace);
