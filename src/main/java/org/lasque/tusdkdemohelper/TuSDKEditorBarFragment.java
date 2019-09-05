@@ -16,7 +16,6 @@ import androidx.annotation.UiThread;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
@@ -96,6 +95,7 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
             @Override
             public void run() {
                 changeFilter(0);
+                switchConfigSkin(true);
             }
         }, 500);
     }
@@ -547,11 +547,12 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
         ruddyArgs.setMaxValueFactor(useSkinNatural ? 0.35f : 0.65f);//设置最大值限制
 
         if (mFilterEngine.mediaEffectsWithType(TuSdkMediaEffectDataTypeSkinFace).size() == 0) {
-            smoothingArgs.setPrecentValue(0.5f);//设置默认显示
-
+            mFilterEngine.addMediaEffectData(skinFaceEffect);
             whiteningArgs.setPrecentValue(0.5f);//设置默认显示
 
-            mFilterEngine.addMediaEffectData(skinFaceEffect);
+            smoothingArgs.setPrecentValue(0.5f);//设置默认显示
+
+
         } else {
             TuSdkMediaSkinFaceEffect oldSkinFaceEffect = (TuSdkMediaSkinFaceEffect) mFilterEngine.mediaEffectsWithType(TuSdkMediaEffectDataTypeSkinFace).get(0);
             mFilterEngine.addMediaEffectData(skinFaceEffect);
