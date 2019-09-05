@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/lsq_sticker_layout"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -24,6 +24,7 @@
             android:background="#26FFFFFF"/>
         <org.lasque.tusdkdemohelper.tusdk.TabPagerIndicator
             android:id="@+id/lsq_TabIndicator"
+            app:text_size="11"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -34,12 +35,12 @@
         android:layout_width="match_parent"
         android:layout_height="0.2dp"
         android:background="#26FFFFFF"/>
-    <android.support.v4.view.ViewPager
+    <androidx.viewpager.widget.ViewPager
         android:background="@android:color/black"
         android:id="@+id/lsq_viewPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    </android.support.v4.view.ViewPager>
+    </androidx.viewpager.widget.ViewPager>
 
 </LinearLayout>

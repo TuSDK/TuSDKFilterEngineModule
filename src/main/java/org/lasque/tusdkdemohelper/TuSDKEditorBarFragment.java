@@ -11,12 +11,14 @@ package org.lasque.tusdkdemohelper;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.annotation.UiThread;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.annotation.UiThread;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -536,16 +538,19 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
 
         // 美白
         SelesParameters.FilterArg whiteningArgs = skinFaceEffect.getFilterArg("whitening");
-        whiteningArgs.setMaxValueFactor(0.6f);//设置最大值限制
+        whiteningArgs.setMaxValueFactor(useSkinNatural ? 0.4f : 0.5f);//设置最大值限制
         // 磨皮
         SelesParameters.FilterArg smoothingArgs = skinFaceEffect.getFilterArg("smoothing");
-        smoothingArgs.setMaxValueFactor(0.7f);//设置最大值限制
+        smoothingArgs.setMaxValueFactor(1.0f);//设置最大值限制
+        // 红润
+        SelesParameters.FilterArg ruddyArgs = skinFaceEffect.getFilterArg("ruddy");
+        ruddyArgs.setMaxValueFactor(useSkinNatural ? 0.35f : 0.65f);//设置最大值限制
 
         if (mFilterEngine.mediaEffectsWithType(TuSdkMediaEffectDataTypeSkinFace).size() == 0) {
+            smoothingArgs.setPrecentValue(0.5f);//设置默认显示
 
-            whiteningArgs.setPrecentValue(0.3f);//设置默认显示
+            whiteningArgs.setPrecentValue(0.5f);//设置默认显示
 
-            smoothingArgs.setPrecentValue(0.6f);//设置默认显示
             mFilterEngine.addMediaEffectData(skinFaceEffect);
         } else {
             TuSdkMediaSkinFaceEffect oldSkinFaceEffect = (TuSdkMediaSkinFaceEffect) mFilterEngine.mediaEffectsWithType(TuSdkMediaEffectDataTypeSkinFace).get(0);
@@ -556,8 +561,8 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
                 arg.setPrecentValue(filterArg.getPrecentValue());
             }
 
-            skinFaceEffect.submitParameters();
         }
+        skinFaceEffect.submitParameters();
 
     }
 
