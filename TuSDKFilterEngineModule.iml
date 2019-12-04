@@ -91,8 +91,8 @@
     <orderEntry type="jdk" jdkName="Android API 26 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Gradle: __local_aars__:D.\work\droid_tu_sdk_demos\qiniu-PLShortVideoKit-android\PLDroidShortVideo-master\PLDroidShortVideoDemo\TuSDKFilterEngineModule\libs\TuSDKCore-3.1.1.jar:unspecified@jar" level="project" />
-    <orderEntry type="library" name="Gradle: __local_aars__:D.\work\droid_tu_sdk_demos\qiniu-PLShortVideoKit-android\PLDroidShortVideo-master\PLDroidShortVideoDemo\TuSDKFilterEngineModule\libs\TuSDKFace-3.0.1.jar:unspecified@jar" level="project" />
-    <orderEntry type="library" name="Gradle: __local_aars__:D.\work\droid_tu_sdk_demos\qiniu-PLShortVideoKit-android\PLDroidShortVideo-master\PLDroidShortVideoDemo\TuSDKFilterEngineModule\libs\TuSDKVideo-3.4.4.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" name="Gradle: __local_aars__:D.\work\droid_tu_sdk_demos\qiniu-PLShortVideoKit-android\PLDroidShortVideo-master\PLDroidShortVideoDemo\TuSDKFilterEngineModule\libs\TuSDKFace-3.0.2.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" name="Gradle: __local_aars__:D.\work\droid_tu_sdk_demos\qiniu-PLShortVideoKit-android\PLDroidShortVideo-master\PLDroidShortVideoDemo\TuSDKFilterEngineModule\libs\TuSDKVideo-3.5.1.jar:unspecified@jar" level="project" />
     <orderEntry type="library" name="Gradle: __local_aars__:D.\work\droid_tu_sdk_demos\qiniu-PLShortVideoKit-android\PLDroidShortVideo-master\PLDroidShortVideoDemo\TuSDKFilterEngineModule\libs\universal-image-loader-1.9.4.jar:unspecified@jar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.collection:collection:1.0.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-common:2.0.0@jar" level="project" />

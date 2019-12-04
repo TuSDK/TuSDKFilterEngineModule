@@ -74,10 +74,10 @@ public class BeautyRecyclerAdapter extends RecyclerView.Adapter<BeautyRecyclerAd
                 }
                 if(!useSkinNatural) {
                     beautyViewHolder.skinBeautyImage.setImageResource(R.drawable.lsq_ic_skin_extreme_nor);
-                    beautyViewHolder.skinBeautyName.setText(R.string.lsq_filter_set_skin_extreme);
+                    beautyViewHolder.skinBeautyName.setText(R.string.lsq_beauty_skin_extreme);
                 }else {
                     beautyViewHolder.skinBeautyImage.setImageResource(R.drawable.lsq_ic_skin_precision_nor);
-                    beautyViewHolder.skinBeautyName.setText(R.string.lsq_filter_set_skin_precision);
+                    beautyViewHolder.skinBeautyName.setText(R.string.lsq_beauty_skin_precision);
                 }
 
                 useSkinNatural = !useSkinNatural;
