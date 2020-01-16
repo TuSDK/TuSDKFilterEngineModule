@@ -172,7 +172,7 @@ public class FilterConfigView extends TuSdkRelativeLayout
         return false;
     }
 
-    String[] ignoredKeys = new String[]{"eyeSize", "chinSize", "noseSize","mouthWidth","archEyebrow","jawSize","eyeAngle","eyeDis"};
+    String[] ignoredKeys = new String[]{"eyeSize", "chinSize", "noseSize","mouthWidth","lips","archEyebrow","browPosition","jawSize","eyeAngle","eyeDis","forehead"};
 
     private String[] getIgnoredKeys()
     {

@@ -94,8 +94,9 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
         ThreadHelper.postDelayed(new Runnable() {
             @Override
             public void run() {
-                changeFilter(0);
+                changeFilter(3);
                 switchConfigSkin(true);
+                switchBeautyPlasticConfig(1);
             }
         }, 500);
     }
