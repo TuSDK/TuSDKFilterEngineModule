@@ -94,9 +94,30 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
         ThreadHelper.postDelayed(new Runnable() {
             @Override
             public void run() {
-                changeFilter(3);
+                changeFilter(1);
                 switchConfigSkin(true);
-                switchBeautyPlasticConfig(1);
+                if (mFilterEngine.mediaEffectsWithType(TuSdkMediaEffectDataTypePlasticFace).size() == 0)
+                {
+                    // 添加一个默认微整形特效
+                    TuSdkMediaPlasticFaceEffect plasticFaceEffect = new TuSdkMediaPlasticFaceEffect();
+                    mFilterEngine.addMediaEffectData(plasticFaceEffect);
+                    for (SelesParameters.FilterArg arg : plasticFaceEffect.getFilterArgs()) {
+                        if (arg.equalsKey("eyeSize")) {// 大眼
+                            arg.setMaxValueFactor(0.85f);// 最大值限制
+                        }
+                        if (arg.equalsKey("chinSize")) {// 瘦脸
+                            arg.setMaxValueFactor(0.9f);// 最大值限制
+                        }
+                        if (arg.equalsKey("noseSize")) {// 瘦鼻
+                            arg.setMaxValueFactor(0.6f);// 最大值限制
+                        }
+                    }
+                    for (String key : mDefaultBeautyPercentParams.keySet()) {
+                        TLog.e("key -- %s",mDefaultBeautyPercentParams.get(key));
+                        submitPlasticFaceParamter(key,mDefaultBeautyPercentParams.get(key));
+                    }
+
+                }
             }
         }, 500);
     }
