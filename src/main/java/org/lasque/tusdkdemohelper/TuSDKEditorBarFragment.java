@@ -95,7 +95,7 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
             @Override
             public void run() {
                 changeFilter(1);
-                switchConfigSkin(true);
+                switchConfigSkin(false);
                 if (mFilterEngine.mediaEffectsWithType(TuSdkMediaEffectDataTypePlasticFace).size() == 0)
                 {
                     // 添加一个默认微整形特效
