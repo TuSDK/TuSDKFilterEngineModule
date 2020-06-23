@@ -7,7 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import androidx.annotation.Nullable;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -54,7 +54,7 @@ public class TabPagerIndicator extends LinearLayout {
     /** 移动位置 */
     private int mMoveX;
 
-    private ViewPager mViewPager;
+    private ViewPager2 mViewPager;
 
     public TabPagerIndicator(Context context) {
         this(context,null);
@@ -75,9 +75,9 @@ public class TabPagerIndicator extends LinearLayout {
      * @param viewPager
      * @param currentPos
      */
-    public void setViewPager(ViewPager viewPager, int currentPos){
+    public void setViewPager(ViewPager2 viewPager, int currentPos){
         mViewPager = viewPager;
-        viewPager.addOnPageChangeListener(mListener);
+        viewPager.registerOnPageChangeCallback(mPageChangeCallback);
         viewPager.setCurrentItem(currentPos);
     }
 
@@ -239,22 +239,24 @@ public class TabPagerIndicator extends LinearLayout {
     /**
      * viewPager滑动
      */
-    private ViewPager.OnPageChangeListener mListener = new ViewPager.OnPageChangeListener() {
+    private ViewPager2.OnPageChangeCallback mPageChangeCallback = new ViewPager2.OnPageChangeCallback() {
         @Override
-        public void onPageScrolled(int i, float offset, int i1) {
-            scroll(i,offset);
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+            scroll(position,positionOffset);
         }
 
         @Override
-        public void onPageSelected(int i) {
-            setHighLightText(i);
+        public void onPageSelected(int position) {
+            super.onPageSelected(position);
+            setHighLightText(position);
             // 必须刷新不然getItemPosition不会更新
             mViewPager.getAdapter().notifyDataSetChanged();
         }
 
         @Override
-        public void onPageScrollStateChanged(int i) {
-
+        public void onPageScrollStateChanged(int state) {
+            super.onPageScrollStateChanged(state);
         }
     };
 

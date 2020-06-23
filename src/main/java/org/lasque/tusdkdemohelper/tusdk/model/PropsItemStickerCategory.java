@@ -11,7 +11,7 @@ import org.lasque.tusdk.core.utils.TLog;
 import org.lasque.tusdk.core.utils.json.JsonHelper;
 import org.lasque.tusdk.modules.view.widget.sticker.StickerGroup;
 import org.lasque.tusdk.modules.view.widget.sticker.StickerLocalPackage;
-import org.lasque.tusdk.video.editor.TuSdkMediaEffectData;
+
 
 import java.io.File;
 import java.io.InputStream;
@@ -30,7 +30,7 @@ import java.util.List;
 public class PropsItemStickerCategory extends PropsItemCategory<PropsItemSticker>{
 
     public PropsItemStickerCategory(List<PropsItemSticker> stickerPropsItems) {
-        super(TuSdkMediaEffectData.TuSdkMediaEffectDataType.TuSdkMediaEffectDataTypeSticker,stickerPropsItems);
+        super(stickerPropsItems);
     }
 
     /**
@@ -75,7 +75,7 @@ public class PropsItemStickerCategory extends PropsItemCategory<PropsItemSticker
 
 
                 //  将下载后的贴纸加入 TuSDKPFStickerLocalPackage
-                boolean result = StickerLocalPackage.shared().addStickerGroupFile(stickerFile, Long.parseLong(groupId),master);
+                boolean result = StickerLocalPackage.shared().addStickerGroupFile(stickerFile);
 
                 TLog.e("result" + result);
             }

@@ -1,8 +1,11 @@
 package org.lasque.tusdkdemohelper.tusdk;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.lifecycle.Lifecycle;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import java.util.List;
 
@@ -12,34 +15,26 @@ import java.util.List;
  * @Date 2018/9/21
  */
 
-public class TabViewPagerAdapter extends FragmentPagerAdapter {
+public class TabViewPagerAdapter extends FragmentStateAdapter {
 
     // 默认0 其他为贴纸ID
     public static long mStickerGroupId;
 
     private List<Fragment> mFragments;
 
-    public TabViewPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
-        super(fm);
+    public TabViewPagerAdapter(FragmentManager fm, List<Fragment> fragments, Lifecycle lifecycle) {
+        super(fm,lifecycle);
         mFragments = fragments;
     }
 
+    @NonNull
     @Override
-    public int getItemPosition(Object object) {
-        if(object instanceof StickerFragment){
-            ((StickerFragment) object).refetchStickerList();
-            return POSITION_NONE;
-        }
-        return super.getItemPosition(object);
+    public Fragment createFragment(int position) {
+        return mFragments.get(position);
     }
 
     @Override
-    public int getCount() {
+    public int getItemCount() {
         return mFragments.size();
-    }
-
-    @Override
-    public Fragment getItem(int i) {
-        return mFragments.get(i);
     }
 }

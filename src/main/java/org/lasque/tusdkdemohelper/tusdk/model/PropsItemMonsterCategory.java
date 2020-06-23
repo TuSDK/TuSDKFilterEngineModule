@@ -1,19 +1,11 @@
 package org.lasque.tusdkdemohelper.tusdk.model;
 
 import org.lasque.tusdk.core.TuSdkContext;
-import org.lasque.tusdk.core.seles.tusdk.TuSDKMonsterFaceWrap;
-import org.lasque.tusdk.video.editor.TuSdkMediaEffectData;
+import org.lasque.tusdk.cx.api.TuFilterCombo;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.lasque.tusdk.core.seles.tusdk.TuSDKMonsterFaceWrap.TuSDKMonsterFaceType.TuSDKMonsterFaceTypeBigNose;
-import static org.lasque.tusdk.core.seles.tusdk.TuSDKMonsterFaceWrap.TuSDKMonsterFaceType.TuSDKMonsterFaceTypePapayaFace;
-import static org.lasque.tusdk.core.seles.tusdk.TuSDKMonsterFaceWrap.TuSDKMonsterFaceType.TuSDKMonsterFaceTypePieFace;
-import static org.lasque.tusdk.core.seles.tusdk.TuSDKMonsterFaceWrap.TuSDKMonsterFaceType.TuSDKMonsterFaceTypeSmallEyes;
-import static org.lasque.tusdk.core.seles.tusdk.TuSDKMonsterFaceWrap.TuSDKMonsterFaceType.TuSDKMonsterFaceTypeSnakeFace;
-import static org.lasque.tusdk.core.seles.tusdk.TuSDKMonsterFaceWrap.TuSDKMonsterFaceType.TuSDKMonsterFaceTypeSquareFace;
-import static org.lasque.tusdk.core.seles.tusdk.TuSDKMonsterFaceWrap.TuSDKMonsterFaceType.TuSDKMonsterFaceTypeThickLips;
+import static org.lasque.tusdk.cx.api.TuFilterCombo.TuFaceMonsterMode.*;
 
 /******************************************************************
  * droid-sdk-video 
@@ -32,7 +24,7 @@ public class PropsItemMonsterCategory extends PropsItemCategory<PropsItemMonster
      * @param propsItemMonsters
      */
     public PropsItemMonsterCategory(List<PropsItemMonster> propsItemMonsters) {
-        super(TuSdkMediaEffectData.TuSdkMediaEffectDataType.TuSdkMediaEffectDataTypeMonsterFace,propsItemMonsters);
+        super(propsItemMonsters);
     }
 
     /**
@@ -42,15 +34,15 @@ public class PropsItemMonsterCategory extends PropsItemCategory<PropsItemMonster
      */
     public static List<PropsItemMonsterCategory> allCategories() {
 
-        TuSDKMonsterFaceWrap.TuSDKMonsterFaceType[] faceTypes =
+        TuFilterCombo.TuFaceMonsterMode[] faceTypes =
                 {
-                        TuSDKMonsterFaceTypeBigNose, // 大鼻子
-                        TuSDKMonsterFaceTypePapayaFace, // 木瓜脸
-                        TuSDKMonsterFaceTypePieFace, // 大饼脸
-                        TuSDKMonsterFaceTypeSmallEyes, // 眯眯眼
-                        TuSDKMonsterFaceTypeSnakeFace, // 蛇精脸
-                        TuSDKMonsterFaceTypeSquareFace, // 国字脸
-                        TuSDKMonsterFaceTypeThickLips // 厚嘴唇
+                        BigNose, // 大鼻子
+                        PapayaFace, // 木瓜脸
+                        PieFace, // 大饼脸
+                        SmallEyes, // 眯眯眼
+                        SnakeFace, // 蛇精脸
+                        SquareFace, // 国字脸
+                        ThickLips // 厚嘴唇
                 };
 
 

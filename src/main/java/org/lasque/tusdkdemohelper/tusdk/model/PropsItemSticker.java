@@ -2,8 +2,6 @@ package org.lasque.tusdkdemohelper.tusdk.model;
 
 import org.lasque.tusdk.modules.view.widget.sticker.StickerGroup;
 import org.lasque.tusdk.modules.view.widget.sticker.StickerLocalPackage;
-import org.lasque.tusdk.video.editor.TuSdkMediaEffectData;
-import org.lasque.tusdk.video.editor.TuSdkMediaStickerEffectData;
 
 /******************************************************************
  * droid-sdk-video 
@@ -23,29 +21,8 @@ public class PropsItemSticker extends PropsItem {
         this.mStickerGrop  = stickerGroup;
     }
 
-    public StickerGroup getStickerGrop () {
+    public StickerGroup getStickerGroup () {
         return mStickerGrop;
-    }
-
-    private TuSdkMediaStickerEffectData mStickerEffect;
-
-    /**
-     * 获取道具对应的 SDK 特效
-     *
-     * @return TuSdkMediaEffectData
-     */
-    @Override
-    public TuSdkMediaEffectData effect() {
-
-        if (mStickerEffect != null) return mStickerEffect;
-
-        /** 使用下载后的贴纸数据生成 TuSdkMediaStickerEffectData */
-        StickerGroup stickerGroup = StickerLocalPackage.shared().getStickerGroup(mStickerGrop.groupId);
-
-        if (stickerGroup != null)
-            mStickerEffect = new TuSdkMediaStickerEffectData(stickerGroup);
-
-        return mStickerEffect;
     }
 }
 

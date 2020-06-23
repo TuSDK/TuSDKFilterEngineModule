@@ -1,7 +1,5 @@
 package org.lasque.tusdkdemohelper.tusdk.model;
 
-import org.lasque.tusdk.video.editor.TuSdkMediaEffectData;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,12 +20,10 @@ public class PropsItemCategory <Item extends PropsItem>{
     /** 道具列表 */
     private List<Item> mItems;
 
-    /** 道具分类对应的特效类型 */
-    private TuSdkMediaEffectData.TuSdkMediaEffectDataType mMediaEffectType;
 
-    public PropsItemCategory(TuSdkMediaEffectData.TuSdkMediaEffectDataType mediaEffectType, List<Item> items) {
+
+    public PropsItemCategory(List<Item> items) {
         mItems = new ArrayList<>(items);
-        this.mMediaEffectType =  mediaEffectType;
     }
 
     /**
@@ -55,15 +51,6 @@ public class PropsItemCategory <Item extends PropsItem>{
      */
     public String getName() {
         return this.mName;
-    }
-
-    /**
-     * 道具分类对应的特效类型
-     *
-     * @return TuSdkMediaEffectData.TuSdkMediaEffectDataType
-     */
-    public TuSdkMediaEffectData.TuSdkMediaEffectDataType getMediaEffectType() {
-        return mMediaEffectType;
     }
 }
 

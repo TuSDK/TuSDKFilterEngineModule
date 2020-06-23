@@ -16,11 +16,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import org.lasque.tusdk.core.TuSdkContext;
+import org.lasque.tusdk.core.seles.SelesParameters;
 import org.lasque.tusdk.core.seles.SelesParameters.FilterArg;
 import org.lasque.tusdk.core.view.TuSdkRelativeLayout;
 import org.lasque.tusdk.core.view.TuSdkViewHelper;
 import org.lasque.tusdk.core.view.TuSdkViewHelper.OnSafeClickListener;
-import org.lasque.tusdk.video.editor.TuSdkMediaEffectData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +32,6 @@ import java.util.List;
  */
 public class FilterConfigView extends TuSdkRelativeLayout
 {
-
-    private TuSdkMediaEffectData mMediaEffect;
-
     /**
      * 滤镜配置视图委托
      *
@@ -54,6 +51,8 @@ public class FilterConfigView extends TuSdkRelativeLayout
      * 滤镜配置视图委托
      */
     private FilterConfigViewDelegate mDelegate;
+
+    private SelesParameters mParameters;
 
     /**
      * 滤镜配置视图委托
@@ -122,9 +121,9 @@ public class FilterConfigView extends TuSdkRelativeLayout
     /**
      * 设置显示的参数信息
      *
-     * @param filterArgs 参数列表
+     * @param parameters 参数列表
      */
-    public void setFilterArgs(TuSdkMediaEffectData effectData, List<FilterArg> filterArgs) {
+    public void setFilterArgs(SelesParameters parameters) {
 
         LinearLayout configWrap = this.getConfigWrap();
 
@@ -132,13 +131,46 @@ public class FilterConfigView extends TuSdkRelativeLayout
         // 删除所有视图
         configWrap.removeAllViews();
 
-        this.mMediaEffect = effectData;
+        if (parameters == null) {
+            mParameters = null;
+            return;
+        }
+
+        this.mParameters = parameters;
         mSeekbars = new ArrayList<FilterConfigSeekbar>(0);
 
-        if (filterArgs == null) return;
+        if (parameters.getArgs() == null) return;
 
 
-        for (FilterArg arg : filterArgs)
+        for (FilterArg arg : parameters.getArgs())
+        {
+            // 可过滤不需要的调节参数
+            if (checkIgnoredKey(arg, getIgnoredKeys())) continue;
+
+            FilterConfigSeekbar seekbar = this.buildAppendSeekbar(configWrap, this.mSeekHeigth);
+            if (seekbar != null)
+            {
+                // 设置滤镜配置参数
+                seekbar.setFilterArg(arg);
+                seekbar.setDelegate(mFilterConfigSeekbarDelegate);
+                mSeekbars.add(seekbar);
+            }
+        }
+    }
+
+    public void setFilterArgs(List<FilterArg> args){
+        LinearLayout configWrap = this.getConfigWrap();
+
+        if (configWrap == null) return;
+        // 删除所有视图
+        configWrap.removeAllViews();
+
+        mSeekbars = new ArrayList<FilterConfigSeekbar>(0);
+
+        if (args == null) return;
+
+
+        for (FilterArg arg : args)
         {
             // 可过滤不需要的调节参数
             if (checkIgnoredKey(arg, getIgnoredKeys())) continue;
@@ -293,8 +325,5 @@ public class FilterConfigView extends TuSdkRelativeLayout
         {
             mDelegate.onFilterConfigRequestRender(this);
         }
-
-        if (this.mMediaEffect != null)
-            this.mMediaEffect.submitParameters();
     }
 }

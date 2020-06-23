@@ -16,7 +16,7 @@ import androidx.annotation.UiThread;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,21 +26,14 @@ import android.widget.RelativeLayout;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.lasque.tusdk.api.engine.TuSdkFilterEngine;
-import org.lasque.tusdk.api.video.preproc.filter.TuSDKVideoProcesser;
 import org.lasque.tusdk.core.TuSdkContext;
 import org.lasque.tusdk.core.activity.TuSdkFragment;
 import org.lasque.tusdk.core.seles.SelesParameters;
-import org.lasque.tusdk.core.utils.TLog;
 import org.lasque.tusdk.core.utils.ThreadHelper;
 import org.lasque.tusdk.core.utils.json.JsonHelper;
+import org.lasque.tusdk.cx.api.TuFilterCombo;
+import org.lasque.tusdk.cx.api.TuFilterEngine;
 import org.lasque.tusdk.modules.view.widget.sticker.StickerGroup;
-import org.lasque.tusdk.video.editor.TuSdkMediaComicEffectData;
-import org.lasque.tusdk.video.editor.TuSdkMediaEffectData;
-import org.lasque.tusdk.video.editor.TuSdkMediaFilterEffectData;
-import org.lasque.tusdk.video.editor.TuSdkMediaPlasticFaceEffect;
-import org.lasque.tusdk.video.editor.TuSdkMediaSkinFaceEffect;
-import org.lasque.tusdk.video.editor.TuSdkMediaStickerEffectData;
 import org.lasque.tusdkdemohelper.tusdk.BeautyPlasticRecyclerAdapter;
 import org.lasque.tusdkdemohelper.tusdk.BeautyRecyclerAdapter;
 import org.lasque.tusdkdemohelper.tusdk.FilterRecyclerAdapter;
@@ -58,10 +51,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-
-import static org.lasque.tusdk.video.editor.TuSdkMediaEffectData.TuSdkMediaEffectDataType.TuSdkMediaEffectDataTypeFilter;
-import static org.lasque.tusdk.video.editor.TuSdkMediaEffectData.TuSdkMediaEffectDataType.TuSdkMediaEffectDataTypePlasticFace;
-import static org.lasque.tusdk.video.editor.TuSdkMediaEffectData.TuSdkMediaEffectDataType.TuSdkMediaEffectDataTypeSkinFace;
 
 /**
  * 底部特效编辑栏
@@ -88,7 +77,7 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
 
     private boolean mHasMonsterFace = false;
 
-    public void setFilterEngine(TuSdkFilterEngine filterEngine) {
+    public void setFilterEngine(TuFilterEngine filterEngine) {
         this.mFilterEngine = filterEngine;
 
         ThreadHelper.postDelayed(new Runnable() {
@@ -96,34 +85,13 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
             public void run() {
                 changeFilter(1);
                 switchConfigSkin(false);
-                if (mFilterEngine.mediaEffectsWithType(TuSdkMediaEffectDataTypePlasticFace).size() == 0)
-                {
-                    // 添加一个默认微整形特效
-                    TuSdkMediaPlasticFaceEffect plasticFaceEffect = new TuSdkMediaPlasticFaceEffect();
-                    mFilterEngine.addMediaEffectData(plasticFaceEffect);
-                    for (SelesParameters.FilterArg arg : plasticFaceEffect.getFilterArgs()) {
-                        if (arg.equalsKey("eyeSize")) {// 大眼
-                            arg.setMaxValueFactor(0.85f);// 最大值限制
-                        }
-                        if (arg.equalsKey("chinSize")) {// 瘦脸
-                            arg.setMaxValueFactor(0.9f);// 最大值限制
-                        }
-                        if (arg.equalsKey("noseSize")) {// 瘦鼻
-                            arg.setMaxValueFactor(0.6f);// 最大值限制
-                        }
-                    }
-                    for (String key : mDefaultBeautyPercentParams.keySet()) {
-                        TLog.e("key -- %s",mDefaultBeautyPercentParams.get(key));
-                        submitPlasticFaceParamter(key,mDefaultBeautyPercentParams.get(key));
-                    }
-
-                }
+                mFilterEngine.controller().changePlastic(true);
             }
         }, 500);
     }
 
     // TuSDK Filter Engine
-    private TuSdkFilterEngine mFilterEngine;
+    private TuFilterEngine mFilterEngine;
 
     // 参数调节视图
     private FilterConfigView mFilterConfigView;
@@ -142,7 +110,7 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
     // 取消贴纸
     private ImageView mStickerCancel;
     // 贴纸分类pager页
-    private ViewPager mViewPager;
+    private ViewPager2 mViewPager;
     // 贴纸Tab
     private TabPagerIndicator mTabPagerIndicator;
     // 贴纸Tab适配器
@@ -283,6 +251,8 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
      */
     private BeautyRecyclerAdapter mBeautySkinRecyclerAdapter;
 
+    private SelesParameters mSkinParameters;
+
     public static int getLayoutId() {
         return TuSdkContext.getLayoutResId("tusdk_parent_wrap_layout");
     }
@@ -383,14 +353,8 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
 
             @Override
             public void onItemClick(int position) {
-
-                // 移除不可叠加的特效
-                mFilterEngine.removeMediaEffectsWithType(TuSdkMediaEffectDataTypeFilter);
-                mFilterEngine.removeMediaEffectsWithType(TuSdkMediaEffectData.TuSdkMediaEffectDataType.TuSdkMediaEffectDataTypeComic);
-
-                TuSdkMediaComicEffectData effectData = new TuSdkMediaComicEffectData(mCartoonAdapter.getFilterList().get(position));
-                mFilterEngine.addMediaEffectData(effectData);
-
+                SelesParameters selesParameters = mFilterEngine.controller().changeFilter(mCartoonAdapter.getFilterList().get(position),null);
+                mFilterConfigView.setFilterArgs(selesParameters);
             }
         });
 
@@ -452,34 +416,12 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
      * @param position
      */
     private void switchBeautyPlasticConfig(int position) {
-        if (mFilterEngine.mediaEffectsWithType(TuSdkMediaEffectDataTypePlasticFace).size() == 0) {
 
-            // 添加一个默认微整形特效
-            TuSdkMediaPlasticFaceEffect plasticFaceEffect = new TuSdkMediaPlasticFaceEffect();
-            mFilterEngine.addMediaEffectData(plasticFaceEffect);
-            for (SelesParameters.FilterArg arg : plasticFaceEffect.getFilterArgs()) {
-                if (arg.equalsKey("eyeSize")) {// 大眼
-                    arg.setMaxValueFactor(0.85f);
-                }
-                if (arg.equalsKey("chinSize")) {// 瘦脸
-                    arg.setMaxValueFactor(0.8f);
-                }
-                if (arg.equalsKey("noseSize")) {// 瘦鼻
-                    arg.setMaxValueFactor(0.6f);
-                }
+        SelesParameters selesParameters = mFilterEngine.controller().changePlastic(true);
 
-            }
-            for (String key : mDefaultBeautyPercentParams.keySet()) {
-                TLog.e("key -- %s", mDefaultBeautyPercentParams.get(key));
-                submitPlasticFaceParamter(key, mDefaultBeautyPercentParams.get(key));
-            }
-        }
-        TuSdkMediaEffectData effectData = mFilterEngine.mediaEffectsWithType(TuSdkMediaEffectDataTypePlasticFace).get(0);
-        SelesParameters.FilterArg filterArg = effectData.getFilterArg(mBeautyPlastics.get(position));
+        SelesParameters.FilterArg filterArg = selesParameters.getFilterArg(mBeautyPlastics.get(position));
 
-        TLog.e("filterArg -- %s", filterArg.getPrecentValue());
-
-        mBeautyConfigView.setFilterArgs(null, Arrays.asList(filterArg));
+        mBeautyConfigView.setFilterArgs(Arrays.asList(filterArg));
         mBeautyConfigView.setVisibility(View.VISIBLE);
 
     }
@@ -488,8 +430,7 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
      * 重置微整形
      */
     private void clearBeautyPlastic() {
-
-        mFilterEngine.removeMediaEffectsWithType(TuSdkMediaEffectDataTypePlasticFace);
+        mFilterEngine.controller().changePlastic(false);
     }
 
     /**
@@ -524,13 +465,7 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
      * @param progress
      */
     private void submitPlasticFaceParamter(String key, float progress) {
-        List<TuSdkMediaEffectData> filterEffects = mFilterEngine.mediaEffectsWithType(TuSdkMediaEffectDataTypePlasticFace);
 
-        if (filterEffects.size() == 0) return;
-
-        // 只能添加一个滤镜特效
-        TuSdkMediaPlasticFaceEffect filterEffect = (TuSdkMediaPlasticFaceEffect) filterEffects.get(0);
-        filterEffect.submitParameter(key, progress);
     }
 
     BeautyRecyclerAdapter.OnBeautyItemClickListener mOnBeautyItemClickListener = new BeautyRecyclerAdapter.OnBeautyItemClickListener() {
@@ -539,16 +474,13 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
             mBeautyConfigView.setVisibility(View.VISIBLE);
             switchConfigSkin(useSkinNatural);
 
-            // 获取key值并显示到调节栏
-            TuSdkMediaEffectData effectData = mFilterEngine.mediaEffectsWithType(TuSdkMediaEffectDataTypeSkinFace).get(0);
-            SelesParameters.FilterArg filterArg = effectData.getFilterArg(key);
-            mBeautyConfigView.setFilterArgs(effectData, Arrays.asList(filterArg));
+            SelesParameters.FilterArg filterArg = mSkinParameters.getFilterArg(key);
+            mBeautyConfigView.setFilterArgs(Arrays.asList(filterArg));
         }
 
         @Override
         public void onClear() {
             mBeautyConfigView.setVisibility(View.GONE);
-            mFilterEngine.removeMediaEffectsWithType(TuSdkMediaEffectDataTypeSkinFace);
         }
     };
 
@@ -558,37 +490,7 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
      * @param useSkinNatural true 自然(精准)美颜 false 极致美颜
      */
     private void switchConfigSkin(boolean useSkinNatural) {
-        TuSdkMediaSkinFaceEffect skinFaceEffect = new TuSdkMediaSkinFaceEffect(useSkinNatural);
-
-        // 美白
-        SelesParameters.FilterArg whiteningArgs = skinFaceEffect.getFilterArg("whitening");
-        whiteningArgs.setMaxValueFactor(useSkinNatural ? 0.4f : 0.5f);//设置最大值限制
-        // 磨皮
-        SelesParameters.FilterArg smoothingArgs = skinFaceEffect.getFilterArg("smoothing");
-        smoothingArgs.setMaxValueFactor(1.0f);//设置最大值限制
-        // 红润
-        SelesParameters.FilterArg ruddyArgs = skinFaceEffect.getFilterArg("ruddy");
-        ruddyArgs.setMaxValueFactor(useSkinNatural ? 0.35f : 0.65f);//设置最大值限制
-
-        if (mFilterEngine.mediaEffectsWithType(TuSdkMediaEffectDataTypeSkinFace).size() == 0) {
-            mFilterEngine.addMediaEffectData(skinFaceEffect);
-            whiteningArgs.setPrecentValue(0.5f);//设置默认显示
-
-            smoothingArgs.setPrecentValue(0.5f);//设置默认显示
-
-
-        } else {
-            TuSdkMediaSkinFaceEffect oldSkinFaceEffect = (TuSdkMediaSkinFaceEffect) mFilterEngine.mediaEffectsWithType(TuSdkMediaEffectDataTypeSkinFace).get(0);
-            mFilterEngine.addMediaEffectData(skinFaceEffect);
-
-            for (SelesParameters.FilterArg filterArg : oldSkinFaceEffect.getFilterArgs()) {
-                SelesParameters.FilterArg arg = skinFaceEffect.getFilterArg(filterArg.getKey());
-                arg.setPrecentValue(filterArg.getPrecentValue());
-            }
-
-        }
-        skinFaceEffect.submitParameters();
-
+        mSkinParameters = mFilterEngine.controller().changeSkin(useSkinNatural ? TuFilterCombo.TuComboSkinMode.Sleek : TuFilterCombo.TuComboSkinMode.Vein);
     }
 
     /**
@@ -624,12 +526,16 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
 
         mFilterAdapter.setCurrentPosition(postion);
 
-        // 移除不可叠加的特效
-        mFilterEngine.removeMediaEffectsWithType(TuSdkMediaEffectDataTypeFilter);
-        mFilterEngine.removeMediaEffectsWithType(TuSdkMediaEffectData.TuSdkMediaEffectDataType.TuSdkMediaEffectDataTypeComic);
+        SelesParameters parameters;
+        if (postion == 0){
+            parameters = mFilterEngine.controller().changeFilter(null,null);
+            mFilterConfigView.setVisibility(View.GONE);
+        } else {
+            parameters = mFilterEngine.controller().changeFilter(mFilterAdapter.getFilterList().get(postion),null);
+            mFilterConfigView.setVisibility(View.VISIBLE);
+        }
 
-        TuSdkMediaFilterEffectData effectData = new TuSdkMediaFilterEffectData(mFilterAdapter.getFilterList().get(postion));
-        mFilterEngine.addMediaEffectData(effectData);
+        mFilterConfigView.setFilterArgs(parameters);
     }
 
     // 准备贴纸view
@@ -638,10 +544,9 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
             @Override
             public void onClick(View v) {
                 // 取消贴纸
-                mFilterEngine.removeMediaEffectsWithType(TuSdkMediaEffectData.TuSdkMediaEffectDataType.TuSdkMediaEffectDataTypeSticker);
+                mFilterEngine.controller().sticker().setGroup(0);
                 TabViewPagerAdapter.mStickerGroupId = 0;
                 mViewPager.getAdapter().notifyDataSetChanged();
-                mFilterEngine.removeMediaEffectsWithType(TuSdkMediaEffectData.TuSdkMediaEffectDataType.TuSdkMediaEffectDataTypeMonsterFace);
             }
         });
 
@@ -662,7 +567,7 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
             fragments.add(monsterFaceFragment);
             tabTitles.add("哈哈镜");
         }
-        mStickerPagerAdapter = new TabViewPagerAdapter(getFragmentManager(),fragments);
+        mStickerPagerAdapter = new TabViewPagerAdapter(getFragmentManager(),fragments,getLifecycle());
         mViewPager.setAdapter(mStickerPagerAdapter);
         mTabPagerIndicator.setViewPager(mViewPager,0);
         mTabPagerIndicator.setDefaultVisibleCounts(tabTitles.size());
@@ -717,12 +622,8 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
     private StickerFragment.OnStickerItemClickListener onStickerItemClickListener = new StickerFragment.OnStickerItemClickListener() {
         @Override
         public void onStickerItemClick(StickerGroup itemData) {
-
-            mFilterEngine.removeAllLiveSticker();
-
             if (itemData != null) {
-                TuSdkMediaStickerEffectData stickerEffectData = new TuSdkMediaStickerEffectData(itemData);
-                mFilterEngine.addMediaEffectData(stickerEffectData);
+                mFilterEngine.controller().sticker().setGroup(itemData.groupId);
             }
         }
     };
@@ -733,9 +634,8 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
     private MonsterFaceFragment.OnMonsterItemClickListener onMonsterItemClickListener = new MonsterFaceFragment.OnMonsterItemClickListener() {
         @Override
         public void onMonsterItemClick(PropsItemMonster itemData) {
-
             if (itemData!=null){
-                mFilterEngine.addMediaEffectData(itemData.effect());
+                mFilterEngine.controller().changeMonster(itemData.effect());
             }
         }
     };
@@ -747,18 +647,18 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
         @Override
         public void onSeekbarDataChanged(FilterConfigSeekbar seekbar, SelesParameters.FilterArg arg) {
 
-            List<TuSdkMediaEffectData> filterEffects = mFilterEngine.mediaEffectsWithType(TuSdkMediaEffectDataTypeFilter);
-
-            float progress = seekbar.getSeekbar().getProgress();
-            if (arg.getKey().equals("whitening")) {
-                progress = progress * 0.6f;
-            } else if (arg.equalsKey("mixied") || arg.equalsKey("smoothing")) {
-                progress = progress * 0.7f;
-            }
-
-            // 只能添加一个滤镜特效
-            TuSdkMediaFilterEffectData filterEffect = (TuSdkMediaFilterEffectData) filterEffects.get(0);
-            filterEffect.submitParameter(arg.getKey(), progress);
+//            List<TuSdkMediaEffectData> filterEffects = mFilterEngine.mediaEffectsWithType(TuSdkMediaEffectDataTypeFilter);
+//
+//            float progress = seekbar.getSeekbar().getProgress();
+//            if (arg.getKey().equals("whitening")) {
+//                progress = progress * 0.6f;
+//            } else if (arg.equalsKey("mixied") || arg.equalsKey("smoothing")) {
+//                progress = progress * 0.7f;
+//            }
+//
+//            // 只能添加一个滤镜特效
+//            TuSdkMediaFilterEffectData filterEffect = (TuSdkMediaFilterEffectData) filterEffects.get(0);
+//            filterEffect.submitParameter(arg.getKey(), progress);
         }
     };
 
@@ -781,52 +681,4 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
     public View.OnClickListener getStickerButtonClick() {
         return mStickerButtonClick;
     }
-
-    public TuSDKVideoProcesser.TuSDKVideoProcessorMediaEffectDelegate getMediaEffectDelegate() {
-        return mMediaEffectDelegate;
-    }
-
-    /**
-     * 特效事件委托
-     */
-    private TuSDKVideoProcesser.TuSDKVideoProcessorMediaEffectDelegate mMediaEffectDelegate = new TuSDKVideoProcesser.TuSDKVideoProcessorMediaEffectDelegate() {
-
-        /**
-         * 当前被应用的特效
-         * @param mediaEffectData
-         */
-        @Override
-        public void didApplyingMediaEffect(final TuSdkMediaEffectData mediaEffectData) {
-
-            ThreadHelper.post(new Runnable() {
-
-                @Override
-                public void run() {
-
-                    switch (mediaEffectData.getMediaEffectType())
-                    {
-
-                        case TuSdkMediaEffectDataTypeFilter: {
-
-                            // 切换滤镜时刷新滤镜参数视图
-                            mFilterConfigView.setFilterArgs(mediaEffectData, mediaEffectData.getFilterArgs());
-                            mFilterConfigView.setVisibility(View.VISIBLE);
-
-                        }
-                        break;
-
-                        default:
-                            break;
-                    }
-
-                }
-            });
-
-        }
-
-        @Override
-        public void didRemoveMediaEffect(List<TuSdkMediaEffectData> list) {
-
-        }
-    };
 }

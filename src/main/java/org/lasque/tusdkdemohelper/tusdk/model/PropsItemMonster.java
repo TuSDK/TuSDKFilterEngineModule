@@ -1,8 +1,7 @@
 package org.lasque.tusdkdemohelper.tusdk.model;
 
 import org.lasque.tusdk.core.seles.tusdk.TuSDKMonsterFaceWrap;
-import org.lasque.tusdk.video.editor.TuSDKMediaMonsterFaceEffect;
-import org.lasque.tusdk.video.editor.TuSdkMediaEffectData;
+import org.lasque.tusdk.cx.api.TuFilterCombo;
 
 /******************************************************************
  * droid-sdk-video 
@@ -15,17 +14,16 @@ import org.lasque.tusdk.video.editor.TuSdkMediaEffectData;
 // 哈哈镜道具
 public class PropsItemMonster extends PropsItem {
 
-    /** 哈哈镜类型 */
-    private TuSDKMonsterFaceWrap.TuSDKMonsterFaceType mMonsterFaceType;
+
     /** 哈哈镜特效 */
-    private TuSDKMediaMonsterFaceEffect mMonsterFaceEffect;
+    private TuFilterCombo.TuFaceMonsterMode mMonsterFaceEffect;
 
     /** 缩略图名称 */
     private String mThumbName;
 
 
-    public PropsItemMonster(TuSDKMonsterFaceWrap.TuSDKMonsterFaceType monsterFaceType) {
-        this.mMonsterFaceType = monsterFaceType;
+    public PropsItemMonster(TuFilterCombo.TuFaceMonsterMode monsterFaceType) {
+        this.mMonsterFaceEffect = monsterFaceType;
     }
 
     /**
@@ -51,12 +49,7 @@ public class PropsItemMonster extends PropsItem {
      *
      * @return TuSdkMediaEffectData
      */
-    @Override
-    public TuSdkMediaEffectData effect() {
-
-        if (mMonsterFaceEffect == null)
-            mMonsterFaceEffect = new TuSDKMediaMonsterFaceEffect(mMonsterFaceType);
-
+    public TuFilterCombo.TuFaceMonsterMode effect() {
         return mMonsterFaceEffect;
     }
 }
