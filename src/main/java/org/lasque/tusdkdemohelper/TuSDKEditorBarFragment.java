@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +30,10 @@ import org.json.JSONObject;
 import org.lasque.tusdk.core.TuSdkContext;
 import org.lasque.tusdk.core.activity.TuSdkFragment;
 import org.lasque.tusdk.core.seles.SelesParameters;
+import org.lasque.tusdk.core.seles.tusdk.FilterGroup;
 import org.lasque.tusdk.core.utils.ThreadHelper;
 import org.lasque.tusdk.core.utils.json.JsonHelper;
+import org.lasque.tusdk.core.view.TuSdkViewHelper;
 import org.lasque.tusdk.cx.api.TuFilterCombo;
 import org.lasque.tusdk.cx.api.TuFilterEngine;
 import org.lasque.tusdk.modules.view.widget.sticker.StickerGroup;
@@ -44,6 +47,8 @@ import org.lasque.tusdkdemohelper.tusdk.TabPagerIndicator;
 import org.lasque.tusdkdemohelper.tusdk.TabViewPagerAdapter;
 import org.lasque.tusdkdemohelper.tusdk.filter.FilterConfigSeekbar;
 import org.lasque.tusdkdemohelper.tusdk.filter.FilterConfigView;
+import org.lasque.tusdkdemohelper.tusdk.filter.newFilterUI.FilterFragment;
+import org.lasque.tusdkdemohelper.tusdk.filter.newFilterUI.FilterViewPagerAdapter;
 import org.lasque.tusdkdemohelper.tusdk.model.PropsItemMonster;
 
 import java.io.InputStream;
@@ -57,23 +62,14 @@ import java.util.List;
  */
 public class TuSDKEditorBarFragment extends TuSdkFragment {
 
-    public static TuSDKEditorBarFragment newInstance(String[] mFilterGroup, String[] mCartoonFilterGroup,boolean hasMonsterFace) {
+    public static TuSDKEditorBarFragment newInstance(FilterGroup[] mFilterGroup,boolean hasMonsterFace){
         TuSDKEditorBarFragment fragment = new TuSDKEditorBarFragment();
         Bundle bundle = new Bundle();
-        bundle.putStringArray("FilterGroup", mFilterGroup);
-        bundle.putStringArray("CartoonFilterGroup", mCartoonFilterGroup);
+        bundle.putSerializable("FilterGroups",mFilterGroup);
         bundle.putBoolean("hasMonsterFace",hasMonsterFace);
         fragment.setArguments(bundle);
         return fragment;
     }
-
-    public static TuSDKEditorBarFragment newInstance(String[] mFilterGroup, String[] mCartoonFilterGroup){
-        return newInstance(mFilterGroup,mCartoonFilterGroup,false);
-    }
-
-    private String[] mFilterGroup;
-
-    private String[] mCartoonFilterGroup;
 
     private boolean mHasMonsterFace = false;
 
@@ -96,11 +92,7 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
     // 参数调节视图
     private FilterConfigView mFilterConfigView;
 
-    // 滤镜栏视图
-    private RecyclerView mFilterRecyclerView;
-
-    // 滤镜列表Adapter
-    private FilterRecyclerAdapter mFilterAdapter;
+    private View mFilterPanel;
 
     // 滤镜底部栏
     private View mFilterBottomView;
@@ -118,15 +110,6 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
     // 贴纸数据
     private List<StickerGroupCategories> mStickerGroupCategoriesList;
 
-    // 漫画列表视图
-    private RecyclerView mCartoonRecyclerView;
-
-    // 漫画布局
-    private View mCartoonLayout;
-
-    // 漫画列表Adapter
-    private FilterRecyclerAdapter mCartoonAdapter;
-
     //微整形布局
     private View mBeautyPlasticBottomView;
     //微整形列表
@@ -134,10 +117,15 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
     // 微整形调节栏
     private FilterConfigView mBeautyConfigView;
 
+
+    private ViewPager2 mFilterViewPager;
+    private TabPagerIndicator mFilterTabIndicator;
+    private FilterViewPagerAdapter mFilterViewPagerAdapter;
+    private ImageView mFilterReset;
+
     private View.OnClickListener mCartoonButtonClick = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            mCartoonLayout.setVisibility(mCartoonLayout.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
             mFilterBottomView.setVisibility(View.GONE);
             mBeautyPlasticBottomView.setVisibility(View.GONE);
             mStickerLayout.setVisibility(View.GONE);
@@ -152,7 +140,6 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
             mBeautyPlasticRecyclerView.setAdapter(mBeautyPlasticRecyclerAdapter);
             mBeautyPlasticBottomView.setVisibility(mBeautyPlasticBottomView.getVisibility() == View.VISIBLE
                     ? View.GONE : View.VISIBLE);
-            mCartoonLayout.setVisibility(View.GONE);
             mFilterBottomView.setVisibility(View.GONE);
             mStickerLayout.setVisibility(View.GONE);
             mFilterConfigView.setVisibility(View.GONE);
@@ -170,7 +157,6 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
             // 隐藏贴纸栏布局
             mStickerLayout.setVisibility(View.GONE);
             // 隐藏动漫滤镜
-            mCartoonLayout.setVisibility(View.GONE);
             // 隐藏滤镜调节栏
             mFilterConfigView.setVisibility(View.GONE);
             // 隐藏微整形调节栏
@@ -184,7 +170,6 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
             mBeautyPlasticRecyclerView.setAdapter(mBeautySkinRecyclerAdapter);
             mBeautyPlasticBottomView.setVisibility(mBeautyPlasticBottomView.getVisibility() == View.VISIBLE
                     ? View.GONE : View.VISIBLE);
-            mCartoonLayout.setVisibility(View.GONE);
             mFilterBottomView.setVisibility(View.GONE);
             mStickerLayout.setVisibility(View.GONE);
             mFilterConfigView.setVisibility(View.GONE);
@@ -199,7 +184,6 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
             mStickerLayout.setVisibility((mStickerLayout.getVisibility() == View.VISIBLE) ? View.INVISIBLE : View.VISIBLE);
             mFilterBottomView.setVisibility(View.GONE);
             mBeautyPlasticBottomView.setVisibility(View.GONE);
-            mCartoonLayout.setVisibility(View.GONE);
             mFilterConfigView.setVisibility(View.GONE);
             mBeautyConfigView.setVisibility(View.GONE);
         }
@@ -253,6 +237,8 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
 
     private SelesParameters mSkinParameters;
 
+    private List<FilterGroup> mFilterGroups;
+
     public static int getLayoutId() {
         return TuSdkContext.getLayoutResId("tusdk_parent_wrap_layout");
     }
@@ -263,9 +249,10 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.setRootViewLayoutId(getLayoutId());
-        mFilterGroup = getArguments().getStringArray("FilterGroup");
-        mCartoonFilterGroup = getArguments().getStringArray("CartoonFilterGroup");
         mHasMonsterFace = getArguments().getBoolean("hasMonsterFace",false);
+        if (getArguments().containsKey("FilterGroups")){
+            mFilterGroups = Arrays.asList(((FilterGroup[]) getArguments().getSerializable("FilterGroups")));
+        }
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -302,7 +289,7 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
         // 滤镜调节栏
         mFilterConfigView = this.getViewById("lsq_filter_config_view");
         // 滤镜列表
-        mFilterRecyclerView = this.getViewById("lsq_filter_list_view");
+        mFilterPanel = this.getViewById("lsq_filter_panel");
         // 滤镜布局
         mFilterBottomView = this.getViewById("lsq_filter_group_bottom_view_wrap");
         mFilterConfigView.setSeekBarDelegate(mFilterConfigViewSeekBarDelegate);
@@ -317,17 +304,8 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
         // 贴纸取消按钮
         mStickerCancel = this.getViewById("lsq_cancel_button");
 
-
-        // 动漫滤镜布局
-        mCartoonLayout = this.getViewById("lsq_cartoon_view");
-        // 动漫滤镜列表
-        mCartoonRecyclerView = this.getViewById("lsq_cartoon_recycler_view");
-
         // 准备贴纸视图
         prepareStickerViews();
-
-        // 准备滤镜视图
-        prepareFilterViews();
 
         // 准备美肤视图
         prepareBeautySkinViews();
@@ -335,29 +313,52 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
         // 准备微整形视图
         prepareBeautyPlasticViews();
 
-        // 准备漫画视图
-        prepareCartoonViews();
+        if (mFilterGroups != null){
+            prepareFilterGroupsViews();
+        }
     }
 
-    /**
-     * 准备动漫滤镜视图
-     */
-    private void prepareCartoonViews() {
-        mCartoonRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        mCartoonAdapter = new FilterRecyclerAdapter();
-        mCartoonRecyclerView.setAdapter(mCartoonAdapter);
-        mCartoonAdapter.isShowImageParameter(false);
-        mCartoonAdapter.setFilterList(Arrays.asList(mCartoonFilterGroup));
+    private String mCurrentFilterCode = "";
 
-        mCartoonAdapter.setItemCilckListener(new FilterRecyclerAdapter.ItemClickListener() {
-
+    private void prepareFilterGroupsViews() {
+        mFilterReset = this.getViewById("lsq_filter_reset");
+        mFilterReset.setOnClickListener(new TuSdkViewHelper.OnSafeClickListener() {
             @Override
-            public void onItemClick(int position) {
-                SelesParameters selesParameters = mFilterEngine.controller().changeFilter(mCartoonAdapter.getFilterList().get(position),null);
-                mFilterConfigView.setFilterArgs(selesParameters);
+            public void onSafeClick(View view) {
+                mFilterEngine.controller().changeFilter(null,null);
+                mFilterConfigView.setVisibility(View.GONE);
+                mFilterViewPagerAdapter.notifyDataSetChanged();
             }
         });
 
+        mFilterTabIndicator = this.getViewById("lsq_filter_tabIndicator");
+
+        mFilterViewPager = this.getViewById("lsq_filter_view_pager");
+        mFilterViewPager.requestDisallowInterceptTouchEvent(true);
+        List<String> tabTitles = new ArrayList<>();
+        List<FilterFragment> fragments = new ArrayList<>();
+        for (FilterGroup group : mFilterGroups){
+            FilterFragment fragment = FilterFragment.newInstance(group);
+            fragment.setOnFilterItemClickListener(new FilterFragment.OnFilterItemClickListener() {
+                @Override
+                public void onFilterItemClick(String code) {
+                    if (TextUtils.equals(mCurrentFilterCode,code)){
+                        mFilterConfigView.setVisibility(mFilterConfigView.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+                    } else {
+                        mCurrentFilterCode = code;
+                        SelesParameters selesParameters = mFilterEngine.controller().changeFilter(code,null);
+                        mFilterConfigView.setFilterArgs(selesParameters);
+                    }
+                }
+            });
+            fragments.add(fragment);
+            tabTitles.add(group.getName());
+        }
+        mFilterViewPagerAdapter = new FilterViewPagerAdapter(getFragmentManager(),getLifecycle(),fragments);
+        mFilterViewPager.setAdapter(mFilterViewPagerAdapter);
+        mFilterTabIndicator.setViewPager(mFilterViewPager,0);
+        mFilterTabIndicator.setDefaultVisibleCounts(tabTitles.size());
+        mFilterTabIndicator.setTabItems(tabTitles);
     }
 
     /********************** 微整形 ***********************
@@ -494,48 +495,26 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
     }
 
     /**
-     * 准备滤镜栏视图
-     */
-    private void prepareFilterViews() {
-
-        // 设置滤镜布局方式
-        mFilterRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        // 初始化滤镜适配器
-        mFilterAdapter = new FilterRecyclerAdapter();
-        // 设置滤镜适配器
-        mFilterRecyclerView.setAdapter(mFilterAdapter);
-        // 设置滤镜数据
-        mFilterAdapter.setFilterList(Arrays.asList(mFilterGroup));
-        // 滤镜栏点击事件
-        mFilterAdapter.setItemCilckListener(new FilterRecyclerAdapter.ItemClickListener() {
-
-            @Override
-            public void onItemClick(int position) {
-                changeFilter(position);
-            }
-        });
-
-    }
-
-    /**
      * 切换滤镜
      */
     public void changeFilter(int postion) {
 
-        if (mFilterEngine == null || mFilterAdapter == null) return;
-
-        mFilterAdapter.setCurrentPosition(postion);
-
-        SelesParameters parameters;
-        if (postion == 0){
-            parameters = mFilterEngine.controller().changeFilter(null,null);
-            mFilterConfigView.setVisibility(View.GONE);
-        } else {
-            parameters = mFilterEngine.controller().changeFilter(mFilterAdapter.getFilterList().get(postion),null);
-            mFilterConfigView.setVisibility(View.VISIBLE);
-        }
-
-        mFilterConfigView.setFilterArgs(parameters);
+//        if (mFilterEngine == null || mFilterGroups == null) return;
+//
+//        mFilterAdapter.setCurrentPosition(postion);
+//
+//        SelesParameters parameters;
+//        if (postion == 0){
+//            parameters = mFilterEngine.controller().changeFilter(null,null);
+//            mFilterConfigView.setVisibility(View.GONE);
+//        } else {
+//            SelesParameters selesParameters = new SelesParameters();
+//            selesParameters.appendFloatArg("mixied",0.75f);
+//            parameters = mFilterEngine.controller().changeFilter(mFilterAdapter.getFilterList().get(postion),selesParameters);
+//            mFilterConfigView.setVisibility(View.VISIBLE);
+//        }
+//
+//        mFilterConfigView.setFilterArgs(parameters);
     }
 
     // 准备贴纸view
@@ -647,18 +626,6 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
         @Override
         public void onSeekbarDataChanged(FilterConfigSeekbar seekbar, SelesParameters.FilterArg arg) {
 
-//            List<TuSdkMediaEffectData> filterEffects = mFilterEngine.mediaEffectsWithType(TuSdkMediaEffectDataTypeFilter);
-//
-//            float progress = seekbar.getSeekbar().getProgress();
-//            if (arg.getKey().equals("whitening")) {
-//                progress = progress * 0.6f;
-//            } else if (arg.equalsKey("mixied") || arg.equalsKey("smoothing")) {
-//                progress = progress * 0.7f;
-//            }
-//
-//            // 只能添加一个滤镜特效
-//            TuSdkMediaFilterEffectData filterEffect = (TuSdkMediaFilterEffectData) filterEffects.get(0);
-//            filterEffect.submitParameter(arg.getKey(), progress);
         }
     };
 

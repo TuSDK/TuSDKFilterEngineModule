@@ -30,19 +30,6 @@
         <include layout="@layout/tusdk_filter_list_config_view" />
     </RelativeLayout>
 
-
-    <!-- 漫画 -->
-    <RelativeLayout
-        android:id="@+id/lsq_cartoon_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom"
-        android:visibility="gone">
-
-        <include layout="@layout/tusdk_cartoon_list_view" />
-    </RelativeLayout>
-
     <RelativeLayout
         android:id="@+id/lsq_beauty_bottom_view"
         android:layout_width="match_parent"
