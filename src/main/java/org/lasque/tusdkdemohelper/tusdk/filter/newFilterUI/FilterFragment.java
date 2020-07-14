@@ -34,6 +34,8 @@ public class FilterFragment extends Fragment {
 
     private static final String FILTER_GROUP = "FilterGroup";
 
+    private int mCurrentPosition = -1;
+
     public static FilterFragment newInstance(FilterGroup group){
         FilterFragment fragment = new FilterFragment();
         Bundle bundle = new Bundle();
@@ -77,11 +79,23 @@ public class FilterFragment extends Fragment {
         layoutManager.setOrientation(HORIZONTAL);
         mFilterView.setLayoutManager(layoutManager);
         mFilterView.setAdapter(mFilterAdapter);
+        if (mCurrentPosition != -1)
+            mFilterAdapter.setCurrentPosition(mCurrentPosition);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    public void removeFilter(){
+        mFilterAdapter.setCurrentPosition(-1);
+    }
+
+    public void setCurrentPosition(int position){
+        if (mFilterAdapter !=null)
+            mFilterAdapter.setCurrentPosition(position);
+        mCurrentPosition = position;
     }
 
     private FilterOptionRecyclerAdapter.ItemClickListener mFilterClickListener = new FilterOptionRecyclerAdapter.ItemClickListener() {

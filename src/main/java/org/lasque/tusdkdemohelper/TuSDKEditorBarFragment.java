@@ -31,6 +31,7 @@ import org.lasque.tusdk.core.TuSdkContext;
 import org.lasque.tusdk.core.activity.TuSdkFragment;
 import org.lasque.tusdk.core.seles.SelesParameters;
 import org.lasque.tusdk.core.seles.tusdk.FilterGroup;
+import org.lasque.tusdk.core.seles.tusdk.FilterOption;
 import org.lasque.tusdk.core.utils.ThreadHelper;
 import org.lasque.tusdk.core.utils.json.JsonHelper;
 import org.lasque.tusdk.core.view.TuSdkViewHelper;
@@ -39,7 +40,6 @@ import org.lasque.tusdk.cx.api.TuFilterEngine;
 import org.lasque.tusdk.modules.view.widget.sticker.StickerGroup;
 import org.lasque.tusdkdemohelper.tusdk.BeautyPlasticRecyclerAdapter;
 import org.lasque.tusdkdemohelper.tusdk.BeautyRecyclerAdapter;
-import org.lasque.tusdkdemohelper.tusdk.FilterRecyclerAdapter;
 import org.lasque.tusdkdemohelper.tusdk.MonsterFaceFragment;
 import org.lasque.tusdkdemohelper.tusdk.StickerFragment;
 import org.lasque.tusdkdemohelper.tusdk.StickerGroupCategories;
@@ -79,7 +79,7 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
         ThreadHelper.postDelayed(new Runnable() {
             @Override
             public void run() {
-                changeFilter(1);
+                setDefaultFilter();
                 switchConfigSkin(false);
                 mFilterEngine.controller().changePlastic(true);
             }
@@ -122,6 +122,8 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
     private TabPagerIndicator mFilterTabIndicator;
     private FilterViewPagerAdapter mFilterViewPagerAdapter;
     private ImageView mFilterReset;
+
+    private List<FilterFragment> mFilterFragments;
 
     private View.OnClickListener mCartoonButtonClick = new View.OnClickListener() {
         @Override
@@ -354,7 +356,8 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
             fragments.add(fragment);
             tabTitles.add(group.getName());
         }
-        mFilterViewPagerAdapter = new FilterViewPagerAdapter(getFragmentManager(),getLifecycle(),fragments);
+        mFilterFragments = fragments;
+        mFilterViewPagerAdapter = new FilterViewPagerAdapter(getFragmentManager(),getLifecycle(),mFilterFragments);
         mFilterViewPager.setAdapter(mFilterViewPagerAdapter);
         mFilterTabIndicator.setViewPager(mFilterViewPager,0);
         mFilterTabIndicator.setDefaultVisibleCounts(tabTitles.size());
@@ -497,24 +500,22 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
     /**
      * 切换滤镜
      */
-    public void changeFilter(int postion) {
+    public void setDefaultFilter() {
 
-//        if (mFilterEngine == null || mFilterGroups == null) return;
-//
-//        mFilterAdapter.setCurrentPosition(postion);
-//
-//        SelesParameters parameters;
-//        if (postion == 0){
-//            parameters = mFilterEngine.controller().changeFilter(null,null);
-//            mFilterConfigView.setVisibility(View.GONE);
-//        } else {
-//            SelesParameters selesParameters = new SelesParameters();
-//            selesParameters.appendFloatArg("mixied",0.75f);
-//            parameters = mFilterEngine.controller().changeFilter(mFilterAdapter.getFilterList().get(postion),selesParameters);
-//            mFilterConfigView.setVisibility(View.VISIBLE);
-//        }
-//
-//        mFilterConfigView.setFilterArgs(parameters);
+        if (mFilterEngine == null || mFilterGroups == null) return;
+        String defaultFilterCode = mFilterGroups.get(0).getDefaultFilter().code;
+        mViewPager.setCurrentItem(0);
+
+        int mCurrentPosition = -1;
+        List<FilterOption> defaultGroup = mFilterGroups.get(0).filters;
+        for (int i=0;i<defaultGroup.size();i++){
+            if (defaultGroup.get(i).code.equals(defaultFilterCode)){
+                mCurrentPosition = i;
+                break;
+            }
+        }
+        if (mCurrentPosition != -1)
+            mFilterFragments.get(0).setCurrentPosition(mCurrentPosition);
     }
 
     // 准备贴纸view
