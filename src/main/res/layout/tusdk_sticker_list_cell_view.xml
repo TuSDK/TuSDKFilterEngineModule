@@ -1,44 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="60dp"
-    android:layout_height="60dp">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="16dp"
+    >
 
     <RelativeLayout
         android:id="@+id/lsq_item_wrap"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:padding="5dp">
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="@drawable/sticker_item_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/lsq_item_image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:scaleType="fitCenter" />
+
         <ImageView
-			android:visibility="gone"
             android:id="@+id/lsq_progress_image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerInside"
-            android:src="@drawable/lsq_loading_icon"  />
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/sticker_load_ic"
+            android:visibility="gone" />
+
         <ImageView
-            android:visibility="visible"
             android:id="@+id/lsq_item_state_image"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_alignEnd="@id/lsq_item_image"
+            android:layout_alignBottom="@id/lsq_item_image"
             android:scaleType="centerInside"
-            android:src="@drawable/lsq_video_ic_download"
-            android:layout_alignRight="@id/lsq_item_image"
-            android:layout_alignBottom="@id/lsq_item_image" />
+            android:src="@drawable/sticker_download_ic"
+            android:visibility="visible" />
 
         <ImageView
             android:id="@+id/lsq_item_remove"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:src="@drawable/lsq_sticker_del"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/sticker_delete_ic"
             android:visibility="gone" />
 
     </RelativeLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

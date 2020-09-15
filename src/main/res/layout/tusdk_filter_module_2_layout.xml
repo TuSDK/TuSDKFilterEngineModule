@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="184dp"
+    android:background="@color/lsq_color_black"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="144dp">
+
+        <ImageView
+            android:id="@+id/lsq_filter_remove"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/skin_no_ic"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_marginStart="4dp"
+            app:layout_constraintBottom_toBottomOf="@id/lsq_filter_remove"
+            app:layout_constraintTop_toTopOf="@id/lsq_filter_remove"
+            app:layout_constraintLeft_toRightOf="@id/lsq_filter_remove"
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:background="#3DFFFFFF" />
+
+        <RelativeLayout
+            android:id="@+id/lsq_tab_wrap"
+            app:layout_constraintLeft_toRightOf="@id/lsq_filter_remove"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="340dp"
+            android:layout_height="34dp">
+            <org.lasque.tusdkdemohelper.tusdk.newUI.CustomUi.RecyclerViewTabPagerIndicator
+                android:id="@+id/lsq_TabIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:tab_normal_text_color="#99FFFFFF"
+                app:tab_high_light_text_color="@color/lsq_color_white"
+                app:tab_line_size="5"
+                app:tab_text_size="11">
+
+            </org.lasque.tusdkdemohelper.tusdk.newUI.CustomUi.RecyclerViewTabPagerIndicator>
+        </RelativeLayout>
+
+        <View
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/lsq_tab_wrap"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#26FFFFFF" />
+
+
+
+        <RelativeLayout
+            android:layout_marginTop="4dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:descendantFocusability="blocksDescendants"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lsq_filter_remove">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/lsq_filter_group_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:minHeight="80dp"
+                android:nestedScrollingEnabled="false"
+                app:layout_goneMarginBottom="8dp">
+
+            </androidx.recyclerview.widget.RecyclerView>
+        </RelativeLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/lsq_back"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/lsq_color_black"
+        android:src="@drawable/backup_ic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</LinearLayout>

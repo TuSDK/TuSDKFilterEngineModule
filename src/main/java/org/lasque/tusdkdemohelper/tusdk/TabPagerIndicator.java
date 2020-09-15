@@ -148,7 +148,7 @@ public class TabPagerIndicator extends LinearLayout {
      * @param position
      * @param offset
      */
-    private void scroll(int position,float offset){
+    public void scroll(int position,float offset){
         int tabWidth = getWidth() / mDefaultVisibleCounts;
         // tab移动距离
         mMoveX = (int) (tabWidth * (position + offset));
@@ -236,6 +236,8 @@ public class TabPagerIndicator extends LinearLayout {
         }
     }
 
+    private int mCurrentPosition = -1;
+
     /**
      * viewPager滑动
      */
@@ -249,6 +251,7 @@ public class TabPagerIndicator extends LinearLayout {
         @Override
         public void onPageSelected(int position) {
             super.onPageSelected(position);
+            mCurrentPosition = position;
             setHighLightText(position);
             // 必须刷新不然getItemPosition不会更新
             mViewPager.getAdapter().notifyDataSetChanged();
@@ -259,6 +262,10 @@ public class TabPagerIndicator extends LinearLayout {
             super.onPageScrollStateChanged(state);
         }
     };
+
+    public int getCurrentPosition(){
+        return mCurrentPosition;
+    }
 
     /**
      * Tab点击事件
@@ -271,7 +278,12 @@ public class TabPagerIndicator extends LinearLayout {
                 view.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mViewPager.setCurrentItem(clickPosition);
+                        if (mViewPager != null){
+                            mViewPager.setCurrentItem(clickPosition);
+                        }
+                        if (onTabClickListener != null){
+                            onTabClickListener.onClick(clickPosition);
+                        }
                     }
                 });
             }
@@ -291,6 +303,16 @@ public class TabPagerIndicator extends LinearLayout {
     public int dip2px(float dpValue) {
         final float scale = getContext().getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
+    }
+
+    public void setOnTabClickListener(OnTabClickListener onTabClickListener) {
+        this.onTabClickListener = onTabClickListener;
+    }
+
+    private OnTabClickListener onTabClickListener;
+
+    static public interface OnTabClickListener{
+        void onClick(int position);
     }
 
 }

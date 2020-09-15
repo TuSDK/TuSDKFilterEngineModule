@@ -7,6 +7,7 @@
     <color name="colorSpeedPanel">#99222222</color>
 
     <color name="white">#FFFFFF</color>
+    <color name="white3D">#3DFFFFFF</color>
     <color name="red">#FF0000</color>
 
     <color name="text1">#FFFFFF</color>
@@ -21,6 +22,7 @@
     <color name="text10">#00ff00</color>
     <color name="text11">#ff0000</color>
     <color name="text12">#0000ff</color>
+    <color name="text13">#999999</color>
 
     <color name="paint1">#FFFFFF</color>
     <color name="paint2">#000000</color>
@@ -67,7 +69,7 @@
     <color name="lsq_color_semitransparent">#7f000000</color>
 
     <!-- seekbar -->
-    <color name="lsq_seekbar_drag_color">#f4a11a</color>
+    <color name="lsq_seekbar_drag_color">#ffffff</color>
     <color name="lsq_seekbar_view_color">#d9d9d9</color>
     <color name="lsq_dubbing_unselected_color">#9B9B9B</color>
     <color name="lsq_dubbing_bg_color">#EFEFEF</color>
@@ -80,5 +82,11 @@
     <color name="lsq_alpha_black_66">#66000000</color>
     <color name="lsq_alpha_black_B4">#B4000000</color>
     <color name="lsq_alpha_black_CO">#C0000000</color>
+    <color name="lsq_alpha_background">#00D8D8D8</color>
+
+    <color name="lsq_alpha_66CE4564">#66CE4564</color>
+
+
+
 
 </resources>

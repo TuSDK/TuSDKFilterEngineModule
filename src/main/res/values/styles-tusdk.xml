@@ -29,4 +29,19 @@
         <attr name="line_width" format="dimension"></attr>
     </declare-styleable>
 
+    <declare-styleable name="RecyclerViewTabPagerIndicator">
+        <attr name="tab_default_display_counts" format="integer"></attr>
+        <attr name="tab_normal_text_color" format="color"/>
+        <attr name="tab_high_light_text_color" format="color"/>
+        <attr name="tab_text_size" format="integer"/>
+        <attr name="tab_line_color" format="color"/>
+        <attr name="tab_line_size" format="integer"/>
+        <attr name="tab_line_width" format="dimension"></attr>
+    </declare-styleable>
+
+    <style name="lsq_module_title">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/text13</item>
+    </style>
+
 </resources>

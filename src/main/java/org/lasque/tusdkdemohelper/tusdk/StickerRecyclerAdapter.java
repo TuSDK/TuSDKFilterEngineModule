@@ -13,6 +13,7 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.example.tusdkdemohelper.R;
 
 import org.lasque.tusdk.core.TuSdkContext;
 import org.lasque.tusdk.core.secret.TuSDKOnlineStickerDownloader;
@@ -74,7 +75,6 @@ public class StickerRecyclerAdapter extends RecyclerView.Adapter<StickerRecycler
     public interface ItemDeleteListener {
         void onItemDelete(int position);
     }
-
     public void setItemDeleteListener(ItemDeleteListener listener) {
         this.itemDeleteListener = listener;
     }
@@ -131,10 +131,11 @@ public class StickerRecyclerAdapter extends RecyclerView.Adapter<StickerRecycler
             StickerLocalPackage.shared().loadGroupThumb(model, stickerViewHolder.mItemImage);
             stickerViewHolder.mLoadProgressImage.setVisibility(View.GONE);
             stickerViewHolder.mDownStateImage.setVisibility(View.GONE);
+            stickerViewHolder.mItemWarp.setBackground(TuSdkContext.getDrawable("sticker_item_bg"));
         } else if (isDownloading(position)) {
+            stickerViewHolder.mItemWarp.setBackground(TuSdkContext.getDrawable("sticker_item_download_bg"));
             stickerViewHolder.mDownStateImage.setVisibility(View.GONE);
             stickerViewHolder.mLoadProgressImage.setVisibility(View.VISIBLE);
-//            StickerLocalPackage.shared().loadGroupThumb(model,stickerViewHolder.mItemImage);
             Glide.with(mContext)
                     .asBitmap()
                     .load(model.getPreviewNamePath())
@@ -142,7 +143,6 @@ public class StickerRecyclerAdapter extends RecyclerView.Adapter<StickerRecycler
             showProgressAnimation(stickerViewHolder.mLoadProgressImage);
         } else {
             if (mContext == null) return;
-//            StickerLocalPackage.shared().loadGroupThumb(model,stickerViewHolder.mItemImage);
             Glide.with(mContext).asBitmap()
                     .load(model.getPreviewNamePath()).into(stickerViewHolder.mItemImage);
             stickerViewHolder.mDownStateImage.setVisibility(View.VISIBLE);
@@ -151,9 +151,13 @@ public class StickerRecyclerAdapter extends RecyclerView.Adapter<StickerRecycler
 
         /** 点击选中处理 */
         if (position == mCurrentPosition) {
-            stickerViewHolder.mItemWarp.setBackground(TuSdkContext.getDrawable("tusdk_sticker_cell_background"));
+            if (isDownloading(position)){
+                stickerViewHolder.mItemWarp.setBackground(TuSdkContext.getDrawable("sticker_item_download_bg"));
+            } else {
+                stickerViewHolder.mItemWarp.setBackground(TuSdkContext.getDrawable("bg_yellow_border"));
+            }
         } else {
-            stickerViewHolder.mItemWarp.setBackground(null);
+            stickerViewHolder.mItemWarp.setBackground(TuSdkContext.getDrawable("sticker_item_bg"));
         }
 
         /** 长按后UI处理 */
@@ -213,6 +217,8 @@ public class StickerRecyclerAdapter extends RecyclerView.Adapter<StickerRecycler
         adBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                mCurrentLongPos = -1;
+                notifyItemChanged(position);
                 dialog.dismiss();
             }
         });

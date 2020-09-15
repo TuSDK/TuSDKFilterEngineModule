@@ -115,6 +115,7 @@ public class StickerFragment extends Fragment {
         @Override
         public void onItemDelete(int position) {
             if(listener != null) listener.onStickerItemClick(null);
+            clearSelect();
         }
     };
 
@@ -128,5 +129,11 @@ public class StickerFragment extends Fragment {
             if(listener != null) listener.onStickerItemClick(itemData);
         }
     };
+
+    public void clearSelect(){
+        if (mStickerRecyclerAdapter != null){
+            mStickerRecyclerAdapter.setSelectedPosition(-1);
+        }
+    }
 
 }

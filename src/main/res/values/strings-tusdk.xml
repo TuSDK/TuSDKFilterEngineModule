@@ -11,7 +11,7 @@
     <string name="lsq_beauty_browposition">眉高</string>
     <string name="lsq_beauty_eyeangle">眼角</string>
     <string name="lsq_beauty_chinsize">瘦脸</string>
-    <string name="lsq_beauty_mouthwidth">嘴型</string>
+    <string name="lsq_beauty_mouthwidth">嘴形</string>
     <string name="lsq_beauty_nosesize">瘦鼻</string>
     <string name="lsq_beauty_lips">唇厚</string>
     <string name="lsq_beauty_forehead">发际线</string>
@@ -87,7 +87,7 @@
     <string name="lsq_filter_Scenery_Film_2">电影</string>
     <string name="lsq_filter_Scenery_Silent_2">寂静</string>
     <string name="lsq_filter_Scenery_Lautumn_2">晚秋</string>
-    <string name="lsq_filter_Scenery_Sunlight_2">日光</string>
+    <string name="lsq_filter_Scenery_Sunrise_2">日出</string>
     <string name="lsq_filter_Scenery_Sunset_2">晚霞</string>
     <string name="lsq_filter_Scenery_Grace_2">优雅</string>
     <string name="lsq_filter_Scenery_Withered_2">凋零</string>

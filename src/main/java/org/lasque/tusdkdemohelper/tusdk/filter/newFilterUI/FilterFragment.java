@@ -113,4 +113,8 @@ public class FilterFragment extends Fragment {
         }
     };
 
+    public void removeFilter(){
+        mFilterAdapter.setCurrentPosition(-1);
+    }
+
 }

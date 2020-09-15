@@ -13,6 +13,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+import com.example.tusdkdemohelper.R;
+
 import org.lasque.tusdk.core.TuSdkContext;
 import org.lasque.tusdk.core.seles.SelesParameters.FilterArg;
 import org.lasque.tusdk.core.seles.SelesParameters.FilterParameterInterface;
@@ -20,6 +22,7 @@ import org.lasque.tusdk.core.seles.sources.SelesOutInput;
 import org.lasque.tusdk.core.view.TuSdkRelativeLayout;
 import org.lasque.tusdk.impl.view.widget.TuSeekBar;
 import org.lasque.tusdk.impl.view.widget.TuSeekBar.TuSeekBarDelegate;
+import org.lasque.tusdkdemohelper.tusdk.newUI.CustomUi.TuSeekBarPressure;
 
 import java.math.BigDecimal;
 
@@ -75,7 +78,7 @@ public class FilterConfigSeekbar extends TuSdkRelativeLayout
 	}
 
 	// 百分比控制条
-	private TuSeekBar mSeekbar;
+	private TuSeekBarPressure mSeekbar;
 	// 标题视图
 	private TextView mTitleView;
 	// 计数视图
@@ -95,7 +98,7 @@ public class FilterConfigSeekbar extends TuSdkRelativeLayout
 	 * 
 	 * @return the mSeekbar
 	 */
-	public TuSeekBar getSeekbar()
+	public TuSeekBarPressure getSeekbar()
 	{
 		if (mSeekbar == null)
 		{
@@ -214,9 +217,12 @@ public class FilterConfigSeekbar extends TuSdkRelativeLayout
 		mFilterArg = arg;
 		if (mFilterArg == null) return;
 
-		TuSeekBar seekBar = this.getSeekbar();
+		TuSeekBarPressure seekBar = this.getSeekbar();
 		if (seekBar == null) return;
+		seekBar.setDragViewBackgroundResourceId(R.drawable.tusdk_view_widget_seekbar_drag);
+		seekBar.setBottomViewBackgroundResourceId(R.drawable.tusdk_view_widget_seekbar_bottom_bg);
 		seekBar.setProgress(arg.getPrecentValue());
+		seekBar.setSecondProgress(arg.getDefaultValue());
 
 		if (this.getTitleView() != null)
 		{
@@ -251,24 +257,19 @@ public class FilterConfigSeekbar extends TuSdkRelativeLayout
 			switch (key) {
 				// 以下为改变显示进度
 				case "mouthWidth":
-					progress = progress - 0.5f;
-					break;
 				case "archEyebrow":
-					progress = progress - 0.5f;
-					break;
 				case "jawSize":
-					progress = progress - 0.5f;
-					break;
 				case "eyeAngle":
-					progress = progress - 0.5f;
-					break;
 				case "eyeDis":
+				case "lips":
+				case "browPosition":
+				case "forehead":
 					progress = progress - 0.5f;
 					break;
 			}
 			BigDecimal bigDecimal = new BigDecimal(progress);
 			progress = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
-			this.getFilterValueView().setText((int) (progress * 100)+"%");
+			this.getFilterValueView().setText(String.valueOf((int) (progress * 100) + "%"));
 		}
 	}
 

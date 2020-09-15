@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="144dp"
+    android:orientation="vertical"
+    android:background="@color/lsq_color_black">
+
+    <HorizontalScrollView
+        android:scrollbars="none"
+        android:layout_width="match_parent"
+        android:layout_height="104dp"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/lsq_voice_module_reset"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:src="@drawable/skin_no_ic" />
+            <TextView
+                android:layout_marginTop="4dp"
+                android:textSize="10sp"
+                android:layout_gravity="center_horizontal"
+                android:textColor="#FF999999"
+                android:text="正常"
+                android:id="@+id/lsq_voice_module_reset_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+            <View
+                android:id="@+id/lsq_voice_point"
+                android:layout_width="4dp"
+                android:layout_height="4dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="12dp"
+                android:background="@drawable/point" />
+
+            <RelativeLayout
+                android:layout_marginStart="18dp"
+                android:descendantFocusability="blocksDescendants"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/lsq_voice_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="24dp"
+                    />
+            </RelativeLayout>
+        </LinearLayout>
+
+    </HorizontalScrollView>
+    <ImageView
+        android:id="@+id/lsq_back"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/lsq_color_black"
+        android:src="@drawable/backup_ic" />
+</LinearLayout>

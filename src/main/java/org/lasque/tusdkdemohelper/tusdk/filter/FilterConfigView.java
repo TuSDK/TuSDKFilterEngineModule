@@ -173,7 +173,7 @@ public class FilterConfigView extends TuSdkRelativeLayout
         for (FilterArg arg : args)
         {
             // 可过滤不需要的调节参数
-            if (checkIgnoredKey(arg, getIgnoredKeys())) continue;
+//            if (checkIgnoredKey(arg, getIgnoredKeys())) continue;
 
             FilterConfigSeekbar seekbar = this.buildAppendSeekbar(configWrap, this.mSeekHeigth);
             if (seekbar != null)
