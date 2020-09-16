@@ -186,6 +186,7 @@ public class StickerModule extends BaseModule {
     public void clearSelect(){
         if (mPrePos != -1){
             ((StickerFragment) mFragments.get(mPrePos)).clearSelect();
+            clearSticker();
             mPrePos = -1;
         }
     }
