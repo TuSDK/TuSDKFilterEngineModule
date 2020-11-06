@@ -263,7 +263,7 @@ public class TabPagerIndicator extends LinearLayout {
         }
     };
 
-    public int getCurrentPosition(){
+    public int getCurrentPos(){
         return mCurrentPosition;
     }
 

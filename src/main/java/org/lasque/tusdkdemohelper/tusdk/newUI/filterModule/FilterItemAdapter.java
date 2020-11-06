@@ -46,42 +46,42 @@ class FilterItemAdapter extends BaseAdapter<FilterItemAdapter.FilterItemViewHold
 
     private int mPosition = -1;
 
-    protected FilterItemAdapter(Context context, String color,List<FilterOption> itemList,int position) {
+    protected FilterItemAdapter(Context context, String color, List<FilterOption> itemList, int position) {
         super(context, itemList);
         mSelectColor = Color.parseColor("#66" + color);
         mTitleColor = Color.parseColor("#FF" + color);
         mPosition = position;
     }
 
-    public int getPosition(){
+    public int getPosition() {
         return mPosition;
     }
 
     @Override
     protected FilterItemViewHolder onChildCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new FilterItemViewHolder(LayoutInflater.from(mContext).inflate(R.layout.tusdk_filter_module_filter_item,parent,false));
+        return new FilterItemViewHolder(LayoutInflater.from(mContext).inflate(R.layout.tusdk_filter_module_filter_item, parent, false));
     }
 
     @Override
     protected void onChildBindViewHolder(@NonNull final FilterItemViewHolder holder, final int position, final FilterOption item) {
         String filterCode = item.code;
-        String imageCode = filterCode.toLowerCase().replaceAll("_","");
+        String imageCode = filterCode.toLowerCase().replaceAll("_", "");
         String filterImageName = getThumbPrefix() + imageCode;
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mOnClickListener!= null) {
-                    mOnClickListener.onItemClick(position,holder,item);
+                if (mOnClickListener != null) {
+                    mOnClickListener.onItemClick(position, holder, item);
                 }
             }
         });
-        if (!TextUtils.isEmpty(mDefaultFilterCode) && mCurrentPosition == -1){
-            if (item.code.equals(mDefaultFilterCode)){
+        if (!TextUtils.isEmpty(mDefaultFilterCode) && mCurrentPosition == -1) {
+            if (item.code.equals(mDefaultFilterCode)) {
                 mCurrentPosition = position;
             }
         }
 
-        if (position == mCurrentPosition){
+        if (position == mCurrentPosition) {
             holder.mFilterIcon.setColorFilter(mSelectColor);
             holder.mConfigIcon.setVisibility(isShowParameter ? View.VISIBLE : View.GONE);
         } else {
@@ -90,8 +90,7 @@ class FilterItemAdapter extends BaseAdapter<FilterItemAdapter.FilterItemViewHold
         }
 
         Bitmap filterImage = TuSdkContext.getRawBitmap(filterImageName);
-        if (filterImage != null)
-        {
+        if (filterImage != null) {
             holder.mFilterIcon.setImageBitmap(filterImage);
         }
         holder.mFilterTitle.setText(item.getName());
@@ -103,39 +102,25 @@ class FilterItemAdapter extends BaseAdapter<FilterItemAdapter.FilterItemViewHold
      *
      * @return
      */
-    protected String getThumbPrefix()
-    {
+    protected String getThumbPrefix() {
         return "lsq_filter_thumb_";
     }
 
-    public void changeShowParameterState(){
+    public void changeShowParameterState() {
         isShowParameter = !isShowParameter;
     }
 
-    public boolean isShowParameter(){
+    public boolean isShowParameter() {
         return isShowParameter;
     }
 
-    @Override
-    public void setCurrentPosition(int position){
-        int lastPosition = mCurrentPosition;
-        this.mCurrentPosition = position;
-        notifyItemChanged(lastPosition);
-        if (mCurrentPosition != -1)
-            notifyItemChanged(mCurrentPosition);
-    }
 
-    public void setDefaultFilterCode(String filterCode){
+    public void setDefaultFilterCode(String filterCode) {
         mDefaultFilterCode = filterCode;
     }
 
-    @Override
-    public int getCurrentPosition(){
-        return mCurrentPosition;
-    }
 
-
-    public static class FilterItemViewHolder extends RecyclerView.ViewHolder{
+    public static class FilterItemViewHolder extends RecyclerView.ViewHolder {
 
         public TextView mFilterTitle;
         public ImageView mFilterIcon;

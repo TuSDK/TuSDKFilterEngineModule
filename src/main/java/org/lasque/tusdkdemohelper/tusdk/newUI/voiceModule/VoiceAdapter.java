@@ -60,20 +60,6 @@ public class VoiceAdapter extends BaseAdapter<VoiceAdapter.VoiceViewHolder,Voice
         }
     }
 
-    @Override
-    public int getCurrentPosition() {
-        return mCurrentPosition;
-    }
-
-    @Override
-    public void setCurrentPosition(int position) {
-        int lastPosition = mCurrentPosition;
-        this.mCurrentPosition = position;
-        notifyItemChanged(lastPosition);
-        if (mCurrentPosition != -1)
-            notifyItemChanged(mCurrentPosition);
-    }
-
     public static class VoiceViewHolder extends RecyclerView.ViewHolder{
 
         public ImageView mVoiceIcon;

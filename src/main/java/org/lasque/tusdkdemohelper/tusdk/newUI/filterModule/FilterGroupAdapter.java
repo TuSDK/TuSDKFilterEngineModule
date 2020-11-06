@@ -81,7 +81,7 @@ public class FilterGroupAdapter extends BaseAdapter<FilterGroupAdapter.FilterVie
             public void onClick(View v) {
                 if (mOnClickListener != null) {
                     for (FilterItemAdapter adapter : mFilterAdapterMap.values()) {
-                        adapter.setCurrentPosition(-1);
+                        adapter.setCurrentPos(-1);
                     }
                     mOnClickListener.onItemClick(position, holder, item);
                 }
@@ -90,7 +90,7 @@ public class FilterGroupAdapter extends BaseAdapter<FilterGroupAdapter.FilterVie
         holder.mFilterGroupClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setCurrentPosition(-1);
+                setCurrentPos(-1);
             }
         });
         FilterItemAdapter adapter = mFilterAdapterMap.get(item.groupId);
@@ -128,11 +128,6 @@ public class FilterGroupAdapter extends BaseAdapter<FilterGroupAdapter.FilterVie
 
     }
 
-    @Override
-    public int getCurrentPosition() {
-        return mCurrentPosition;
-    }
-
     /**
      * 缩略图前缀
      *
@@ -144,16 +139,6 @@ public class FilterGroupAdapter extends BaseAdapter<FilterGroupAdapter.FilterVie
 
     public FilterItemAdapter getItemAdapter(long pos) {
         return mFilterAdapterMap.get(pos);
-    }
-
-    @Override
-    public void setCurrentPosition(int position) {
-        int lastPosition = mCurrentPosition;
-        this.mCurrentPosition = position;
-        notifyItemChanged(lastPosition);
-        if (mCurrentPosition != -1) {
-            notifyItemChanged(mCurrentPosition);
-        }
     }
 
     public void setDefaultFilterCode(String filterCode){

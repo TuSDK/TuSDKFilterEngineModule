@@ -73,7 +73,7 @@ public class MonsterModule extends BaseModule {
             @Override
             public void onClick(View v) {
                 mFilterEngine.controller().changeMonster(TuFilterCombo.TuFaceMonsterMode.Empty);
-                mMonsterAdapter.setCurrentPosition(-1);
+                mMonsterAdapter.setCurrentPos(-1);
                 showToast("哈哈镜移除");
                 mController.getPlasticModule().setParameters(mFilterEngine.controller().changePlastic(true));
             }
@@ -83,7 +83,7 @@ public class MonsterModule extends BaseModule {
         mMonsterAdapter.setOnItemClickListener(new OnItemClickListener<MonsterAdapter.MonsterViewHolder, MonsterFunction>() {
             @Override
             public void onItemClick(int pos, MonsterAdapter.MonsterViewHolder holder, MonsterFunction item) {
-                mMonsterAdapter.setCurrentPosition(pos);
+                mMonsterAdapter.setCurrentPos(pos);
                 mFilterEngine.controller().changeMonster(item.mode);
                 mController.getPlasticModule().clearPlastic();
                 mController.getStickerModule().clearSelect();
@@ -99,7 +99,7 @@ public class MonsterModule extends BaseModule {
 
     public void clearMonsterFace(){
         if (mMonsterAdapter != null){
-            mMonsterAdapter.setCurrentPosition(-1);
+            mMonsterAdapter.setCurrentPos(-1);
         }
     }
 }

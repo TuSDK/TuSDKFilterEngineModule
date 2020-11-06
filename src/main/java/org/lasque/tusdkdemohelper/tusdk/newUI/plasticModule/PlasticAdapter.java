@@ -61,20 +61,6 @@ public class PlasticAdapter extends BaseAdapter<PlasticAdapter.PlasticViewHolder
         }
     }
 
-    @Override
-    public int getCurrentPosition() {
-        return mCurrentPosition;
-    }
-
-    @Override
-    public void setCurrentPosition(int position) {
-        int lastPosition = mCurrentPosition;
-        this.mCurrentPosition = position;
-        notifyItemChanged(lastPosition);
-        if (mCurrentPosition != -1)
-            notifyItemChanged(mCurrentPosition);
-    }
-
     public static class PlasticViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView mPlasticIcon;

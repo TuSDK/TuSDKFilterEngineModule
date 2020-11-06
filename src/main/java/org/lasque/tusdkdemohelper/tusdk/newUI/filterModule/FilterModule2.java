@@ -99,7 +99,7 @@ public class FilterModule2 extends BaseModule {
         mFilterRemoveView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mFilterGroupAdapter.setCurrentPosition(-1);
+                mFilterGroupAdapter.setCurrentPos(-1);
                 mFilterGroupAdapter.setDefaultFilterCode(null);
                 mFilterEngine.controller().changeFilter(null, null);
                 showToast("滤镜重置");
@@ -112,15 +112,15 @@ public class FilterModule2 extends BaseModule {
             public void onItemClick(int pos, FilterItemAdapter.FilterItemViewHolder holder, FilterOption item) {
                 mFilterGroupAdapter.setDefaultFilterCode(null);
                 FilterItemAdapter adapter = mFilterGroupAdapter.getItemAdapter(item.groupId);
-                if (adapter.getCurrentPosition() == pos) {
+                if (adapter.getCurrentPos() == pos) {
                     adapter.changeShowParameterState();
                     adapter.notifyItemChanged(pos);
                     mConfigView.setVisibility(adapter.isShowParameter() ? View.VISIBLE : View.GONE);
                 } else {
-                    if (adapter.getPosition() != mFilterGroupAdapter.getCurrentPosition()){
-                        mFilterGroupAdapter.setCurrentPosition(adapter.getPosition());
+                    if (adapter.getPosition() != mFilterGroupAdapter.getCurrentPos()){
+                        mFilterGroupAdapter.setCurrentPos(adapter.getPosition());
                     }
-                    adapter.setCurrentPosition(pos);
+                    adapter.setCurrentPos(pos);
                     mParameters = mFilterEngine.controller().changeFilter(item.code, mParameters);
                 }
                 mConfigView.setFilterArgs(mParameters);
@@ -134,7 +134,7 @@ public class FilterModule2 extends BaseModule {
         mFilterGroupList.setLayoutManager(linearLayoutManager);
         mFilterGroupList.setAdapter(mFilterGroupAdapter);
         if (mDefaultFilterGroupIndex != -1){
-            mFilterGroupAdapter.setCurrentPosition(mDefaultFilterGroupIndex);
+            mFilterGroupAdapter.setCurrentPos(mDefaultFilterGroupIndex);
         }
         mFilterGroupNames.clear();
         for (FilterGroup group : mFilterGroups){
@@ -204,7 +204,7 @@ public class FilterModule2 extends BaseModule {
 
     public void setDefaultFilter(int groupIndex,String filterCode){
         if (mFilterGroupAdapter != null){
-            mFilterGroupAdapter.setCurrentPosition(groupIndex);
+            mFilterGroupAdapter.setCurrentPos(groupIndex);
             mFilterGroupAdapter.setDefaultFilterCode(filterCode);
         }
         mDefaultFilterGroupIndex = groupIndex;

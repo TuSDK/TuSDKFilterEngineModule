@@ -55,7 +55,7 @@ public class FilterOptionRecyclerAdapter extends RecyclerView.Adapter<FilterOpti
         notifyDataSetChanged();
     }
 
-    public void setCurrentPosition(int position){
+    public void setCurrentPos(int position){
         int lastPosition = mCurrentPosition;
         this.mCurrentPosition = position;
         notifyItemChanged(lastPosition);

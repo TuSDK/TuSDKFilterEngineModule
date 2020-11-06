@@ -105,7 +105,7 @@ public class PlasticModule extends BaseModule {
         mPlasticReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPlasticAdapter.setCurrentPosition(-1);
+                mPlasticAdapter.setCurrentPos(-1);
                 mConfigView.setVisibility(View.GONE);
                 mParameters.reset();
                 showToast("微整形参数重置");
@@ -125,7 +125,7 @@ public class PlasticModule extends BaseModule {
                 SelesParameters.FilterArg arg = mParameters.getFilterArg(item.code);
                 mConfigView.setFilterArgs(Arrays.asList(arg));
                 mConfigView.setVisibility(View.VISIBLE);
-                mPlasticAdapter.setCurrentPosition(pos);
+                mPlasticAdapter.setCurrentPos(pos);
             }
         });
         mPlasticList = mCurrentView.findViewById(R.id.lsq_plastic_list);
@@ -140,7 +140,7 @@ public class PlasticModule extends BaseModule {
     public void detach(ViewGroup parent) {
         super.detach(parent);
         if (mPlasticAdapter != null) {
-            mPlasticAdapter.setCurrentPosition(-1);
+            mPlasticAdapter.setCurrentPos(-1);
         }
         mConfigView.setVisibility(View.GONE);
         mConfigView.setFilterArgs(((SelesParameters) null));

@@ -21,6 +21,7 @@ public abstract class BaseAdapter<H extends RecyclerView.ViewHolder,Y> extends R
     protected OnItemClickListener<H,Y> mOnClickListener;
     protected List<Y> mItemList;
     protected Context mContext;
+    protected int mCurrentPos = -1;
 
     protected BaseAdapter(Context context, List<Y> itemList){
         this.mItemList = itemList;
@@ -29,6 +30,19 @@ public abstract class BaseAdapter<H extends RecyclerView.ViewHolder,Y> extends R
 
     public void setOnItemClickListener(OnItemClickListener<H,Y> onItemClickListener){
         this.mOnClickListener = onItemClickListener;
+    }
+
+    public int getCurrentPos(){
+        return mCurrentPos;
+    }
+
+    public void setCurrentPos(int pos){
+        int lastPos = mCurrentPos;
+        notifyItemChanged(lastPos);
+        mCurrentPos = pos;
+        if (mCurrentPos != -1){
+            notifyItemChanged(mCurrentPos);
+        }
     }
 
     @NonNull
@@ -49,9 +63,6 @@ public abstract class BaseAdapter<H extends RecyclerView.ViewHolder,Y> extends R
 
     protected abstract H onChildCreateViewHolder(@NonNull ViewGroup parent, int viewType);
     protected abstract void onChildBindViewHolder(@NonNull H holder, int position, Y item);
-
-    public abstract int getCurrentPosition();
-    public abstract void setCurrentPosition(int pos);
 
 
 }

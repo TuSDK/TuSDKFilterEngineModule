@@ -75,7 +75,7 @@ public class FilterModule extends BaseModule {
         mFilterRemoveView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mFilterGroupAdapter.setCurrentPosition(-1);
+                mFilterGroupAdapter.setCurrentPos(-1);
                 mFilterGroupAdapter.setDefaultFilterCode(null);
                 mFilterEngine.controller().changeFilter(null, null);
             }
@@ -85,11 +85,11 @@ public class FilterModule extends BaseModule {
         mFilterGroupAdapter.setOnItemClickListener(new OnItemClickListener<FilterGroupAdapter.FilterViewHolder, FilterGroup>() {
             @Override
             public void onItemClick(final int pos, FilterGroupAdapter.FilterViewHolder holder, FilterGroup item) {
-                mFilterGroupAdapter.setCurrentPosition(-1);
+                mFilterGroupAdapter.setCurrentPos(-1);
                 mFilterGroupList.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mFilterGroupAdapter.setCurrentPosition(pos);
+                        mFilterGroupAdapter.setCurrentPos(pos);
                     }
                 },10);
             }
@@ -99,12 +99,12 @@ public class FilterModule extends BaseModule {
             public void onItemClick(int pos, FilterItemAdapter.FilterItemViewHolder holder, FilterOption item) {
                 mFilterGroupAdapter.setDefaultFilterCode(null);
                 FilterItemAdapter adapter = mFilterGroupAdapter.getItemAdapter(item.groupId);
-                if (adapter.getCurrentPosition() == pos) {
+                if (adapter.getCurrentPos() == pos) {
                     adapter.changeShowParameterState();
                     adapter.notifyItemChanged(pos);
                     mConfigView.setVisibility(adapter.isShowParameter() ? View.VISIBLE : View.GONE);
                 } else {
-                    adapter.setCurrentPosition(pos);
+                    adapter.setCurrentPos(pos);
                     mParameters = mFilterEngine.controller().changeFilter(item.code, mParameters);
                 }
                 mConfigView.setFilterArgs(mParameters);
@@ -117,7 +117,7 @@ public class FilterModule extends BaseModule {
         mFilterGroupList.setLayoutManager(linearLayoutManager);
         mFilterGroupList.setAdapter(mFilterGroupAdapter);
         if (mDefaultFilterGroupIndex != -1){
-            mFilterGroupAdapter.setCurrentPosition(mDefaultFilterGroupIndex);
+            mFilterGroupAdapter.setCurrentPos(mDefaultFilterGroupIndex);
         }
     }
 
@@ -128,7 +128,7 @@ public class FilterModule extends BaseModule {
 
     public void setDefaultFilter(int groupIndex,String filterCode){
         if (mFilterGroupAdapter != null){
-            mFilterGroupAdapter.setCurrentPosition(groupIndex);
+            mFilterGroupAdapter.setCurrentPos(groupIndex);
             mFilterGroupAdapter.setDefaultFilterCode(filterCode);
         }
         mDefaultFilterGroupIndex = groupIndex;

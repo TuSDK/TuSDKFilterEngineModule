@@ -42,11 +42,6 @@ public class FilterGroupAdapter2 extends BaseAdapter<FilterGroupAdapter2.FilterV
     private Map<Integer,FilterViewHolder> mFilterViews;
     private List<String> mColorList;
 
-    @Override
-    public int getCurrentPosition() {
-        return mCurrentPosition;
-    }
-
     private int mCurrentPosition = -1;
 
     private String mDefaultFilterCode;
@@ -88,7 +83,7 @@ public class FilterGroupAdapter2 extends BaseAdapter<FilterGroupAdapter2.FilterV
         holder.mFilterList.setLayoutManager(linearLayoutManager);
         holder.mFilterList.setAdapter(adapter);
         if (mCurrentPosition != position){
-            adapter.setCurrentPosition(-1);
+            adapter.setCurrentPos(-1);
         }
 
         if (position == mItemList.size() -1){
@@ -113,13 +108,6 @@ public class FilterGroupAdapter2 extends BaseAdapter<FilterGroupAdapter2.FilterV
 
     public FilterViewHolder getItemViewHolder(int pos){
         return mFilterViews.get(pos);
-    }
-
-    @Override
-    public void setCurrentPosition(int position) {
-        int lastPosition = mCurrentPosition;
-        this.mCurrentPosition = position;
-        notifyItemChanged(lastPosition);
     }
 
     public void setDefaultFilterCode(String filterCode){

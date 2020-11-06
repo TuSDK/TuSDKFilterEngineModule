@@ -80,7 +80,7 @@ public class FilterFragment extends Fragment {
         mFilterView.setLayoutManager(layoutManager);
         mFilterView.setAdapter(mFilterAdapter);
         if (mCurrentPosition != -1)
-            mFilterAdapter.setCurrentPosition(mCurrentPosition);
+            mFilterAdapter.setCurrentPos(mCurrentPosition);
     }
 
     @Override
@@ -89,12 +89,12 @@ public class FilterFragment extends Fragment {
     }
 
     public void removeFilter(){
-        mFilterAdapter.setCurrentPosition(-1);
+        mFilterAdapter.setCurrentPos(-1);
     }
 
-    public void setCurrentPosition(int position){
+    public void setCurrentPos(int position){
         if (mFilterAdapter !=null)
-            mFilterAdapter.setCurrentPosition(position);
+            mFilterAdapter.setCurrentPos(position);
         mCurrentPosition = position;
     }
 
@@ -108,7 +108,7 @@ public class FilterFragment extends Fragment {
             }
             previewPosition = position;
             String code = mFilterAdapter.getFilterCode(position);
-            mFilterAdapter.setCurrentPosition(position);
+            mFilterAdapter.setCurrentPos(position);
             if (mListener != null) mListener.onFilterItemClick(code);
         }
     };

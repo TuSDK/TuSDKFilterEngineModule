@@ -10,5 +10,5 @@ package org.lasque.tusdkdemohelper.tusdk.newUI.base;
  * @Copyright (c) 2020 tusdk.com. All rights reserved.
  */
 public enum FunctionsType {
-    MAIN,SKIN,PLASTIC,FILTER,STICKER,MONSTER,VOICE;
+    MAIN,SKIN,PLASTIC,FILTER,STICKER,MONSTER,VOICE,COSMETIC;
 }

@@ -76,6 +76,9 @@ public class MainModule extends BaseModule implements OnItemClickListener<Functi
             case FUNCTION_VOICE:
                 mController.animatorSwitchModule(FunctionsType.VOICE);
                 break;
+            case FUNCTION_COSMETIC:
+                mController.animatorSwitchModule(FunctionsType.COSMETIC);
+                break;
         }
     }
 }

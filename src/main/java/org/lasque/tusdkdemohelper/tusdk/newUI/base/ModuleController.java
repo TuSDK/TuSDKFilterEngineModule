@@ -19,6 +19,7 @@ import org.lasque.tusdk.core.utils.ThreadHelper;
 import org.lasque.tusdk.cx.api.TuFilterCombo;
 import org.lasque.tusdk.cx.api.TuFilterEngine;
 import org.lasque.tusdkdemohelper.tusdk.filter.FilterConfigView;
+import org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.CosmeticModule;
 import org.lasque.tusdkdemohelper.tusdk.newUI.filterModule.FilterModule;
 import org.lasque.tusdkdemohelper.tusdk.newUI.filterModule.FilterModule2;
 import org.lasque.tusdkdemohelper.tusdk.newUI.mainModule.FunctionMenuItem;
@@ -50,6 +51,7 @@ final public class ModuleController {
     private MonsterModule mMonsterModule;
     private StickerModule mStickerModule;
     private VoiceModule mVoiceModule;
+    private CosmeticModule mCosmeticModule;
 
     private List<FunctionMenuItem> mMenuItems;
 
@@ -221,6 +223,8 @@ final public class ModuleController {
             case VOICE:
                 mCurrentModule = getVoiceModule();
                 break;
+            case COSMETIC:
+                mCurrentModule = getCosmeticModule();
         }
         if (mCurrentModule != null)
             mCurrentModule.attach(mBottomView);
@@ -353,6 +357,15 @@ final public class ModuleController {
             mVoiceModule.setAudioEngine(mAudioEngine);
         }
         return mVoiceModule;
+    }
+
+    public CosmeticModule getCosmeticModule(){
+        if (mCosmeticModule == null){
+            mCosmeticModule = new CosmeticModule(this,mContext);
+            mCosmeticModule.setFilterEngine(mFilterEngine);
+            mCosmeticModule.setConfigView(mConfigView);
+        }
+        return mCosmeticModule;
     }
 
 }

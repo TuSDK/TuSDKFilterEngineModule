@@ -63,16 +63,6 @@ public class FunctionMenuAdapter extends BaseAdapter<FunctionMenuAdapter.Functio
         });
     }
 
-    @Override
-    public int getCurrentPosition() {
-        return -1;
-    }
-
-    @Override
-    public void setCurrentPosition(int pos) {
-
-    }
-
     static public class FunctionMenuViewHolder extends RecyclerView.ViewHolder{
 
         public ImageView mIcon;

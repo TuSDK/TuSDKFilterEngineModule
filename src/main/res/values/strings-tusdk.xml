@@ -140,4 +140,182 @@
 
     <string name="lsq_filter_set_mixied">效果</string>
 
+    <string name="lsq_text_cosmetic_type">美妆</string>
+    <string name="lsq_clear_beauty_cosmetic_hit">确定删除所有美妆效果?</string>
+    <string name="lsq_audioRecording_next">确定</string>
+    <string name="lsq_audioRecording_cancel">取消</string>
+
+
+    <!--    美妆     -->
+
+    <string name="lsq_cosmetic_lipstick">口红</string>
+    <string name="lsq_cosmetic_blush">腮红</string>
+    <string name="lsq_cosmetic_eyebrow">眉毛</string>
+    <string name="lsq_cosmetic_eyeshadow">眼影</string>
+    <string name="lsq_cosmetic_eyeliner">眼线</string>
+    <string name="lsq_cosmetic_eyelash">睫毛</string>
+    <string name="lsq_cosmetic_clear_all">一键卸妆</string>
+
+    <string name="lsq_lipstick_matte">雾面</string>
+    <string name="lsq_lipstick_moisturizing">水润</string>
+    <string name="lsq_lipstick_moisturize">滋润</string>
+
+    <string name="lsq_eyebrow_fog">雾眉</string>
+    <string name="lsq_eyebrow_root">雾根眉</string>
+
+    <string name="lsq_lipstick_0">枫叶红</string>
+    <string name="lsq_lipstick_1">正红色</string>
+    <string name="lsq_lipstick_2">牛血红</string>
+    <string name="lsq_lipstick_3">番茄橘</string>
+    <string name="lsq_lipstick_4">暖柿红</string>
+    <string name="lsq_lipstick_5">正橘色</string>
+    <string name="lsq_lipstick_6">珊瑚粉</string>
+    <string name="lsq_lipstick_7">玫红色</string>
+    <string name="lsq_lipstick_8">梅子色</string>
+    <string name="lsq_lipstick_9">覆盆子</string>
+    <string name="lsq_lipstick_10">肉桂色</string>
+    <string name="lsq_lipstick_11">奶茶色</string>
+    <string name="lsq_lipstick_12">豆沙色</string>
+
+
+    <string name="lsq_eyelash_0">0</string>
+    <string name="lsq_eyelash_1">1</string>
+    <string name="lsq_eyelash_2">2</string>
+    <string name="lsq_eyelash_3">3</string>
+    <string name="lsq_eyelash_4">4</string>
+    <string name="lsq_eyelash_5">5</string>
+    <string name="lsq_eyelash_6">6</string>
+    <string name="lsq_eyelash_7">7</string>
+    <string name="lsq_eyelash_8">8</string>
+    <string name="lsq_eyelash_9">9</string>
+    <string name="lsq_eyelash_10">10</string>
+    <string name="lsq_eyelash_11">11</string>
+    <string name="lsq_eyelash_12">12</string>
+    <string name="lsq_eyelash_13">13</string>
+    <string name="lsq_eyelash_14">14</string>
+    <string name="lsq_eyelash_15">15</string>
+    <string name="lsq_eyelash_16">16</string>
+    <string name="lsq_eyelash_17">17</string>
+    <string name="lsq_eyelash_18">18</string>
+    <string name="lsq_eyelash_19">19</string>
+    <string name="lsq_eyelash_20">20</string>
+    <string name="lsq_eyelash_21">21</string>
+    <string name="lsq_eyelash_22">22</string>
+    <string name="lsq_eyelash_23">23</string>
+    <string name="lsq_eyelash_24">24</string>
+    <string name="lsq_eyelash_25">25</string>
+    <string name="lsq_eyelash_26">26</string>
+    <string name="lsq_eyelash_27">27</string>
+    <string name="lsq_eyelash_28">28</string>
+
+    <string name="lsq_eyebrow_normal_black">标准黑</string>
+    <string name="lsq_eyebrow_normal_gray">标准灰</string>
+    <string name="lsq_eyebrow_normal_brown">标准棕</string>
+    <string name="lsq_eyebrow_willow_black">柳弯黑</string>
+    <string name="lsq_eyebrow_willow_gray">柳弯灰</string>
+    <string name="lsq_eyebrow_willow_brown">柳弯棕</string>
+    <string name="lsq_eyebrow_leaf_black">叶细黑</string>
+    <string name="lsq_eyebrow_leaf_gray">叶细灰</string>
+    <string name="lsq_eyebrow_leaf_brown">叶细棕</string>
+    <string name="lsq_eyeborw_peak_black">峰眉黑</string>
+    <string name="lsq_eyeborw_peak_gray">峰眉灰</string>
+    <string name="lsq_eyeborw_peak_brown">峰眉棕</string>
+    <string name="lsq_eyeborw_rough_black">粗平黑</string>
+    <string name="lsq_eyeborw_rough_gray">粗平灰</string>
+    <string name="lsq_eyeborw_rough_brown">粗平棕</string>
+    <string name="lsq_eyebrow_curved_black">弯线黑</string>
+    <string name="lsq_eyebrow_curved_gray">弯线灰</string>
+    <string name="lsq_eyebrow_curved_brown">弯线棕</string>
+    <string name="lsq_eyeborw_barbie_black">芭比黑</string>
+    <string name="lsq_eyeborw_barbie_gray">芭比灰</string>
+    <string name="lsq_eyeborw_barbie_brown">芭比棕</string>
+    <string name="lsq_eyeborw_peach_black">小桃黑</string>
+    <string name="lsq_eyeborw_peach_gray">小桃灰</string>
+    <string name="lsq_eyeborw_peach_brown">小桃棕</string>
+    <string name="lsq_eyeborw_moon_black">新月黑</string>
+    <string name="lsq_eyeborw_moon_gray">新月灰</string>
+    <string name="lsq_eyeborw_moon_brown">新月棕</string>
+    <string name="lsq_eyebrow_broken_black">断眉黑</string>
+    <string name="lsq_eyebrow_broken_gray">断眉灰</string>
+    <string name="lsq_eyebrow_broken_brown">断眉棕</string>
+    <string name="lsq_eyeborw_wild_black">野生黑</string>
+    <string name="lsq_eyeborw_wild_gray">野生灰</string>
+    <string name="lsq_eyeborw_wild_brown">野生棕</string>
+    <string name="lsq_eyebrow_european_black">欧线黑</string>
+    <string name="lsq_eyebrow_european_gray">欧线灰</string>
+    <string name="lsq_eyebrow_european_brown">欧线棕</string>
+    <string name="lsq_eyebrow_round_black">圆眉黑</string>
+    <string name="lsq_eyebrow_round_gray">圆眉灰</string>
+    <string name="lsq_eyebrow_round_brown">圆眉棕</string>
+    <string name="lsq_eyebrow_yanxi_black">延禧黑</string>
+    <string name="lsq_eyebrow_yanxi_gray">延禧灰</string>
+    <string name="lsq_eyebrow_yanxi_brown">延禧棕</string>
+
+    <string name="lsq_blush_a">1</string>
+    <string name="lsq_blush_b">2</string>
+    <string name="lsq_blush_c">3</string>
+    <string name="lsq_blush_d">4</string>
+    <string name="lsq_blush_e">5</string>
+    <string name="lsq_blush_f">6</string>
+    <string name="lsq_blush_g">7</string>
+    <string name="lsq_blush_h">8</string>
+    <string name="lsq_blush_i">9</string>
+    <string name="lsq_blush_j">10</string>
+    <string name="lsq_blush_k">11</string>
+    <string name="lsq_blush_l">12</string>
+    <string name="lsq_blush_m">13</string>
+    <string name="lsq_blush_n">14</string>
+    <string name="lsq_blush_p">15</string>
+    <string name="lsq_blush_x">16</string>
+
+
+    <string name="lsq_eyeshadow_0">0</string>
+    <string name="lsq_eyeshadow_1">1</string>
+    <string name="lsq_eyeshadow_2">2</string>
+    <string name="lsq_eyeshadow_3">3</string>
+    <string name="lsq_eyeshadow_4">4</string>
+    <string name="lsq_eyeshadow_5">5</string>
+    <string name="lsq_eyeshadow_6">6</string>
+    <string name="lsq_eyeshadow_7">7</string>
+    <string name="lsq_eyeshadow_8">8</string>
+    <string name="lsq_eyeshadow_9">9</string>
+    <string name="lsq_eyeshadow_10">10</string>
+    <string name="lsq_eyeshadow_11">11</string>
+    <string name="lsq_eyeshadow_12">12</string>
+    <string name="lsq_eyeshadow_13">13</string>
+    <string name="lsq_eyeshadow_14">14</string>
+    <string name="lsq_eyeshadow_15">15</string>
+    <string name="lsq_eyeshadow_16">16</string>
+    <string name="lsq_eyeshadow_17">17</string>
+    <string name="lsq_eyeshadow_18">18</string>
+    <string name="lsq_eyeshadow_19">19</string>
+    <string name="lsq_eyeshadow_20">20</string>
+    <string name="lsq_eyeshadow_21">21</string>
+    <string name="lsq_eyeshadow_22">22</string>
+    <string name="lsq_eyeshadow_23">23</string>
+
+    <string name="lsq_eyeline_0">0</string>
+    <string name="lsq_eyeline_1">1</string>
+    <string name="lsq_eyeline_2">2</string>
+    <string name="lsq_eyeline_3">3</string>
+    <string name="lsq_eyeline_4">4</string>
+    <string name="lsq_eyeline_5">5</string>
+    <string name="lsq_eyeline_6">6</string>
+    <string name="lsq_eyeline_7">7</string>
+    <string name="lsq_eyeline_8">8</string>
+    <string name="lsq_eyeline_9">9</string>
+    <string name="lsq_eyeline_10">10</string>
+    <string name="lsq_eyeline_11">11</string>
+    <string name="lsq_eyeline_12">12</string>
+    <string name="lsq_eyeline_13">13</string>
+    <string name="lsq_eyeline_14">14</string>
+    <string name="lsq_eyeline_15">15</string>
+
+    <string name="lsq_beauty_lipalpha">透明度</string>
+    <string name="lsq_beauty_blushalpha">透明度</string>
+    <string name="lsq_beauty_eyebrowalpha">透明度</string>
+    <string name="lsq_beauty_eyeshadowalpha">透明度</string>
+    <string name="lsq_beauty_eyelashalpha">透明度</string>
+    <string name="lsq_beauty_eyelinealpha">透明度</string>
+
 </resources>

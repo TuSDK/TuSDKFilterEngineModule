@@ -27,7 +27,7 @@ import java.util.List;
  */
 class FilterGroupNameAdapter extends BaseAdapter<FilterGroupNameAdapter.FilterGroupNameViewHolder, String> {
 
-    public int getCurrentPosition() {
+    public int getCurrentPos() {
         return mCurrentPosition;
     }
 
@@ -68,7 +68,7 @@ class FilterGroupNameAdapter extends BaseAdapter<FilterGroupNameAdapter.FilterGr
         }
     }
 
-    public void setCurrentPosition(int position) {
+    public void setCurrentPos(int position) {
         int lastPosition = mCurrentPosition;
         this.mCurrentPosition = position;
         notifyItemChanged(lastPosition);

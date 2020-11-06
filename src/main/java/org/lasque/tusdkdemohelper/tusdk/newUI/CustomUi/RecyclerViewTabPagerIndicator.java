@@ -99,7 +99,7 @@ public class RecyclerViewTabPagerIndicator extends LinearLayout {
             this.addView(generateTitleView(categories));
         }
         setItemClickListener();
-        setHighLightText(mAdapter.getCurrentPosition());
+        setHighLightText(mAdapter.getCurrentPos());
     }
 
     // 初始化
@@ -232,7 +232,7 @@ public class RecyclerViewTabPagerIndicator extends LinearLayout {
 
     private int mCurrentPosition = -1;
 
-    public int getCurrentPosition(){
+    public int getCurrentPos(){
         return mCurrentPosition;
     }
 

@@ -52,7 +52,7 @@ public class FilterRecyclerAdapter extends RecyclerView.Adapter<FilterRecyclerAd
         notifyDataSetChanged();
     }
 
-    public void setCurrentPosition(int position){
+    public void setCurrentPos(int position){
         this.mCurrentPosition = position;
         notifyDataSetChanged();
     }

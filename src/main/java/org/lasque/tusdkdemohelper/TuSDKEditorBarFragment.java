@@ -515,7 +515,7 @@ public class TuSDKEditorBarFragment extends TuSdkFragment {
             }
         }
         if (mCurrentPosition != -1)
-            mFilterFragments.get(0).setCurrentPosition(mCurrentPosition);
+            mFilterFragments.get(0).setCurrentPos(mCurrentPosition);
     }
 
     // 准备贴纸view

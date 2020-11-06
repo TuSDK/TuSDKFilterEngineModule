@@ -76,14 +76,14 @@ public class VoiceModule extends BaseModule {
         mVoiceReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mVoiceAdapter.setCurrentPosition(-1);
+                mVoiceAdapter.setCurrentPos(-1);
             }
         });
         mVoiceAdapter = new VoiceAdapter(mContext,mVoiceFunctions);
         mVoiceAdapter.setOnItemClickListener(new OnItemClickListener<VoiceAdapter.VoiceViewHolder, VoiceFunction>() {
             @Override
             public void onItemClick(int pos, VoiceAdapter.VoiceViewHolder holder, VoiceFunction item) {
-                mVoiceAdapter.setCurrentPosition(pos);
+                mVoiceAdapter.setCurrentPos(pos);
                 mAudioEngine.setSoundPitchType(item.type);
             }
         });
