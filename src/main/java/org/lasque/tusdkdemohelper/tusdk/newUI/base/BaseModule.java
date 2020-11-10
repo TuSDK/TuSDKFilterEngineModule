@@ -25,10 +25,13 @@ import org.lasque.tusdkdemohelper.tusdk.filter.FilterConfigView;
 public abstract class BaseModule {
     protected FunctionsType mModuleType;
     protected View mCurrentView;
+
     protected Context mContext;
     protected ModuleController mController;
 
     protected TuFilterEngine mFilterEngine;
+
+
 
     protected SelesParameters mParameters;
 
@@ -112,11 +115,20 @@ public abstract class BaseModule {
         this.mParameters = parameters;
     }
 
+    public SelesParameters getParameters() {
+        return mParameters;
+    }
+
     protected void showToast(String value){
         if (mCurrentToast != null){
             mCurrentToast.cancel();
         }
         mCurrentToast = Toast.makeText(mContext,value,Toast.LENGTH_SHORT);
         mCurrentToast.show();
+    }
+
+
+    public Context getContext() {
+        return mContext;
     }
 }

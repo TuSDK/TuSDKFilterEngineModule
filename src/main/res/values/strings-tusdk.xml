@@ -311,11 +311,11 @@
     <string name="lsq_eyeline_14">14</string>
     <string name="lsq_eyeline_15">15</string>
 
-    <string name="lsq_beauty_lipalpha">透明度</string>
-    <string name="lsq_beauty_blushalpha">透明度</string>
-    <string name="lsq_beauty_eyebrowalpha">透明度</string>
-    <string name="lsq_beauty_eyeshadowalpha">透明度</string>
-    <string name="lsq_beauty_eyelashalpha">透明度</string>
-    <string name="lsq_beauty_eyelinealpha">透明度</string>
+    <string name="lsq_filter_set_lipalpha">透明度</string>
+    <string name="lsq_filter_set_blushalpha">透明度</string>
+    <string name="lsq_filter_set_eyebrowalpha">透明度</string>
+    <string name="lsq_filter_set_eyeshadowalpha">透明度</string>
+    <string name="lsq_filter_set_eyelashalpha">透明度</string>
+    <string name="lsq_filter_set_eyelinealpha">透明度</string>
 
 </resources>

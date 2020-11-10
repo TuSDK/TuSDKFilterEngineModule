@@ -113,21 +113,27 @@ public class CosmeticModule extends BaseModule {
             switch (type) {
                 case Lipstick:
                     viewID = R.id.lsq_lipstick_add;
+                    mConfigView.setFilterArgs(Arrays.asList(mParameters.getFilterArg("lipAlpha")));
                     break;
                 case Blush:
                     viewID = R.id.lsq_blush_add;
+                    mConfigView.setFilterArgs(Arrays.asList(mParameters.getFilterArg("blushAlpha")));
                     break;
                 case Eyebrow:
                     viewID = R.id.lsq_eyebrow_add;
+                    mConfigView.setFilterArgs(Arrays.asList(mParameters.getFilterArg("eyebrowAlpha")));
                     break;
                 case Eyeshadow:
                     viewID = R.id.lsq_eyeshadow_add;
+                    mConfigView.setVisibility(mCurrentView.findViewById(R.id.lsq_eyeshadow_add).getVisibility());
                     break;
                 case Eyeliner:
                     viewID = R.id.lsq_eyeliner_add;
+                    mConfigView.setFilterArgs(Arrays.asList(mParameters.getFilterArg("eyelineAlpha")));
                     break;
                 case Eyelash:
                     viewID = R.id.lsq_eyelash_add;
+                    mConfigView.setFilterArgs(Arrays.asList(mParameters.getFilterArg("eyelashAlpha")));
                     break;
             }
             mCurrentView.findViewById(viewID).setVisibility(View.VISIBLE);
@@ -140,7 +146,7 @@ public class CosmeticModule extends BaseModule {
 
     public CosmeticModule(ModuleController controller, Context context) {
         super(controller, COSMETIC, context);
-        mCosmeticController = new CosmeticPanelController(context);
+        mCosmeticController = new CosmeticPanelController(this);
         findViews();
     }
 
@@ -152,7 +158,7 @@ public class CosmeticModule extends BaseModule {
 
     @Override
     protected View getView() {
-        return LayoutInflater.from(mContext).inflate(R.layout.tusdk_cosmetic_module_layout,null,false);
+        return LayoutInflater.from(mContext).inflate(R.layout.tusdk_cosmetic_module_layout, null, false);
     }
 
     private void initCosmeticView() {
@@ -183,7 +189,9 @@ public class CosmeticModule extends BaseModule {
                 mEyelashPanel.setVisibility(View.GONE);
                 if (mLipstickPanel.getVisibility() == View.VISIBLE) {
                     mConfigView.setVisibility(mCurrentView.findViewById(R.id.lsq_lipstick_add).getVisibility());
-//                    mConfigView.setFilterArgs(Arrays.asList(mParameters.getFilterArg("lipAlpha")));
+                    if (mParameters != null) {
+                        mConfigView.setFilterArgs(Arrays.asList(mParameters.getFilterArg("lipAlpha")));
+                    }
                     mCurrentView.findViewById(R.id.list_panel).addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
                         @Override
                         public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
@@ -216,7 +224,8 @@ public class CosmeticModule extends BaseModule {
                 mEyelashPanel.setVisibility(View.GONE);
                 if (mBlushPanel.getVisibility() == View.VISIBLE) {
                     mConfigView.setVisibility(mCurrentView.findViewById(R.id.lsq_blush_add).getVisibility());
-//                    mConfigView.setFilterArgs(Arrays.asList(mParameters.getFilterArg("blushAlpha")));
+                    if (mParameters != null)
+                        mConfigView.setFilterArgs(Arrays.asList(mParameters.getFilterArg("blushAlpha")));
                     mCurrentView.findViewById(R.id.list_panel).addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
                         @Override
                         public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
@@ -249,7 +258,8 @@ public class CosmeticModule extends BaseModule {
                 mEyelashPanel.setVisibility(View.GONE);
                 if (mEyebrowPanel.getVisibility() == View.VISIBLE) {
                     mConfigView.setVisibility(mCurrentView.findViewById(R.id.lsq_eyebrow_add).getVisibility());
-//                    mConfigView.setFilterArgs(Arrays.asList(mParameters.getFilterArg("eyebrowAlpha")));
+                    if (mParameters != null)
+                        mConfigView.setFilterArgs(Arrays.asList(mParameters.getFilterArg("eyebrowAlpha")));
                     mCurrentView.findViewById(R.id.list_panel).addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
                         @Override
                         public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
@@ -282,7 +292,8 @@ public class CosmeticModule extends BaseModule {
                 mEyelashPanel.setVisibility(View.GONE);
                 if (mEyeshadowPanel.getVisibility() == View.VISIBLE) {
                     mConfigView.setVisibility(mCurrentView.findViewById(R.id.lsq_eyeshadow_add).getVisibility());
-//                    mConfigView.setFilterArgs(Arrays.asList(mParameters.getFilterArg("eyeshadowAlpha")));
+                    if (mParameters != null)
+                        mConfigView.setFilterArgs(Arrays.asList(mParameters.getFilterArg("eyeshadowAlpha")));
                     mCurrentView.findViewById(R.id.list_panel).addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
                         @Override
                         public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
@@ -315,7 +326,8 @@ public class CosmeticModule extends BaseModule {
                 mEyelashPanel.setVisibility(View.GONE);
                 if (mEyelinerPanel.getVisibility() == View.VISIBLE) {
                     mConfigView.setVisibility(mCurrentView.findViewById(R.id.lsq_eyeliner_add).getVisibility());
-//                    mConfigView.setFilterArgs(Arrays.asList(mParameters.getFilterArg("eyelineAlpha")));
+                    if (mParameters != null)
+                        mConfigView.setFilterArgs(Arrays.asList(mParameters.getFilterArg("eyelineAlpha")));
                     mCurrentView.findViewById(R.id.list_panel).addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
                         @Override
                         public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
@@ -348,7 +360,8 @@ public class CosmeticModule extends BaseModule {
                 mEyelashPanel.setVisibility(mEyelashPanel.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
                 if (mEyelashPanel.getVisibility() == View.VISIBLE) {
                     mConfigView.setVisibility(mCurrentView.findViewById(R.id.lsq_eyelash_add).getVisibility());
-//                    mConfigView.setFilterArgs(Arrays.asList(mParameters.getFilterArg("eyelashAlpha")));
+                    if (mParameters != null)
+                        mConfigView.setFilterArgs(Arrays.asList(mParameters.getFilterArg("eyelashAlpha")));
                     mCurrentView.findViewById(R.id.list_panel).addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
                         @Override
                         public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {

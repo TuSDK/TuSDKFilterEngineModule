@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tusdkdemohelper.R;
 
+import org.lasque.tusdk.core.seles.SelesParameters;
 import org.lasque.tusdk.cx.api.TuFilterCombo;
 import org.lasque.tusdk.modules.view.widget.sticker.StickerLocalPackage;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.OnItemClickListener;
@@ -60,7 +61,8 @@ public class LipstickPanel extends BasePanel {
                 stateIcon.setImageResource(mCurrentState.mIconId);
                 stateTitle.setText(mCurrentState.mTitleId);
                 if (mCurrentType == null) return;
-                //todo 更新口红材质
+                SelesParameters parameters = mController.getEngine().controller().changeCosmetic(TuFilterCombo.TuCosmeticMode.LipGloss, -1,mCurrentType.mColor, mCurrentState.type);
+                mController.setParameters(parameters);
             }
         });
 
@@ -84,7 +86,8 @@ public class LipstickPanel extends BasePanel {
             @Override
             public void onItemClick(int pos, LipstickAdapter.LipstickViewHolder holder, CosmeticTypes.LipstickType item) {
                 mCurrentType = item;
-                mController.getEngine().controller().changeCosmetic(TuFilterCombo.TuCosmeticMode.LipGloss, -1,item.mColor,1, mCurrentState.type);
+                SelesParameters parameters = mController.getEngine().controller().changeCosmetic(TuFilterCombo.TuCosmeticMode.LipGloss, -1,item.mColor, mCurrentState.type);
+                mController.setParameters(parameters);
                 mAdapter.setCurrentPos(pos);
                 if (onPanelClickListener != null) onPanelClickListener.onClick(mType);
 
@@ -102,7 +105,7 @@ public class LipstickPanel extends BasePanel {
     @Override
     public void clear() {
         mCurrentType = null;
-        //todo 清空美妆效果
+        mController.getEngine().controller().closeLip();
         mAdapter.setCurrentPos(-1);
         if (onPanelClickListener != null) onPanelClickListener.onClear(mType);
     }

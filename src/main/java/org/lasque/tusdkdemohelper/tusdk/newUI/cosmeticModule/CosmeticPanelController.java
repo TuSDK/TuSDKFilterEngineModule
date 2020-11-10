@@ -78,12 +78,20 @@ public class CosmeticPanelController {
      */
     public static List<CosmeticTypes.EyelinerType> mEyelinerTypes = Arrays.asList(CosmeticTypes.EyelinerType.values());
 
-    private Context mContext;
+    private CosmeticModule mModule;
 
     private TuFilterEngine mEngine;
 
-    public CosmeticPanelController(Context context){
-        this.mContext = context;
+    public SelesParameters getParameters() {
+        return mModule.getParameters();
+    }
+
+    public void setParameters(SelesParameters mParameters) {
+        mModule.setParameters(mParameters);
+    }
+
+    public CosmeticPanelController(CosmeticModule module){
+        this.mModule = module;
 //        for (String key : mDefaultCosmeticMaxPercentParams.keySet()){
 //            SelesParameters.FilterArg arg = mEffect.getFilterArg(key);
 //            arg.setMaxValueFactor(mDefaultCosmeticMaxPercentParams.get(key));
@@ -167,7 +175,7 @@ public class CosmeticPanelController {
 
 
     public Context getContext(){
-        return mContext;
+        return mModule.getContext();
     }
 
     public void setPanelClickListener(BasePanel.OnPanelClickListener listener){

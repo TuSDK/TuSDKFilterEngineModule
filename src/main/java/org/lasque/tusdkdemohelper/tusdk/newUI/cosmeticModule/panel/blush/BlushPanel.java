@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.lasque.tusdk.core.seles.SelesParameters;
 import org.lasque.tusdk.cx.api.TuFilterCombo;
 import org.lasque.tusdk.modules.view.widget.sticker.StickerLocalPackage;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.OnItemClickListener;
@@ -58,8 +59,8 @@ public class BlushPanel extends BasePanel {
             @Override
             public void onItemClick(int pos, BlushAdapter.BlushViewHolder holder, CosmeticTypes.BlushType item) {
                 mCurrentType = item;
-                mController.getEngine().controller().changeCosmetic(TuFilterCombo.TuCosmeticMode.Blush,StickerLocalPackage.shared().getStickerGroup(item.mGroupId).stickers.get(0).categoryId,-1,1, TuFilterCombo.TuCosmeticLipGlossStyle.None);
-                //todo 设置美妆
+                SelesParameters parameters = mController.getEngine().controller().changeCosmetic(TuFilterCombo.TuCosmeticMode.Blush,StickerLocalPackage.shared().getStickerGroup(item.mGroupId).stickers.get(0).categoryId,-1, TuFilterCombo.TuCosmeticLipGlossStyle.None);
+                mController.setParameters(parameters);
                 mAdapter.setCurrentPos(pos);
                 if (onPanelClickListener != null) onPanelClickListener.onClick(mType);
             }
@@ -77,7 +78,7 @@ public class BlushPanel extends BasePanel {
     public void clear() {
         mCurrentType = null;
         mAdapter.setCurrentPos(-1);
-        //todo 清除美妆效果
+        mController.getEngine().controller().closeBlush();
         if (onPanelClickListener != null) onPanelClickListener.onClear(mType);
     }
 }

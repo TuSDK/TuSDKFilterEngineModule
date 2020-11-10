@@ -60,7 +60,7 @@ public class EyelashPanel extends BasePanel {
             @Override
             public void onItemClick(int pos, EyelashAdapter.EyelashViewHolder holder, CosmeticTypes.EyelashType item) {
                 mCurrentType = item;
-                mController.getEngine().controller().changeCosmetic(TuFilterCombo.TuCosmeticMode.EyeLash,StickerLocalPackage.shared().getStickerGroup(item.mGroupId).stickers.get(0).categoryId,-1,1, TuFilterCombo.TuCosmeticLipGlossStyle.None);
+                mController.getEngine().controller().changeCosmetic(TuFilterCombo.TuCosmeticMode.EyeLash,StickerLocalPackage.shared().getStickerGroup(item.mGroupId).stickers.get(0).categoryId,-1, TuFilterCombo.TuCosmeticLipGlossStyle.None);
                 mAdapter.setCurrentPos(pos);
                 if (onPanelClickListener != null) onPanelClickListener.onClick(mType);
 
@@ -78,7 +78,7 @@ public class EyelashPanel extends BasePanel {
     @Override
     public void clear() {
         mCurrentType = null;
-        //todo 清空美妆效果
+        mController.getEngine().controller().closeEyelash();
         mAdapter.setCurrentPos(-1);
         if (onPanelClickListener != null) onPanelClickListener.onClear(mType);
     }
