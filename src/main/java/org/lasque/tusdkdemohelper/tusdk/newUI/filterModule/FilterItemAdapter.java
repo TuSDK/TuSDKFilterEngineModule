@@ -36,9 +36,6 @@ class FilterItemAdapter extends BaseAdapter<FilterItemAdapter.FilterItemViewHold
 
     private int mTitleColor;
 
-    // 当前选中
-    private int mCurrentPosition = -1;
-
     private String mDefaultFilterCode;
 
     // 是否显示调节图
@@ -75,13 +72,13 @@ class FilterItemAdapter extends BaseAdapter<FilterItemAdapter.FilterItemViewHold
                 }
             }
         });
-        if (!TextUtils.isEmpty(mDefaultFilterCode) && mCurrentPosition == -1) {
+        if (!TextUtils.isEmpty(mDefaultFilterCode) && mCurrentPos == -1) {
             if (item.code.equals(mDefaultFilterCode)) {
-                mCurrentPosition = position;
+                mCurrentPos = position;
             }
         }
 
-        if (position == mCurrentPosition) {
+        if (position == mCurrentPos) {
             holder.mFilterIcon.setColorFilter(mSelectColor);
             holder.mConfigIcon.setVisibility(isShowParameter ? View.VISIBLE : View.GONE);
         } else {

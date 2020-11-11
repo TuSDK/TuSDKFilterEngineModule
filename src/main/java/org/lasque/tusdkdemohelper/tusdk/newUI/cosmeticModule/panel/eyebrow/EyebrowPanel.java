@@ -71,7 +71,7 @@ public class EyebrowPanel extends BasePanel {
                         currentGroupId = item.mMistyGroupId;
                         break;
                 }
-                mController.getEngine().controller().changeCosmetic(TuFilterCombo.TuCosmeticMode.Brows,StickerLocalPackage.shared().getStickerGroup(currentGroupId).stickers.get(0).categoryId,-1, TuFilterCombo.TuCosmeticLipGlossStyle.None);
+                mController.getEngine().controller().changeCosmetic(TuFilterCombo.TuCosmeticMode.Brows,StickerLocalPackage.shared().getStickerGroup(currentGroupId).stickers.get(0).stickerId,-1, TuFilterCombo.TuCosmeticLipGlossStyle.None);
             }
         });
         ImageView putAway = panel.findViewById(R.id.lsq_eyebrow_put_away);
@@ -102,7 +102,7 @@ public class EyebrowPanel extends BasePanel {
                         currentGroupId = item.mMistyGroupId;
                         break;
                 }
-                mController.getEngine().controller().changeCosmetic(TuFilterCombo.TuCosmeticMode.Brows,StickerLocalPackage.shared().getStickerGroup(currentGroupId).stickers.get(0).categoryId,-1, TuFilterCombo.TuCosmeticLipGlossStyle.None);
+                mController.getEngine().controller().changeCosmetic(TuFilterCombo.TuCosmeticMode.Brows,StickerLocalPackage.shared().getStickerGroup(currentGroupId).stickers.get(0).stickerId,-1, TuFilterCombo.TuCosmeticLipGlossStyle.None);
                 mAdapter.setCurrentPos(pos);
                 if (onPanelClickListener != null) onPanelClickListener.onClick(mType);
 

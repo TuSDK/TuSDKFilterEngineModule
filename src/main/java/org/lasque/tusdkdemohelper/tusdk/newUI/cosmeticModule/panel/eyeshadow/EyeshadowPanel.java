@@ -59,7 +59,7 @@ public class EyeshadowPanel extends BasePanel {
             @Override
             public void onItemClick(int pos, EyeshadowAdapter.EyeshadowViewHolder holder, CosmeticTypes.EyeshadowType item) {
                 mCurrentType = item;
-                mController.getEngine().controller().changeCosmetic(TuFilterCombo.TuCosmeticMode.EyeShadow,StickerLocalPackage.shared().getStickerGroup(item.mGroupId).stickers.get(0).categoryId,-1, TuFilterCombo.TuCosmeticLipGlossStyle.None);
+                mController.getEngine().controller().changeCosmetic(TuFilterCombo.TuCosmeticMode.EyeShadow,StickerLocalPackage.shared().getStickerGroup(item.mGroupId).stickers.get(0).stickerId,-1, TuFilterCombo.TuCosmeticLipGlossStyle.None);
                 mAdapter.setCurrentPos(pos);
                 if (onPanelClickListener != null) onPanelClickListener.onClick(mType);
 

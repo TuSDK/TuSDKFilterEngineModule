@@ -59,7 +59,7 @@ public class BlushPanel extends BasePanel {
             @Override
             public void onItemClick(int pos, BlushAdapter.BlushViewHolder holder, CosmeticTypes.BlushType item) {
                 mCurrentType = item;
-                SelesParameters parameters = mController.getEngine().controller().changeCosmetic(TuFilterCombo.TuCosmeticMode.Blush,StickerLocalPackage.shared().getStickerGroup(item.mGroupId).stickers.get(0).categoryId,-1, TuFilterCombo.TuCosmeticLipGlossStyle.None);
+                SelesParameters parameters = mController.getEngine().controller().changeCosmetic(TuFilterCombo.TuCosmeticMode.Blush,StickerLocalPackage.shared().getStickerGroup(item.mGroupId).stickers.get(0).stickerId,-1, TuFilterCombo.TuCosmeticLipGlossStyle.None);
                 mController.setParameters(parameters);
                 mAdapter.setCurrentPos(pos);
                 if (onPanelClickListener != null) onPanelClickListener.onClick(mType);
