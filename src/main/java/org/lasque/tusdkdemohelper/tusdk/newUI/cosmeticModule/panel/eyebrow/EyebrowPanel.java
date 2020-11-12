@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.lasque.tusdk.core.seles.SelesParameters;
 import org.lasque.tusdk.cx.api.TuFilterCombo;
 import org.lasque.tusdk.modules.view.widget.sticker.StickerLocalPackage;
 import com.example.tusdkdemohelper.R;
@@ -102,7 +103,8 @@ public class EyebrowPanel extends BasePanel {
                         currentGroupId = item.mMistyGroupId;
                         break;
                 }
-                mController.getEngine().controller().changeCosmetic(TuFilterCombo.TuCosmeticMode.Brows,StickerLocalPackage.shared().getStickerGroup(currentGroupId).stickers.get(0).stickerId,-1, TuFilterCombo.TuCosmeticLipGlossStyle.None);
+                SelesParameters parameters = mController.getEngine().controller().changeCosmetic(TuFilterCombo.TuCosmeticMode.Brows,StickerLocalPackage.shared().getStickerGroup(currentGroupId).stickers.get(0).stickerId,-1, TuFilterCombo.TuCosmeticLipGlossStyle.None);
+                mController.setParameters(parameters);
                 mAdapter.setCurrentPos(pos);
                 if (onPanelClickListener != null) onPanelClickListener.onClick(mType);
 

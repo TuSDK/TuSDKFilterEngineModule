@@ -56,7 +56,7 @@ public class CosmeticTypes {
         public int mTitleId;
 
         private LipstickType(int R, int G, int B, int iconId, int titleId) {
-            mColor = Color.rgb(R, G, B);
+            mColor = Color.argb(0,R, G, B);
             mIconId = iconId;
             mTitleId = titleId;
         }
