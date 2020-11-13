@@ -28,25 +28,27 @@ import java.util.List;
 public class CosmeticPanelController {
     public static HashMap<String, Float> mDefaultCosmeticPercentParams = new HashMap<String, Float>() {
         {
-            put("lipAlpha",0.4f);
-            put("blushAlpha",0.5f);
-            put("eyebrowAlpha",0.4f);
-            put("eyeshadowAlpha",0.5f);
-            put("eyelineAlpha",0.5f);
-            put("eyelashAlpha",0.5f);
+            put("lipAlpha", 0.4f);
+            put("blushAlpha", 0.5f);
+            put("eyebrowAlpha", 0.4f);
+            put("eyeshadowAlpha", 0.5f);
+            put("eyelineAlpha", 0.5f);
+            put("eyelashAlpha", 0.5f);
         }
     };
 
-    private static HashMap<String,Float> mDefaultCosmeticMaxPercentParams = new HashMap<String, Float>(){
+    private static HashMap<String, Float> mDefaultCosmeticMaxPercentParams = new HashMap<String, Float>() {
         {
-            put("lipAlpha",0.8f);
-            put("blushAlpha",1.0f);
-            put("eyebrowAlpha",0.7f);
-            put("eyeshadowAlpha",1.0f);
-            put("eyelineAlpha",1.0f);
-            put("eyelashAlpha",1.0f);
+            put("lipAlpha", 0.8f);
+            put("blushAlpha", 1.0f);
+            put("eyebrowAlpha", 0.7f);
+            put("eyeshadowAlpha", 1.0f);
+            put("eyelineAlpha", 1.0f);
+            put("eyelashAlpha", 1.0f);
         }
     };
+
+    private boolean isFirstCommit = true;
 
     /**
      * 口红列表
@@ -87,63 +89,69 @@ public class CosmeticPanelController {
     }
 
     public void setParameters(SelesParameters mParameters) {
+        for (String key : mDefaultCosmeticMaxPercentParams.keySet()) {
+            SelesParameters.FilterArg arg = mParameters.getFilterArg(key);
+            arg.setMaxValueFactor(mDefaultCosmeticMaxPercentParams.get(key));
+            arg.setDefaultValue(mDefaultCosmeticPercentParams.get(key));
+            if (isFirstCommit){
+                arg.setPrecentValue(mDefaultCosmeticPercentParams.get(key));
+            }
+        }
+        isFirstCommit = false;
         mModule.setParameters(mParameters);
     }
 
-    public CosmeticPanelController(CosmeticModule module){
+    public CosmeticPanelController(CosmeticModule module) {
         this.mModule = module;
-//        for (String key : mDefaultCosmeticMaxPercentParams.keySet()){
-//            SelesParameters.FilterArg arg = mEffect.getFilterArg(key);
-//            arg.setMaxValueFactor(mDefaultCosmeticMaxPercentParams.get(key));
-//        }
+
 
     }
 
     public LipstickPanel getLipstickPanel() {
-        if (mLipstickPanel == null){
+        if (mLipstickPanel == null) {
             mLipstickPanel = new LipstickPanel(this);
         }
         return mLipstickPanel;
     }
 
     public BlushPanel getBlushPanel() {
-        if (mBlushPanel == null){
+        if (mBlushPanel == null) {
             mBlushPanel = new BlushPanel(this);
         }
         return mBlushPanel;
     }
 
     public EyebrowPanel getEyebrowPanel() {
-        if (mEyebrowPanel == null){
+        if (mEyebrowPanel == null) {
             mEyebrowPanel = new EyebrowPanel(this);
         }
         return mEyebrowPanel;
     }
 
     public EyeshadowPanel getEyeshadowPanel() {
-        if (mEyeshadowPanel == null){
+        if (mEyeshadowPanel == null) {
             mEyeshadowPanel = new EyeshadowPanel(this);
         }
         return mEyeshadowPanel;
     }
 
     public EyelinerPanel getEyelinerPanel() {
-        if (mEyelinerPanel == null){
+        if (mEyelinerPanel == null) {
             mEyelinerPanel = new EyelinerPanel(this);
         }
         return mEyelinerPanel;
     }
 
     public EyelashPanel getEyelashPanel() {
-        if (mEyelashPanel == null){
+        if (mEyelashPanel == null) {
             mEyelashPanel = new EyelashPanel(this);
         }
         return mEyelashPanel;
     }
 
-    public BasePanel getPanel(CosmeticTypes.Types types){
+    public BasePanel getPanel(CosmeticTypes.Types types) {
         BasePanel panel = null;
-        switch (types){
+        switch (types) {
             case Lipstick:
                 panel = getLipstickPanel();
                 break;
@@ -174,11 +182,11 @@ public class CosmeticPanelController {
     private EyelashPanel mEyelashPanel;
 
 
-    public Context getContext(){
+    public Context getContext() {
         return mModule.getContext();
     }
 
-    public void setPanelClickListener(BasePanel.OnPanelClickListener listener){
+    public void setPanelClickListener(BasePanel.OnPanelClickListener listener) {
         getLipstickPanel().setOnPanelClickListener(listener);
         getBlushPanel().setOnPanelClickListener(listener);
         getEyebrowPanel().setOnPanelClickListener(listener);
@@ -187,17 +195,17 @@ public class CosmeticPanelController {
         getEyelashPanel().setOnPanelClickListener(listener);
     }
 
-    public void clearAllCosmetic(){
-        for (CosmeticTypes.Types type : CosmeticTypes.Types.values()){
+    public void clearAllCosmetic() {
+        for (CosmeticTypes.Types type : CosmeticTypes.Types.values()) {
             getPanel(type).clear();
         }
     }
 
-    public TuFilterEngine getEngine(){
+    public TuFilterEngine getEngine() {
         return mEngine;
     }
 
-    public void setEngine(TuFilterEngine engine){
+    public void setEngine(TuFilterEngine engine) {
         this.mEngine = engine;
     }
 
