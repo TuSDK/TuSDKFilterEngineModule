@@ -42,10 +42,10 @@ public class FunctionMenuAdapter extends BaseAdapter<FunctionMenuAdapter.Functio
     protected FunctionMenuViewHolder onChildCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.tusdk_main_function_menu_item,parent,false);
         FunctionMenuViewHolder holder = new FunctionMenuViewHolder(view);
-        mParentWidth = parent.getMeasuredWidth();
-        mParentWidth = View.MeasureSpec.getSize(mParentWidth);
-        ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
-        params.width = mParentWidth / mItemList.size();
+//        mParentWidth = parent.getMeasuredWidth();
+//        mParentWidth = View.MeasureSpec.getSize(mParentWidth);
+//        ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
+//        params.width = mParentWidth / mItemList.size();
         return holder;
     }
 

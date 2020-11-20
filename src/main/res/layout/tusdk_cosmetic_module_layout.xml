@@ -6,6 +6,7 @@
     android:layout_height="wrap_content">
     <HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/lsq_cosmetic_scroll_view"
+        android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="90dp"
         android:fillViewport="true"

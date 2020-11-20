@@ -16,7 +16,7 @@ public enum FunctionMenuItem {
     FUNCTION_PLASTIC("微整形", R.drawable.home_plastic_ic),
     FUNCTION_FILTER("滤镜", R.drawable.home_filter_ic),
     FUNCTION_FACE_STICKER("贴纸", R.drawable.home_stickers_ic),
-    FUNCTION_COSMETIC("美妆", R.drawable.makeup_lipstick_ic),
+    FUNCTION_COSMETIC("美妆", R.drawable.home_makeup_ic),
     FUNCTION_MONSTER_FACE("哈哈镜", R.drawable.home_mirror_ic),
     FUNCTION_VOICE("变声", R.drawable.home_voice_ic);
 

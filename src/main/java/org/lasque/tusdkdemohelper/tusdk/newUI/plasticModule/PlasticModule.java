@@ -83,6 +83,7 @@ public class PlasticModule extends BaseModule {
         super.setParameters(parameters);
         for (String s : mDefaultBeautyPercentParams.keySet()) {
             float v = mDefaultBeautyPercentParams.get(s);
+
             mParameters.setFilterArg(s, v);
         }
         mParameters = mFilterEngine.controller().changePlastic(true);

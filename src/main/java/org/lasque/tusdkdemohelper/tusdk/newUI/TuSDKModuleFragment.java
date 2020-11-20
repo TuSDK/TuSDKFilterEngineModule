@@ -83,9 +83,9 @@ public class TuSDKModuleFragment extends Fragment {
         ArrayList<FunctionMenuItem> menuItems = new ArrayList<>();
         menuItems.add(FunctionMenuItem.FUNCTION_SKIN);
         menuItems.add(FunctionMenuItem.FUNCTION_PLASTIC);
+        menuItems.add(FunctionMenuItem.FUNCTION_COSMETIC);
         menuItems.add(FunctionMenuItem.FUNCTION_FILTER);
         menuItems.add(FunctionMenuItem.FUNCTION_FACE_STICKER);
-        menuItems.add(FunctionMenuItem.FUNCTION_COSMETIC);
         boolean hasMonsterFace = getArguments().getBoolean(HAS_MONSTER_FACE_KEY, false);
         if (hasMonsterFace) menuItems.add(FunctionMenuItem.FUNCTION_MONSTER_FACE);
         boolean hasVoice = getArguments().getBoolean(HAS_VOICE_KEY, false);
