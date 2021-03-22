@@ -7,21 +7,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.tusdkdemohelper.R;
+import com.tusdk.pulse.Config;
+import com.tusdk.pulse.filter.Filter;
+import com.tusdk.pulse.filter.FilterPipe;
+import com.tusdk.pulse.filter.filters.TusdkBeautFaceV2Filter;
+import com.tusdk.pulse.filter.filters.TusdkImageFilter;
 
-import org.lasque.tusdk.core.seles.SelesParameters;
-import org.lasque.tusdk.cx.api.TuFilterCombo;
-import org.lasque.tusdk.impl.view.widget.TuMessageHubImpl;
-import org.lasque.tusdk.impl.view.widget.TuProgressHub;
+import org.lasque.tusdkpulse.core.seles.SelesParameters;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.BaseModule;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.FunctionsType;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.ModuleController;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * TuSDK
@@ -34,8 +35,9 @@ import java.util.List;
  */
 public class SkinModule extends BaseModule {
     public enum SkinMode{
-        EXTREME(R.drawable.skin_extreme_ic,"极致美颜"),
-        PRECISION(R.drawable.skin_precision_ic,"精准美颜"),
+        EXTREME(R.drawable.skin_extreme_ic,"极致美肤"),
+        PRECISION(R.drawable.skin_precision_ic,"精准美肤"),
+        BEAUTY(R.drawable.lsq_ic_skin_new_normal,"自然美肤"),
         EMPTY(-1,"无美颜");
 
         public int iconId;
@@ -50,7 +52,7 @@ public class SkinModule extends BaseModule {
     private TextView mNotTitle,mSkinModeTitle,mSkinWhiteTitle,mSkinDermabrasionTitle,mSkinRuddyTitle;
     private ImageView mNotIcon,mSkinModeIcon,mSkinWhiteIcon,mSkinDermabrasionIcon,mSkinRuddyIcon;
 
-    private SkinMode mCurrentMode = SkinMode.PRECISION;
+    private SkinMode mCurrentMode = SkinMode.BEAUTY;
 
     private boolean isClear = false;
 
@@ -58,26 +60,6 @@ public class SkinModule extends BaseModule {
     public SkinModule(ModuleController controller, Context context) {
         super(controller, FunctionsType.SKIN, context);
         findViews();
-    }
-
-    @Override
-    public void setParameters(SelesParameters parameters) {
-        super.setParameters(parameters);
-        mParameters.setFilterArg("whitening",0.3f);
-        mParameters.setFilterArg("smoothing",0.7f);
-        mParameters.setFilterArg("ruddy",0.2f);
-        TuFilterCombo.TuComboSkinMode mode = TuFilterCombo.TuComboSkinMode.Sleek;
-        switch (mCurrentMode){
-            case EXTREME:
-                mCurrentMode = SkinMode.PRECISION;
-                mode = TuFilterCombo.TuComboSkinMode.Sleek;
-                break;
-            case PRECISION:
-                mCurrentMode = SkinMode.EXTREME;
-                mode = TuFilterCombo.TuComboSkinMode.Vein;
-                break;
-        }
-        mParameters = mFilterEngine.controller().changeSkin(mode);
     }
 
     @Override
@@ -102,8 +84,7 @@ public class SkinModule extends BaseModule {
         mNotIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setParameters(mParameters);
-                mFilterEngine.controller().changeSkin(TuFilterCombo.TuComboSkinMode.Empty);
+                switchConfigSkin(SkinMode.EMPTY);
                 isClear = true;
                 if (mConfigView!= null){
                     mConfigView.setVisibility(View.GONE);
@@ -121,18 +102,20 @@ public class SkinModule extends BaseModule {
         mSkinModeIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TuFilterCombo.TuComboSkinMode mode = TuFilterCombo.TuComboSkinMode.Sleek;
                 switch (mCurrentMode){
                     case EXTREME:
                         mCurrentMode = SkinMode.PRECISION;
-                        mode = TuFilterCombo.TuComboSkinMode.Sleek;
                         break;
                     case PRECISION:
+                        mCurrentMode = SkinMode.BEAUTY;
+                        break;
+                    case BEAUTY:
                         mCurrentMode = SkinMode.EXTREME;
-                        mode = TuFilterCombo.TuComboSkinMode.Vein;
+                        break;
+                    case EMPTY:
                         break;
                 }
-                mParameters = mFilterEngine.controller().changeSkin(mode);
+                switchConfigSkin(mCurrentMode);
                 Glide.with(mContext).load(mCurrentMode.iconId).into(mSkinModeIcon);
                 mSkinModeTitle.setText(mCurrentMode.title);
                 showToast(mCurrentMode.title);
@@ -141,7 +124,7 @@ public class SkinModule extends BaseModule {
         mSkinWhiteIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addSkinEffect();
+                if (isClear) switchConfigSkin(mCurrentMode);
                 showConfigView("whitening");
                 Glide.with(mContext).load(R.drawable.skin_white_sel_ic).into(mSkinWhiteIcon);
                 Glide.with(mContext).load(R.drawable.skin_dermabrasion_ic).into(mSkinDermabrasionIcon);
@@ -155,7 +138,7 @@ public class SkinModule extends BaseModule {
         mSkinDermabrasionIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addSkinEffect();
+                if (isClear) switchConfigSkin(mCurrentMode);
                 showConfigView("smoothing");
 
                 Glide.with(mContext).load(R.drawable.skin_white_ic).into(mSkinWhiteIcon);
@@ -170,7 +153,7 @@ public class SkinModule extends BaseModule {
         mSkinRuddyIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addSkinEffect();
+                if (isClear) switchConfigSkin(mCurrentMode);
                 showConfigView("ruddy");
 
                 Glide.with(mContext).load(R.drawable.skin_white_ic).into(mSkinWhiteIcon);
@@ -208,19 +191,147 @@ public class SkinModule extends BaseModule {
         }
     }
 
-    private void addSkinEffect(){
-        if (!isClear) return;
-        TuFilterCombo.TuComboSkinMode mode = TuFilterCombo.TuComboSkinMode.Sleek;
-        switch (mCurrentMode){
-            case EXTREME:
-                mode = TuFilterCombo.TuComboSkinMode.Vein;
-                break;
-            case PRECISION:
-                mode = TuFilterCombo.TuComboSkinMode.Sleek;
-                break;
-        }
-        mParameters = mFilterEngine.controller().changeSkin(mode);
+    public void switchConfigSkin(final SkinMode skinMode) {
         isClear = false;
-    }
+        syncRun(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                FilterPipe fp = mController.getFilterPipe();
+                int index = ModuleController.mFilterMap.get(SelesParameters.FilterModel.SkinFace);
+                mParameters = new SelesParameters();
+                mParameters.appendFloatArg("whitening", 0.3f);
+                mParameters.appendFloatArg("smoothing", 0.8f);
+                Filter skinFilter = null;
+                Config config = null;
+                boolean ret = false;
 
+                switch (skinMode) {
+                    case EXTREME:
+                        skinFilter = new Filter(fp.getContext(), TusdkImageFilter.TYPE_NAME);
+                        config = new Config();
+                        config.setString(TusdkImageFilter.CONFIG_NAME, TusdkImageFilter.NAME_SkinNatural);
+                        skinFilter.setConfig(config);
+                        TusdkImageFilter.SkinNaturalPropertyBuilder naturalPropertyBuilder = new TusdkImageFilter.SkinNaturalPropertyBuilder();
+                        naturalPropertyBuilder.smoothing = 0.8;
+                        naturalPropertyBuilder.fair = 0.3;
+                        naturalPropertyBuilder.ruddy = 0.4;
+                        mController.getPropertyMap().put(SelesParameters.FilterModel.SkinFace, naturalPropertyBuilder);
+                        mParameters.appendFloatArg("ruddy", 0.4f);
+                        ret = fp.addFilter(index, skinFilter);
+                        skinFilter.setProperty(TusdkImageFilter.PROP_PARAM, naturalPropertyBuilder.makeProperty());
+                        break;
+                    case PRECISION:
+                        skinFilter = new Filter(fp.getContext(), TusdkImageFilter.TYPE_NAME);
+                        config = new Config();
+                        config.setString(TusdkImageFilter.CONFIG_NAME, TusdkImageFilter.NAME_SkinHazy);
+                        skinFilter.setConfig(config);
+
+                        TusdkImageFilter.SkinHazyPropertyBuilder hazyPropertyBuilder = new TusdkImageFilter.SkinHazyPropertyBuilder();
+                        hazyPropertyBuilder.smoothing = 0.8;
+                        hazyPropertyBuilder.fair = 0.3;
+                        hazyPropertyBuilder.ruddy = 0.4;
+
+                        mController.getPropertyMap().put(SelesParameters.FilterModel.SkinFace, hazyPropertyBuilder);
+                        mParameters.appendFloatArg("ruddy", 0.4f);
+                        ret = fp.addFilter(index, skinFilter);
+                        skinFilter.setProperty(TusdkImageFilter.PROP_PARAM, hazyPropertyBuilder.makeProperty());
+                        break;
+                    case BEAUTY:
+                        skinFilter = new Filter(fp.getContext(), TusdkBeautFaceV2Filter.TYPE_NAME);
+
+                        TusdkBeautFaceV2Filter.PropertyBuilder builder = new TusdkBeautFaceV2Filter.PropertyBuilder();
+                        builder.smoothing = 0.8;
+                        builder.whiten = 0.3;
+                        builder.sharpen = 0.6f;
+                        mController.getPropertyMap().put(SelesParameters.FilterModel.SkinFace, builder);
+                        mParameters.appendFloatArg("sharpen", 0.6f);
+                        ret = fp.addFilter(index, skinFilter);
+                        skinFilter.setProperty(TusdkBeautFaceV2Filter.PROP_PARAM, builder.makeProperty());
+
+                        break;
+                    case EMPTY:
+                        isClear = true;
+                        ret = fp.deleteFilter(index);
+                        break;
+                }
+
+                if (skinMode == SkinMode.EMPTY) {
+                    mController.getCurrentFilterMap().remove(SelesParameters.FilterModel.SkinFace);
+                } else {
+                    mController.getCurrentFilterMap().put(SelesParameters.FilterModel.SkinFace, skinFilter);
+                }
+
+                mParameters.setListener(new SelesParameters.SelesParametersListener() {
+                    @Override
+                    public void onUpdateParameters(SelesParameters.FilterModel filterModel, String s, final SelesParameters.FilterArg filterArg) {
+                        syncRun(new Callable<Boolean>() {
+                            @Override
+                            public Boolean call() throws Exception {
+                                boolean ret = false;
+                                Object skinProperty = mController.getPropertyMap().get(SelesParameters.FilterModel.SkinFace);
+                                Filter currentFilter = mController.getCurrentFilterMap().get(SelesParameters.FilterModel.SkinFace);
+                                String key = filterArg.getKey();
+                                double progress = filterArg.getValue();
+
+                                switch (mCurrentMode) {
+                                    case EXTREME:
+                                        TusdkImageFilter.SkinNaturalPropertyBuilder naturalPropertyBuilder = (TusdkImageFilter.SkinNaturalPropertyBuilder) skinProperty;
+                                        switch (key) {
+                                            case "whitening":
+                                                naturalPropertyBuilder.fair = progress;
+                                                break;
+                                            case "smoothing":
+                                                naturalPropertyBuilder.smoothing = progress;
+                                                break;
+                                            case "ruddy":
+                                                naturalPropertyBuilder.ruddy = progress;
+                                                break;
+                                        }
+
+                                        ret = currentFilter.setProperty(TusdkImageFilter.PROP_PARAM, naturalPropertyBuilder.makeProperty());
+                                        break;
+                                    case PRECISION:
+                                        TusdkImageFilter.SkinHazyPropertyBuilder hazyPropertyBuilder = (TusdkImageFilter.SkinHazyPropertyBuilder) skinProperty;
+                                        switch (key) {
+                                            case "whitening":
+                                                hazyPropertyBuilder.fair = progress;
+                                                break;
+                                            case "smoothing":
+                                                hazyPropertyBuilder.smoothing = progress;
+                                                break;
+                                            case "ruddy":
+                                                hazyPropertyBuilder.ruddy = progress;
+                                                break;
+                                        }
+
+                                        ret = currentFilter.setProperty(TusdkImageFilter.PROP_PARAM, hazyPropertyBuilder.makeProperty());
+                                        break;
+                                    case BEAUTY:
+                                        TusdkBeautFaceV2Filter.PropertyBuilder faceProperty = (TusdkBeautFaceV2Filter.PropertyBuilder) skinProperty;
+                                        switch (key) {
+                                            case "whitening":
+                                                faceProperty.whiten = progress;
+                                                break;
+                                            case "smoothing":
+                                                faceProperty.smoothing = progress;
+                                                break;
+                                            case "sharpen":
+                                                faceProperty.sharpen = progress;
+                                                break;
+                                        }
+                                        ret = currentFilter.setProperty(TusdkBeautFaceV2Filter.PROP_PARAM, faceProperty.makeProperty());
+                                        break;
+                                    case EMPTY:
+                                        break;
+                                }
+                                return ret;
+                            }
+                        });
+                    }
+                });
+
+                return ret;
+            }
+        });
+    }
 }

@@ -1,6 +1,7 @@
 package org.lasque.tusdkdemohelper.tusdk.newUI.filterModule;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.HorizontalScrollView;
@@ -12,19 +13,26 @@ import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tusdkdemohelper.R;
+import com.tusdk.pulse.Config;
+import com.tusdk.pulse.Engine;
+import com.tusdk.pulse.filter.Filter;
+import com.tusdk.pulse.filter.filters.TusdkImageFilter;
 
-import org.lasque.tusdk.core.seles.SelesParameters;
-import org.lasque.tusdk.core.seles.tusdk.FilterGroup;
-import org.lasque.tusdk.core.seles.tusdk.FilterOption;
+import org.lasque.tusdkpulse.core.seles.SelesParameters;
+import org.lasque.tusdkpulse.core.seles.tusdk.FilterGroup;
+import org.lasque.tusdkpulse.core.seles.tusdk.FilterOption;
 import org.lasque.tusdkdemohelper.tusdk.TabPagerIndicator;
 import org.lasque.tusdkdemohelper.tusdk.newUI.CustomUi.RecyclerViewTabPagerIndicator;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.BaseModule;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.FunctionsType;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.ModuleController;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.OnItemClickListener;
+import org.w3c.dom.Node;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.Callable;
 
 /**
  * TuSDK
@@ -58,6 +66,8 @@ public class FilterModule2 extends BaseModule {
     private int mDefaultFilterGroupIndex = -1;
     private String mDefaultFilterCode;
 
+    private TusdkImageFilter.MapPropertyBuilder builder;
+
     private RecyclerView.SmoothScroller smoothScroller = new LinearSmoothScroller(mContext) {
         @Override protected int getVerticalSnapPreference() {
             return LinearSmoothScroller.SNAP_TO_START;
@@ -75,6 +85,7 @@ public class FilterModule2 extends BaseModule {
         this.mFilterGroups = filterGroups;
         this.mColorList = colorList;
         mFilterGroupNames = new ArrayList<>();
+        mParameters = new SelesParameters();
         findViews();
     }
 
@@ -101,7 +112,7 @@ public class FilterModule2 extends BaseModule {
             public void onClick(View v) {
                 mFilterGroupAdapter.setCurrentPos(-1);
                 mFilterGroupAdapter.setDefaultFilterCode(null);
-                mFilterEngine.controller().changeFilter(null, null);
+                changeFilter("");
                 showToast("滤镜重置");
             }
         });
@@ -121,7 +132,7 @@ public class FilterModule2 extends BaseModule {
                         mFilterGroupAdapter.setCurrentPos(adapter.getPosition());
                     }
                     adapter.setCurrentPos(pos);
-                    mParameters = mFilterEngine.controller().changeFilter(item.code, mParameters);
+                    changeFilter(item.code);
                 }
                 mConfigView.setFilterArgs(mParameters);
             }
@@ -197,11 +208,6 @@ public class FilterModule2 extends BaseModule {
         }
     }
 
-    @Override
-    public void setParameters(SelesParameters parameters) {
-        super.setParameters(parameters);
-    }
-
     public void setDefaultFilter(int groupIndex,String filterCode){
         if (mFilterGroupAdapter != null){
             mFilterGroupAdapter.setCurrentPos(groupIndex);
@@ -210,4 +216,44 @@ public class FilterModule2 extends BaseModule {
         mDefaultFilterGroupIndex = groupIndex;
         mDefaultFilterCode = filterCode;
     }
+
+
+    public boolean changeFilter(final String code){
+        boolean res = syncRun(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                mController.getFilterPipe().deleteFilter(ModuleController.mFilterMap.get(SelesParameters.FilterModel.Filter));
+                if (TextUtils.isEmpty(code)) return true;
+                final Filter filter = new Filter(getPipeContext(), TusdkImageFilter.TYPE_NAME);
+                Config config = new Config();
+                config.setString(TusdkImageFilter.CONFIG_NAME,code);
+                filter.setConfig(config);
+                boolean ret = mController.getFilterPipe().addFilter(ModuleController.mFilterMap.get(SelesParameters.FilterModel.Filter),filter);
+
+                builder = new TusdkImageFilter.MapPropertyBuilder(filter.getProperty(TusdkImageFilter.PROP_PARAM));
+
+                mParameters = new SelesParameters();
+                for (String key : builder.pars.keySet()){
+                    mParameters.appendFloatArg(key,builder.pars.get(key).floatValue());
+                }
+                mController.getPropertyMap().put(SelesParameters.FilterModel.Filter,builder);
+                mParameters.setListener(new SelesParameters.SelesParametersListener() {
+                    @Override
+                    public void onUpdateParameters(SelesParameters.FilterModel filterModel, String s, SelesParameters.FilterArg filterArg) {
+                        builder.pars.put(filterArg.getKey(), (double) filterArg.getValue());
+                        filter.setProperty(TusdkImageFilter.PROP_PARAM,builder.makeProperty());
+                    }
+                });
+
+                mConfigView.setFilterArgs(mParameters);
+                if (ret){
+                    mController.getCurrentFilterMap().put(SelesParameters.FilterModel.Filter,filter);
+                }
+                return ret;
+            }
+        });
+
+        return res;
+    }
+
 }

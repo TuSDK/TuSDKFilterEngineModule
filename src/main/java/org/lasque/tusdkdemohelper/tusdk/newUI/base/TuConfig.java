@@ -1,7 +1,7 @@
 package org.lasque.tusdkdemohelper.tusdk.newUI.base;
 
-import org.lasque.tusdk.core.seles.tusdk.FilterGroup;
-import org.lasque.tusdk.core.seles.tusdk.FilterLocalPackage;
+import org.lasque.tusdkpulse.core.seles.tusdk.FilterGroup;
+import org.lasque.tusdkpulse.core.seles.tusdk.FilterLocalPackage;
 
 import java.util.ArrayList;
 import java.util.List;

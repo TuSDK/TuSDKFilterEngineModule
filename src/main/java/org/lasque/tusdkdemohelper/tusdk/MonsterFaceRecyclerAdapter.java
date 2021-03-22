@@ -11,7 +11,7 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 
-import org.lasque.tusdk.core.TuSdkContext;
+import org.lasque.tusdkpulse.core.TuSdkContext;
 import org.lasque.tusdkdemohelper.tusdk.model.PropsItemMonster;
 
 import java.util.ArrayList;

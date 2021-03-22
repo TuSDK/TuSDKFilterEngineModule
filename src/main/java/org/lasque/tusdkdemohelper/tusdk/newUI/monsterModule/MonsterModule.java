@@ -9,8 +9,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tusdkdemohelper.R;
+import com.tusdk.pulse.Config;
+import com.tusdk.pulse.filter.Filter;
+import com.tusdk.pulse.filter.FilterPipe;
+import com.tusdk.pulse.filter.filters.TusdkFaceMonsterFilter;
 
-import org.lasque.tusdk.cx.api.TuFilterCombo;
+import org.lasque.tusdkpulse.core.seles.SelesParameters;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.BaseModule;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.FunctionsType;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.ModuleController;
@@ -18,6 +22,7 @@ import org.lasque.tusdkdemohelper.tusdk.newUI.base.OnItemClickListener;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import static org.lasque.tusdkdemohelper.tusdk.newUI.monsterModule.MonsterFunction.BIGNOSE;
 import static org.lasque.tusdkdemohelper.tusdk.newUI.monsterModule.MonsterFunction.PAPAYAFACE;
@@ -72,10 +77,9 @@ public class MonsterModule extends BaseModule {
         mRemoveMonsterView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mFilterEngine.controller().changeMonster(TuFilterCombo.TuFaceMonsterMode.Empty);
-                mMonsterAdapter.setCurrentPos(-1);
+                clearMonsterFace();
                 showToast("哈哈镜移除");
-                mController.getPlasticModule().setParameters(mFilterEngine.controller().changePlastic(true));
+                mController.getPlasticModule().updateProperty();
             }
         });
 
@@ -84,7 +88,7 @@ public class MonsterModule extends BaseModule {
             @Override
             public void onItemClick(int pos, MonsterAdapter.MonsterViewHolder holder, MonsterFunction item) {
                 mMonsterAdapter.setCurrentPos(pos);
-                mFilterEngine.controller().changeMonster(item.mode);
+                changeMonsterFace(item.mode);
                 mController.getPlasticModule().clearPlastic();
                 mController.getStickerModule().clearSelect();
             }
@@ -101,5 +105,29 @@ public class MonsterModule extends BaseModule {
         if (mMonsterAdapter != null){
             mMonsterAdapter.setCurrentPos(-1);
         }
+        syncRun(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                FilterPipe fp = mController.getFilterPipe();
+                boolean res = fp.deleteFilter(ModuleController.mFilterMap.get(SelesParameters.FilterModel.MonsterFace));
+                return res;
+            }
+        });
+    }
+
+    public boolean changeMonsterFace(final String code){
+        return syncRun(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                FilterPipe fp = mController.getFilterPipe();
+                fp.deleteFilter(ModuleController.mFilterMap.get(SelesParameters.FilterModel.MonsterFace));
+                Filter monsterFace = new Filter(fp.getContext(), TusdkFaceMonsterFilter.TYPE_NAME);
+                Config config = new Config();
+                config.setString(TusdkFaceMonsterFilter.CONFIG_TYPE,code);
+                monsterFace.setConfig(config);
+                boolean res = fp.addFilter(ModuleController.mFilterMap.get(SelesParameters.FilterModel.MonsterFace),monsterFace);
+                return res;
+            }
+        });
     }
 }

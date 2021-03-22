@@ -6,10 +6,6 @@ import android.widget.ImageView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import org.lasque.tusdk.core.seles.SelesParameters;
-import org.lasque.tusdk.cx.api.TuFilterCombo;
-import org.lasque.tusdk.modules.view.widget.sticker.StickerLocalPackage;
 import com.example.tusdkdemohelper.R;
 
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.OnItemClickListener;
@@ -60,8 +56,7 @@ public class EyelinerPanel extends BasePanel {
             @Override
             public void onItemClick(int pos, EyelinerAdapter.EyelinerViewHolder holder, CosmeticTypes.EyelinerType item) {
                 mCurrentType = item;
-                SelesParameters parameters = mController.getEngine().controller().changeCosmetic(TuFilterCombo.TuCosmeticMode.EyeLine,StickerLocalPackage.shared().getStickerGroup(item.mGroupId).stickers.get(0).stickerId,-1, TuFilterCombo.TuCosmeticLipGlossStyle.None);
-                mController.setParameters(parameters);
+                mController.updateEyeliner(item.mGroupId);
                 mAdapter.setCurrentPos(pos);
                 if (onPanelClickListener != null) onPanelClickListener.onClick(mType);
 
@@ -79,7 +74,7 @@ public class EyelinerPanel extends BasePanel {
     @Override
     public void clear() {
         mCurrentType = null;
-        mController.getEngine().controller().closeEyeline();
+        mController.closeEyeliner();
         mAdapter.setCurrentPos(-1);
         if (onPanelClickListener != null) onPanelClickListener.onClear(mType);
     }

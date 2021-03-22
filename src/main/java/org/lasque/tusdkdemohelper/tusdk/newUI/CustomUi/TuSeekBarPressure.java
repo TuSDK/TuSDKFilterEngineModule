@@ -4,8 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 
-import org.lasque.tusdk.core.struct.ViewSize;
-import org.lasque.tusdk.impl.view.widget.TuSeekBar;
+import org.lasque.tusdkpulse.core.struct.ViewSize;
+import org.lasque.tusdkpulse.impl.view.widget.TuSeekBar;
 
 /**
  * TuSDK

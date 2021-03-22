@@ -12,10 +12,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.lasque.tusdk.core.TuSdkContext;
-import org.lasque.tusdk.core.seles.tusdk.FilterOption;
-import org.lasque.tusdk.core.utils.TLog;
-import org.lasque.tusdk.core.view.TuSdkImageView;
+import org.lasque.tusdkpulse.core.TuSdkContext;
+import org.lasque.tusdkpulse.core.seles.tusdk.FilterOption;
+import org.lasque.tusdkpulse.core.utils.TLog;
+import org.lasque.tusdkpulse.core.view.TuSdkImageView;
 
 import java.util.List;
 

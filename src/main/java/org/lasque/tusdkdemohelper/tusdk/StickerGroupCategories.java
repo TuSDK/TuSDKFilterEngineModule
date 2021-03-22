@@ -1,6 +1,6 @@
 package org.lasque.tusdkdemohelper.tusdk;
 
-import org.lasque.tusdk.modules.view.widget.sticker.StickerGroup;
+import org.lasque.tusdkpulse.modules.view.widget.sticker.StickerGroup;
 
 import java.io.Serializable;
 import java.util.List;

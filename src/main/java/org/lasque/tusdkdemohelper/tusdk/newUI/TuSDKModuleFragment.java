@@ -12,14 +12,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.tusdkdemohelper.R;
+import com.tusdk.pulse.filter.FilterPipe;
 
-import org.lasque.tusdk.core.media.codec.audio.processor.TuSdkAudioEngine;
-import org.lasque.tusdk.core.media.codec.audio.processor.TuSdkAudioPitchEngine;
-import org.lasque.tusdk.core.seles.SelesParameters;
-import org.lasque.tusdk.core.seles.tusdk.FilterGroup;
-import org.lasque.tusdk.core.utils.ThreadHelper;
-import org.lasque.tusdk.cx.api.TuFilterCombo;
-import org.lasque.tusdk.cx.api.TuFilterEngine;
+import org.lasque.tusdkpulse.core.seles.SelesParameters;
+import org.lasque.tusdkpulse.core.seles.tusdk.FilterGroup;
+import org.lasque.tusdkpulse.core.utils.ThreadHelper;
 import org.lasque.tusdkdemohelper.tusdk.filter.FilterConfigView;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.FunctionsType;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.ModuleController;
@@ -28,6 +25,7 @@ import org.lasque.tusdkdemohelper.tusdk.newUI.mainModule.FunctionMenuItem;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 /**
  * TuSDK
@@ -62,17 +60,16 @@ public class TuSDKModuleFragment extends Fragment {
 
     private ModuleController mController;
 
-    // TuSDK Filter Engine
-    private TuFilterEngine mFilterEngine;
-
     private List<FilterGroup> mFilterGroups;
 
     private List<String> mColorList;
 
 
-    //TuSdk Audio Engine
+    // ----------------------------- FilterPipe ---------------------------------
 
-    private TuSdkAudioPitchEngine mAudioEngine;
+    private FilterPipe mFP;
+
+    private ExecutorService mRenderPool;
 
     @Nullable
     @Override
@@ -99,8 +96,6 @@ public class TuSDKModuleFragment extends Fragment {
         mController = new ModuleController(getContext(), getChildFragmentManager(), getLifecycle(), mParentView, menuItems);
         mController.setFilters(mFilterGroups, mColorList);
         mController.setConfigView(mConfigView);
-        mController.setFilterEngine(mFilterEngine);
-        mController.setAudioEngine(mAudioEngine);
         return parentView;
     }
 
@@ -116,29 +111,32 @@ public class TuSDKModuleFragment extends Fragment {
         mController.switchModule(FunctionsType.MAIN);
     }
 
-    public void setFilterEngine(TuFilterEngine filterEngine) {
-        this.mFilterEngine = filterEngine;
+    public void setFilterPipe(FilterPipe fp,ExecutorService renderPool){
+        mFP = fp;
+        mRenderPool = renderPool;
+        mController.setFilterPipe(fp,renderPool);
     }
 
-    public void setAudioEngine(TuSdkAudioPitchEngine engine){
-        mAudioEngine = engine;
-    }
 
-    /**
-     * 切换滤镜
-     *
-     * @param code
-     */
-    public void changeFilter(String code) {
-        mFilterEngine.controller().changeFilter(code, null);
-    }
+//    public void setAudioEngine(TuSdkAudioPitchEngine engine){
+//        mAudioEngine = engine;
+//    }
 
-    /**
-     * 切换美颜预设按键
-     *
-     * @param useSkinNatural true 自然(精准)美颜 false 极致美颜
-     */
-    private void switchConfigSkin(boolean useSkinNatural) {
-        SelesParameters parameters = mFilterEngine.controller().changeSkin(useSkinNatural ? TuFilterCombo.TuComboSkinMode.Sleek : TuFilterCombo.TuComboSkinMode.Vein);
-    }
+//    /**
+//     * 切换滤镜
+//     *
+//     * @param code
+//     */
+//    public void changeFilter(String code) {
+//        mFilterEngine.controller().changeFilter(code, null);
+//    }
+//
+//    /**
+//     * 切换美颜预设按键
+//     *
+//     * @param useSkinNatural true 自然(精准)美颜 false 极致美颜
+//     */
+//    private void switchConfigSkin(boolean useSkinNatural) {
+//        SelesParameters parameters = mFilterEngine.controller().changeSkin(useSkinNatural ? TuFilterCombo.TuComboSkinMode.Sleek : TuFilterCombo.TuComboSkinMode.Vein);
+//    }
 }

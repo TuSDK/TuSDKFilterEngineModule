@@ -13,10 +13,9 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import org.lasque.tusdk.core.TuSdkContext;
-import org.lasque.tusdk.core.view.TuSdkRelativeLayout;
-import org.lasque.tusdk.impl.view.widget.TuSeekBar;
-import org.lasque.tusdk.impl.view.widget.TuSeekBar.TuSeekBarDelegate;
+import org.lasque.tusdkpulse.core.TuSdkContext;
+import org.lasque.tusdkpulse.core.view.TuSdkRelativeLayout;
+import org.lasque.tusdkpulse.impl.view.widget.TuSeekBar;
 
 /**
  * 调节栏SeekBar
@@ -120,7 +119,7 @@ public class ConfigViewSeekBar extends TuSdkRelativeLayout
 	/**
 	 * 百分比控制条委托
 	 */
-	private TuSeekBarDelegate mTuSeekBarDelegate = new TuSeekBarDelegate()
+	private TuSeekBar.TuSeekBarDelegate mTuSeekBarDelegate = new TuSeekBar.TuSeekBarDelegate()
 	{
 		/**
 		 * 进度改变

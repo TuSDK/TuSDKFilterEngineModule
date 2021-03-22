@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.lasque.tusdk.core.TuSdkContext;
-import org.lasque.tusdk.core.view.TuSdkImageView;
+import org.lasque.tusdkpulse.core.TuSdkContext;
+import org.lasque.tusdkpulse.core.view.TuSdkImageView;
 
 import java.util.ArrayList;
 import java.util.List;

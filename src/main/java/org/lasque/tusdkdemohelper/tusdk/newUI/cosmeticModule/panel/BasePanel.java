@@ -2,7 +2,7 @@ package org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.panel;
 
 import android.view.View;
 
-import org.lasque.tusdk.core.seles.SelesParameters;
+import org.lasque.tusdkpulse.core.seles.SelesParameters;
 import org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.CosmeticPanelController;
 import org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.CosmeticTypes;
 

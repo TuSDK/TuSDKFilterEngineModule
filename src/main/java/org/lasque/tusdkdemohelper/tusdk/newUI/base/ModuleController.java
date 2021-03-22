@@ -6,18 +6,14 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 
-import org.lasque.tusdk.core.media.codec.audio.processor.TuSdkAudioPitchEngine;
-import org.lasque.tusdk.core.seles.SelesParameters;
-import org.lasque.tusdk.core.seles.tusdk.FilterGroup;
-import org.lasque.tusdk.core.utils.ThreadHelper;
-import org.lasque.tusdk.cx.api.TuFilterCombo;
-import org.lasque.tusdk.cx.api.TuFilterEngine;
+import com.tusdk.pulse.filter.Filter;
+import com.tusdk.pulse.filter.FilterPipe;
+import org.lasque.tusdkpulse.core.seles.SelesParameters;
+import org.lasque.tusdkpulse.core.seles.tusdk.FilterGroup;
+import org.lasque.tusdkpulse.core.utils.ThreadHelper;
 import org.lasque.tusdkdemohelper.tusdk.filter.FilterConfigView;
 import org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.CosmeticModule;
 import org.lasque.tusdkdemohelper.tusdk.newUI.filterModule.FilterModule;
@@ -30,8 +26,13 @@ import org.lasque.tusdkdemohelper.tusdk.newUI.skinModule.SkinModule;
 import org.lasque.tusdkdemohelper.tusdk.newUI.stickerModule.StickerModule;
 import org.lasque.tusdkdemohelper.tusdk.newUI.voiceModule.VoiceModule;
 
-import java.lang.ref.WeakReference;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 /**
  * TuSDK
@@ -43,6 +44,19 @@ import java.util.List;
  * @Copyright (c) 2020 tusdk.com. All rights reserved.
  */
 final public class ModuleController {
+
+    public final static HashMap<SelesParameters.FilterModel, Integer> mFilterMap = new HashMap<SelesParameters.FilterModel, Integer>();
+
+    static {
+        mFilterMap.put(SelesParameters.FilterModel.Reshape,11);
+        mFilterMap.put(SelesParameters.FilterModel.CosmeticFace, 12);
+        mFilterMap.put(SelesParameters.FilterModel.MonsterFace, 13);
+        mFilterMap.put(SelesParameters.FilterModel.PlasticFace, 14);
+        mFilterMap.put(SelesParameters.FilterModel.SkinFace, 15);
+        mFilterMap.put(SelesParameters.FilterModel.StickerFace, 16);
+        mFilterMap.put(SelesParameters.FilterModel.Filter, 17);
+    }
+
     private MainModule mHomeModule;
     private FilterModule mFilterModule;
     private FilterModule2 mFilterModule2;
@@ -78,13 +92,23 @@ final public class ModuleController {
 
     private List<String> mFilterColorList;
 
-    private TuFilterEngine mFilterEngine;
-
     private FilterConfigView mConfigView;
 
     // TuSdk Audio Engine
 
-    private TuSdkAudioPitchEngine mAudioEngine;
+//    private TuSdkAudioPitchEngine mAudioEngine;
+
+    /**  --------------------- FilterPipe -------------------------- */
+
+    private FilterPipe mFP;
+
+    private ExecutorService mRenderPool;
+
+    private HashMap<SelesParameters.FilterModel, Filter> mCurrentFilterMap = new HashMap<>();
+
+    private HashMap<SelesParameters.FilterModel, Object> mPropertyMap = new HashMap<>();
+
+    /**  --------------------- Functions -------------------------- */
 
     public ModuleController(
             Context context,
@@ -104,24 +128,24 @@ final public class ModuleController {
         this.mFilterColorList = filterColors;
     }
 
-    public void setFilterEngine(TuFilterEngine engine){
-        mFilterEngine = engine;
-        ThreadHelper.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                String defaultCode = mFilterGroup.get(0).getDefaultFilter().code;
-                changeFilter(defaultCode);
-                switchConfigSkin(false);
-                SelesParameters selesParameters = mFilterEngine.controller().changePlastic(true);
-                getPlasticModule().setParameters(selesParameters);
-                getFilterModule2().setDefaultFilter(0,defaultCode);
-            }
-        }, 500);
+    public void setFilterPipe(FilterPipe filterPipe, ExecutorService renderPool){
+        mFP = filterPipe;
+        mRenderPool = renderPool;
+
+        getSkinModule().switchConfigSkin(SkinModule.SkinMode.BEAUTY);
+
+        getPlasticModule().updateProperty();
+
+        getCosmeticModule();
     }
 
-    public void setAudioEngine(TuSdkAudioPitchEngine engine){
-        this.mAudioEngine = engine;
+    public FilterPipe getFilterPipe(){
+        return mFP;
     }
+
+//    public void setAudioEngine(TuSdkAudioPitchEngine engine){
+//        this.mAudioEngine = engine;
+//    }
 
 
 
@@ -131,18 +155,7 @@ final public class ModuleController {
      * @param code
      */
     public void changeFilter(String code) {
-        SelesParameters selesParameters = mFilterEngine.controller().changeFilter(code, null);
-        getFilterModule2().setParameters(selesParameters);
-    }
-
-    /**
-     * 切换美颜预设按键
-     *
-     * @param useSkinNatural true 自然(精准)美颜 false 极致美颜
-     */
-    private void switchConfigSkin(boolean useSkinNatural) {
-        SelesParameters parameters = mFilterEngine.controller().changeSkin(useSkinNatural ? TuFilterCombo.TuComboSkinMode.Sleek : TuFilterCombo.TuComboSkinMode.Vein);
-        getSkinModule().setParameters(parameters);
+        getFilterModule2().changeFilter(code);
     }
 
     public void setConfigView(FilterConfigView configView){
@@ -302,7 +315,6 @@ final public class ModuleController {
     public FilterModule getFilterModule() {
         if (mFilterModule == null) {
             mFilterModule = new FilterModule(this, mContext, mFilterGroup, mFilterColorList);
-            mFilterModule.setFilterEngine(mFilterEngine);
             mFilterModule.setConfigView(mConfigView);
         }
         return mFilterModule;
@@ -311,7 +323,6 @@ final public class ModuleController {
     public FilterModule2 getFilterModule2(){
         if (mFilterModule2 == null){
             mFilterModule2 = new FilterModule2(this,mContext,mFilterGroup,mFilterColorList);
-            mFilterModule2.setFilterEngine(mFilterEngine);
             mFilterModule2.setConfigView(mConfigView);
         }
         return mFilterModule2;
@@ -320,7 +331,6 @@ final public class ModuleController {
     public PlasticModule getPlasticModule() {
         if (mPlasticModule == null) {
             mPlasticModule = new PlasticModule(this, mContext);
-            mPlasticModule.setFilterEngine(mFilterEngine);
             mPlasticModule.setConfigView(mConfigView);
         }
         return mPlasticModule;
@@ -329,7 +339,6 @@ final public class ModuleController {
     public SkinModule getSkinModule() {
         if (mSkinModule == null) {
             mSkinModule = new SkinModule(this, mContext);
-            mSkinModule.setFilterEngine(mFilterEngine);
             mSkinModule.setConfigView(mConfigView);
         }
         return mSkinModule;
@@ -338,7 +347,6 @@ final public class ModuleController {
     public MonsterModule getMonsterModule() {
         if (mMonsterModule == null) {
             mMonsterModule = new MonsterModule(this, mContext);
-            mMonsterModule.setFilterEngine(mFilterEngine);
         }
         return mMonsterModule;
     }
@@ -346,7 +354,6 @@ final public class ModuleController {
     public StickerModule getStickerModule() {
         if (mStickerModule == null) {
             mStickerModule = new StickerModule(this, mContext, mFragmentManger, mLifecycle);
-            mStickerModule.setFilterEngine(mFilterEngine);
         }
         return mStickerModule;
     }
@@ -354,7 +361,6 @@ final public class ModuleController {
     public VoiceModule getVoiceModule() {
         if (mVoiceModule == null){
             mVoiceModule = new VoiceModule(this,mContext);
-            mVoiceModule.setAudioEngine(mAudioEngine);
         }
         return mVoiceModule;
     }
@@ -362,10 +368,33 @@ final public class ModuleController {
     public CosmeticModule getCosmeticModule(){
         if (mCosmeticModule == null){
             mCosmeticModule = new CosmeticModule(this,mContext);
-            mCosmeticModule.setFilterEngine(mFilterEngine);
             mCosmeticModule.setConfigView(mConfigView);
         }
         return mCosmeticModule;
+    }
+
+    public Map<SelesParameters.FilterModel,Filter> getCurrentFilterMap(){
+        return mCurrentFilterMap;
+    }
+
+    public Map<SelesParameters.FilterModel, Object> getPropertyMap(){
+        return mPropertyMap;
+    }
+
+    public <T>T syncRun(Callable<T> callable){
+        Future<T> res = mRenderPool.submit(callable);
+        try {
+            return res.get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void asyncRun(Runnable runnable){
+        mRenderPool.execute(runnable);
     }
 
 }

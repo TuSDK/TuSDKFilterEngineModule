@@ -1,5 +1,7 @@
 package org.lasque.tusdkdemohelper.tusdk.model;
 
+import org.lasque.tusdkpulse.core.seles.SelesParameters;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,10 +22,12 @@ public class PropsItemCategory <Item extends PropsItem>{
     /** 道具列表 */
     private List<Item> mItems;
 
+    /** 道具分类对应的特效类型 */
+    private SelesParameters.FilterModel mMediaEffectType;
 
-
-    public PropsItemCategory(List<Item> items) {
+    public PropsItemCategory(SelesParameters.FilterModel mediaEffectType,List<Item> items) {
         mItems = new ArrayList<>(items);
+        this.mMediaEffectType =  mediaEffectType;
     }
 
     /**
@@ -51,6 +55,15 @@ public class PropsItemCategory <Item extends PropsItem>{
      */
     public String getName() {
         return this.mName;
+    }
+
+    /**
+     * 道具分类对应的特效类型
+     *
+     * @return TuSdkMediaEffectData.TuSdkMediaEffectDataType
+     */
+    public SelesParameters.FilterModel getMediaEffectType() {
+        return mMediaEffectType;
     }
 }
 

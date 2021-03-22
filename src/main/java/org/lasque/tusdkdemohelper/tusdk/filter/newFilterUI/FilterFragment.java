@@ -14,9 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tusdkdemohelper.R;
 
-import org.lasque.tusdk.core.TuSdkContext;
-import org.lasque.tusdk.core.seles.tusdk.FilterGroup;
-import org.lasque.tusdk.core.seles.tusdk.FilterOption;
+import org.lasque.tusdkpulse.core.TuSdkContext;
+import org.lasque.tusdkpulse.core.seles.tusdk.FilterGroup;
+import org.lasque.tusdkpulse.core.seles.tusdk.FilterOption;
 
 import java.util.ArrayList;
 

@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.tusdkdemohelper.R;
 
-import org.lasque.tusdk.core.utils.TLog;
+import org.lasque.tusdkpulse.core.utils.TLog;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.BaseAdapter;
 
 import java.util.List;

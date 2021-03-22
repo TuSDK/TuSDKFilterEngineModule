@@ -15,12 +15,11 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import org.lasque.tusdk.core.TuSdkContext;
-import org.lasque.tusdk.core.seles.SelesParameters;
-import org.lasque.tusdk.core.seles.SelesParameters.FilterArg;
-import org.lasque.tusdk.core.view.TuSdkRelativeLayout;
-import org.lasque.tusdk.core.view.TuSdkViewHelper;
-import org.lasque.tusdk.core.view.TuSdkViewHelper.OnSafeClickListener;
+import org.lasque.tusdkpulse.core.TuSdkContext;
+import org.lasque.tusdkpulse.core.seles.SelesParameters;
+import org.lasque.tusdkpulse.core.seles.SelesParameters.FilterArg;
+import org.lasque.tusdkpulse.core.view.TuSdkRelativeLayout;
+import org.lasque.tusdkpulse.core.view.TuSdkViewHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -301,7 +300,7 @@ public class FilterConfigView extends TuSdkRelativeLayout
     /**
      * 按钮点击事件
      */
-    protected OnSafeClickListener mOnClickListener = new OnSafeClickListener()
+    protected TuSdkViewHelper.OnSafeClickListener mOnClickListener = new TuSdkViewHelper.OnSafeClickListener()
     {
         @Override
         public void onSafeClick(View v)

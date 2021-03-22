@@ -21,10 +21,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.tusdkdemohelper.R;
 
-import org.lasque.tusdk.core.TuSdkContext;
-import org.lasque.tusdk.core.seles.tusdk.FilterGroup;
-import org.lasque.tusdk.core.seles.tusdk.FilterOption;
-import org.lasque.tusdk.core.utils.ThreadHelper;
+import org.lasque.tusdkpulse.core.TuSdkContext;
+import org.lasque.tusdkpulse.core.seles.tusdk.FilterGroup;
+import org.lasque.tusdkpulse.core.seles.tusdk.FilterOption;
+import org.lasque.tusdkpulse.core.utils.ThreadHelper;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.BaseAdapter;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.OnItemClickListener;
 

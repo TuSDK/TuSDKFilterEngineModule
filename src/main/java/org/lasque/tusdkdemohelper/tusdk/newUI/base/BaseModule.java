@@ -3,15 +3,18 @@ package org.lasque.tusdkdemohelper.tusdk.newUI.base;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 
-import org.lasque.tusdk.core.seles.SelesParameters;
-import org.lasque.tusdk.cx.api.TuFilterEngine;
+import com.tusdk.pulse.filter.Filter;
+import com.tusdk.pulse.filter.FilterContext;
+
+import org.lasque.tusdkpulse.core.seles.SelesParameters;
 import org.lasque.tusdkdemohelper.tusdk.filter.FilterConfigView;
+
+import java.util.concurrent.Callable;
 
 /**
  * TuSDK
@@ -28,10 +31,6 @@ public abstract class BaseModule {
 
     protected Context mContext;
     protected ModuleController mController;
-
-    protected TuFilterEngine mFilterEngine;
-
-
 
     protected SelesParameters mParameters;
 
@@ -72,10 +71,6 @@ public abstract class BaseModule {
         return false;
     }
 
-    public void setFilterEngine(TuFilterEngine engine) {
-        this.mFilterEngine = engine;
-    }
-
     public void setConfigView(FilterConfigView view) {
         this.mConfigView = view;
     }
@@ -98,7 +93,7 @@ public abstract class BaseModule {
 
     public void detach(ViewGroup parent) {
         parent.removeAllViews();
-        if (mConfigView != null){
+        if (mConfigView != null) {
             mConfigView.setVisibility(View.GONE);
         }
     }
@@ -111,24 +106,59 @@ public abstract class BaseModule {
         return mCurrentView;
     }
 
-    public void setParameters(SelesParameters parameters){
-        this.mParameters = parameters;
-    }
-
     public SelesParameters getParameters() {
         return mParameters;
     }
 
-    protected void showToast(String value){
-        if (mCurrentToast != null){
+    protected void showToast(String value) {
+        if (mCurrentToast != null) {
             mCurrentToast.cancel();
         }
-        mCurrentToast = Toast.makeText(mContext,value,Toast.LENGTH_SHORT);
+        mCurrentToast = Toast.makeText(mContext, value, Toast.LENGTH_SHORT);
         mCurrentToast.show();
     }
 
 
     public Context getContext() {
         return mContext;
+    }
+
+    public FilterContext getPipeContext(){
+        return mController.getFilterPipe().getContext();
+    }
+
+    public <T> T syncRun(Callable<T> callable) {
+        return mController.syncRun(callable);
+    }
+
+    public void asyncRun(Runnable runnable) {
+        mController.asyncRun(runnable);
+    }
+
+    public boolean addFilter(final SelesParameters.FilterModel model, final Filter filter) {
+
+        boolean res = mController.getFilterPipe().addFilter(ModuleController.mFilterMap.get(model), filter);
+        if (res) {
+            mController.getCurrentFilterMap().put(model, filter);
+        }
+
+        return res;
+    }
+
+    public boolean deleteFilter(final SelesParameters.FilterModel model) {
+        boolean res = syncRun(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return mController.getFilterPipe().deleteFilter((ModuleController.mFilterMap.get(model)));
+            }
+        });
+        if (res) {
+            mController.getCurrentFilterMap().remove(model);
+        }
+        return res;
+    }
+
+    public void setProperty(SelesParameters.FilterModel model,Object property){
+        mController.getPropertyMap().put(model, property);
     }
 }

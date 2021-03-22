@@ -15,7 +15,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/tusdk_view_dubbing_roundcorner_none_bg">
 
-            <org.lasque.tusdk.core.view.TuSdkImageView
+            <org.lasque.tusdkpulse.core.view.TuSdkImageView
                 android:id="@+id/lsq_item_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

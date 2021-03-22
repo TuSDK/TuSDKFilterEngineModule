@@ -2,9 +2,6 @@ package org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule;
 
 import android.graphics.Color;
 import com.example.tusdkdemohelper.R;
-
-import org.lasque.tusdk.cx.api.TuFilterCombo;
-
 /**
  * TuSDK
  * org.lasque.tusdkvideodemo.views.cosmetic
@@ -63,15 +60,15 @@ public class CosmeticTypes {
     }
 
     public enum LipstickState {
-        Matte(TuFilterCombo.TuCosmeticLipGlossStyle.WuMian,R.drawable.lipstick_matte_ic,R.string.lsq_lipstick_matte),
-        Moisturizing(TuFilterCombo.TuCosmeticLipGlossStyle.ShuiRun,R.drawable.lipstick_water_ic,R.string.lsq_lipstick_moisturizing),
-        Moisturize(TuFilterCombo.TuCosmeticLipGlossStyle.Zirun,R.drawable.lipstick_moist_ic,R.string.lsq_lipstick_moisturize);
+        Matte(0,R.drawable.lipstick_matte_ic,R.string.lsq_lipstick_matte),
+        Moisturizing(2,R.drawable.lipstick_water_ic,R.string.lsq_lipstick_moisturizing),
+        Moisturize(1,R.drawable.lipstick_moist_ic,R.string.lsq_lipstick_moisturize);
 
-        public TuFilterCombo.TuCosmeticLipGlossStyle type;
+        public int type;
         public int mIconId;
         public int mTitleId;
 
-        LipstickState(TuFilterCombo.TuCosmeticLipGlossStyle type,int iconId,int titleId) {
+        LipstickState(int type,int iconId,int titleId) {
             this.type = type;
             this.mIconId = iconId;
             this.mTitleId = titleId;

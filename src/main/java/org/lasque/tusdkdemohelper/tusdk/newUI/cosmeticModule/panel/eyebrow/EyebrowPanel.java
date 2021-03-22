@@ -7,10 +7,6 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import org.lasque.tusdk.core.seles.SelesParameters;
-import org.lasque.tusdk.cx.api.TuFilterCombo;
-import org.lasque.tusdk.modules.view.widget.sticker.StickerLocalPackage;
 import com.example.tusdkdemohelper.R;
 
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.OnItemClickListener;
@@ -72,7 +68,7 @@ public class EyebrowPanel extends BasePanel {
                         currentGroupId = item.mMistyGroupId;
                         break;
                 }
-                mController.getEngine().controller().changeCosmetic(TuFilterCombo.TuCosmeticMode.Brows,StickerLocalPackage.shared().getStickerGroup(currentGroupId).stickers.get(0).stickerId,-1, TuFilterCombo.TuCosmeticLipGlossStyle.None);
+                mController.updateEyebrow(currentGroupId);
             }
         });
         ImageView putAway = panel.findViewById(R.id.lsq_eyebrow_put_away);
@@ -103,8 +99,7 @@ public class EyebrowPanel extends BasePanel {
                         currentGroupId = item.mMistyGroupId;
                         break;
                 }
-                SelesParameters parameters = mController.getEngine().controller().changeCosmetic(TuFilterCombo.TuCosmeticMode.Brows,StickerLocalPackage.shared().getStickerGroup(currentGroupId).stickers.get(0).stickerId,-1, TuFilterCombo.TuCosmeticLipGlossStyle.None);
-                mController.setParameters(parameters);
+                mController.updateEyebrow(currentGroupId);
                 mAdapter.setCurrentPos(pos);
                 if (onPanelClickListener != null) onPanelClickListener.onClick(mType);
 
@@ -121,7 +116,7 @@ public class EyebrowPanel extends BasePanel {
 
     @Override
     public void clear() {
-        mController.getEngine().controller().closeEyebrow();
+        mController.closeEyebrow();
         mAdapter.setCurrentPos(-1);
         mCurrentType = null;
         if (onPanelClickListener != null) onPanelClickListener.onClear(mType);

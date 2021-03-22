@@ -15,13 +15,12 @@ import android.widget.TextView;
 
 import com.example.tusdkdemohelper.R;
 
-import org.lasque.tusdk.core.TuSdkContext;
-import org.lasque.tusdk.core.seles.SelesParameters.FilterArg;
-import org.lasque.tusdk.core.seles.SelesParameters.FilterParameterInterface;
-import org.lasque.tusdk.core.seles.sources.SelesOutInput;
-import org.lasque.tusdk.core.view.TuSdkRelativeLayout;
-import org.lasque.tusdk.impl.view.widget.TuSeekBar;
-import org.lasque.tusdk.impl.view.widget.TuSeekBar.TuSeekBarDelegate;
+import org.lasque.tusdkpulse.core.TuSdkContext;
+import org.lasque.tusdkpulse.core.seles.SelesParameters.FilterArg;
+import org.lasque.tusdkpulse.core.seles.SelesParameters.FilterParameterInterface;
+import org.lasque.tusdkpulse.core.view.TuSdkRelativeLayout;
+import org.lasque.tusdkpulse.impl.view.widget.TuSeekBar;
+import org.lasque.tusdkpulse.impl.view.widget.TuSeekBar.TuSeekBarDelegate;
 import org.lasque.tusdkdemohelper.tusdk.newUI.CustomUi.TuSeekBarPressure;
 
 import java.math.BigDecimal;
@@ -264,6 +263,8 @@ public class FilterConfigSeekbar extends TuSdkRelativeLayout
 				case "lips":
 				case "browPosition":
 				case "forehead":
+				case "eyeHeight":
+				case "philterum":
 					progress = progress - 0.5f;
 					break;
 			}
@@ -282,19 +283,4 @@ public class FilterConfigSeekbar extends TuSdkRelativeLayout
 		mFilterArg.reset();
 		this.setFilterArg(mFilterArg);
 	}
-	
-    /**
-     * 设置滤镜
-     *
-     * @param filter
-     */
-    public void setSelesFilter(SelesOutInput filter)
-    {
-        if (filter == null || !(filter instanceof FilterParameterInterface))
-            return;
-        
-       this.mFilter = (FilterParameterInterface) filter;
-       
-       mFilter.submitParameter();
-    }
 }

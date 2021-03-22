@@ -13,9 +13,9 @@ import android.view.ViewGroup;
 
 import com.example.tusdkdemohelper.R;
 
-import org.lasque.tusdk.core.TuSdkContext;
-import org.lasque.tusdk.modules.view.widget.sticker.StickerGroup;
-import org.lasque.tusdk.modules.view.widget.sticker.StickerLocalPackage;
+import org.lasque.tusdkpulse.core.TuSdkContext;
+import org.lasque.tusdkpulse.modules.view.widget.sticker.StickerGroup;
+import org.lasque.tusdkpulse.modules.view.widget.sticker.StickerLocalPackage;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -12,12 +12,18 @@ import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.tusdkdemohelper.R;
+import com.tusdk.pulse.Config;
+import com.tusdk.pulse.filter.Filter;
+import com.tusdk.pulse.filter.FilterPipe;
+import com.tusdk.pulse.filter.filters.TusdkLiveStickerFilter;
+import com.tusdk.pulse.filter.filters.TusdkStickerFilter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.lasque.tusdk.core.TuSdkContext;
-import org.lasque.tusdk.core.utils.json.JsonHelper;
-import org.lasque.tusdk.modules.view.widget.sticker.StickerGroup;
+import org.lasque.tusdkpulse.core.TuSdkContext;
+import org.lasque.tusdkpulse.core.seles.SelesParameters;
+import org.lasque.tusdkpulse.core.utils.json.JsonHelper;
+import org.lasque.tusdkpulse.modules.view.widget.sticker.StickerGroup;
 import org.lasque.tusdkdemohelper.tusdk.StickerFragment;
 import org.lasque.tusdkdemohelper.tusdk.StickerGroupCategories;
 import org.lasque.tusdkdemohelper.tusdk.TabPagerIndicator;
@@ -29,6 +35,7 @@ import org.lasque.tusdkdemohelper.tusdk.newUI.base.ModuleController;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * TuSDK
@@ -162,7 +169,7 @@ public class StickerModule extends BaseModule {
                     ((StickerFragment) mFragments.get(mPrePos)).clearSelect();
                 }
                 mPrePos = mStickerViewPager.getCurrentItem();
-                mFilterEngine.controller().sticker().setGroup(itemData.groupId);
+                changeSticker(itemData.groupId);
                 mStickerPagerAdapter.notifyDataSetChanged();
                 mController.getMonsterModule().clearMonsterFace();
             } else {
@@ -172,7 +179,16 @@ public class StickerModule extends BaseModule {
     };
 
     private void clearSticker() {
-        mFilterEngine.controller().sticker().setGroup(0);
+        syncRun(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                int index = ModuleController.mFilterMap.get(SelesParameters.FilterModel.StickerFace);
+                FilterPipe fp = mController.getFilterPipe();
+                boolean res = fp.deleteFilter(index);
+                if (res) mController.getCurrentFilterMap().remove(SelesParameters.FilterModel.StickerFace);
+                return res;
+            }
+        });
         TabViewPagerAdapter.mStickerGroupId = 0;
         mStickerViewPager.getAdapter().notifyDataSetChanged();
         showToast("贴纸移除");
@@ -189,5 +205,24 @@ public class StickerModule extends BaseModule {
             clearSticker();
             mPrePos = -1;
         }
+    }
+
+    public boolean changeSticker(final long groupId){
+        return syncRun(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                boolean res = false;
+                int index = ModuleController.mFilterMap.get(SelesParameters.FilterModel.StickerFace);
+                FilterPipe fp = mController.getFilterPipe();
+                fp.deleteFilter(index);
+                Filter filter = new Filter(fp.getContext(), TusdkLiveStickerFilter.TYPE_NAME);
+                Config config = new Config();
+                config.setNumber(TusdkLiveStickerFilter.CONFIG_ID,groupId);
+                filter.setConfig(config);
+                res = fp.addFilter(index,filter);
+                mController.getCurrentFilterMap().put(SelesParameters.FilterModel.StickerFace,filter);
+                return res;
+            }
+        });
     }
 }

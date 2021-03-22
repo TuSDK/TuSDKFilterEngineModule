@@ -2,8 +2,10 @@ package org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule;
 
 import android.content.Context;
 
-import org.lasque.tusdk.core.seles.SelesParameters;
-import org.lasque.tusdk.cx.api.TuFilterEngine;
+import com.tusdk.pulse.filter.Filter;
+import com.tusdk.pulse.filter.filters.TusdkCosmeticFilter;
+
+import org.lasque.tusdkpulse.core.seles.SelesParameters;
 import org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.panel.BasePanel;
 import org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.panel.blush.BlushPanel;
 import org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.panel.eyebrow.EyebrowPanel;
@@ -15,6 +17,9 @@ import org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.panel.lipstick.Lips
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
  * TuSDK
@@ -82,28 +87,75 @@ public class CosmeticPanelController {
 
     private CosmeticModule mModule;
 
-    private TuFilterEngine mEngine;
+    private TusdkCosmeticFilter.PropertyBuilder mProperty;
+
+    private Filter mCosmeticFilter;
 
     public SelesParameters getParameters() {
         return mModule.getParameters();
     }
 
-    public void setParameters(SelesParameters mParameters) {
-        for (String key : mDefaultCosmeticMaxPercentParams.keySet()) {
-            SelesParameters.FilterArg arg = mParameters.getFilterArg(key);
-            arg.setMaxValueFactor(mDefaultCosmeticMaxPercentParams.get(key));
-            arg.setDefaultValue(mDefaultCosmeticPercentParams.get(key));
-            if (isFirstCommit){
-                arg.setPrecentValue(mDefaultCosmeticPercentParams.get(key));
-            }
-        }
-        isFirstCommit = false;
-        mModule.setParameters(mParameters);
-    }
-
     public CosmeticPanelController(CosmeticModule module) {
         this.mModule = module;
 
+        mProperty = new TusdkCosmeticFilter.PropertyBuilder();
+
+        mModule.syncRun(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                mCosmeticFilter = new Filter(mModule.getPipeContext(),TusdkCosmeticFilter.TYPE_NAME);
+
+                mModule.addFilter(SelesParameters.FilterModel.CosmeticFace,mCosmeticFilter);
+
+                mModule.setProperty(SelesParameters.FilterModel.CosmeticFace,mProperty);
+                return true;
+            }
+        });
+
+        for (String key : mDefaultCosmeticPercentParams.keySet()){
+            mModule.getParameters().appendFloatArg(key,mDefaultCosmeticPercentParams.get(key));
+            SelesParameters.FilterArg arg = mModule.getParameters().getFilterArg(key);
+            arg.setMaxValueFactor(mDefaultCosmeticMaxPercentParams.get(key));
+        }
+
+        mModule.getParameters().setListener(new SelesParameters.SelesParametersListener() {
+            @Override
+            public void onUpdateParameters(SelesParameters.FilterModel filterModel, String s, SelesParameters.FilterArg filterArg) {
+                double value = filterArg.getValue();
+                switch (filterArg.getKey()){
+                    case "lipAlpha":
+                        mProperty.lipOpacity = value;
+                        mProperty.lipEnable = 1;
+                        break;
+                    case "blushAlpha":
+                        mProperty.blushOpacity = value;
+                        mProperty.blushEnable = 1;
+                        break;
+                    case "eyebrowAlpha":
+                        mProperty.browOpacity = value;
+                        mProperty.browEnable = 1;
+                        break;
+                    case "eyeshadowAlpha":
+                        mProperty.eyeshadowOpacity = value;
+                        mProperty.eyeshadowEnable = 1;
+                        break;
+                    case "eyelineAlpha":
+                        mProperty.eyelineOpacity = value;
+                        mProperty.eyelineEnable = 1;
+                        break;
+                    case "eyelashAlpha":
+                        mProperty.eyelashOpacity = value;
+                        mProperty.eyelashEnable = 1;
+                        break;
+                    case "facialAlpha":
+                        mProperty.facialOpacity = value;
+                        mProperty.facialEnable = 1;
+                        break;
+                }
+
+                updateProperty();
+            }
+        });
 
     }
 
@@ -201,12 +253,84 @@ public class CosmeticPanelController {
         }
     }
 
-    public TuFilterEngine getEngine() {
-        return mEngine;
+    public void updateProperty(){
+        mModule.syncRun(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return mCosmeticFilter.setProperty(TusdkCosmeticFilter.PROP_PARAM,mProperty.makeProperty());
+            }
+        });
     }
 
-    public void setEngine(TuFilterEngine engine) {
-        this.mEngine = engine;
+    public void updateBlush(long blushId){
+        mProperty.blushEnable = 1;
+        mProperty.blushId = blushId;
+        updateProperty();
+    }
+
+    public void closeBlush(){
+        mProperty.blushEnable = 0;
+        updateProperty();
+    }
+
+    public void updateEyebrow(long eyebrowId){
+        mProperty.browEnable = 1;
+        mProperty.browId = eyebrowId;
+        updateProperty();
+    }
+
+    public void closeEyebrow(){
+        mProperty.browEnable = 0;
+        updateProperty();
+    }
+
+    public void updateEyelash(long eyelashId){
+        mProperty.eyelashEnable = 1;
+        mProperty.eyelashId = eyelashId;
+        updateProperty();
+    }
+
+    public void closeEyelash(){
+        mProperty.eyelashEnable = 0;
+        updateProperty();
+    }
+
+    public void updateEyeliner(long eyelinerId){
+        mProperty.eyelineEnable = 1;
+        mProperty.eyelineId = eyelinerId;
+        updateProperty();
+    }
+
+    public void closeEyeliner(){
+        mProperty.eyelineEnable = 0;
+        updateProperty();
+    }
+
+    public void updateEyeshadow(long eyeshadowId){
+        mProperty.eyeshadowEnable = 1;
+        mProperty.eyeshadowId = eyeshadowId;
+        updateProperty();
+    }
+
+    public void closeEyeshadow(){
+        mProperty.eyeshadowEnable = 0;
+        updateProperty();
+    }
+
+    public void updateLips(int type,int color){
+        mProperty.lipEnable = 1;
+        mProperty.lipStyle = type;
+        mProperty.lipColor = color;
+        updateProperty();
+    }
+
+    public void closeLips(){
+        mProperty.lipEnable = 0;
+        updateProperty();
+    }
+
+    public TusdkCosmeticFilter.PropertyBuilder getProperty(){
+        return mProperty;
     }
 
 }

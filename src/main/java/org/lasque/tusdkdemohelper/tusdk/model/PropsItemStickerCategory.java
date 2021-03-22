@@ -4,13 +4,14 @@ import android.os.Environment;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.lasque.tusdk.core.TuSdk;
-import org.lasque.tusdk.core.TuSdkBundle;
-import org.lasque.tusdk.core.TuSdkContext;
-import org.lasque.tusdk.core.utils.TLog;
-import org.lasque.tusdk.core.utils.json.JsonHelper;
-import org.lasque.tusdk.modules.view.widget.sticker.StickerGroup;
-import org.lasque.tusdk.modules.view.widget.sticker.StickerLocalPackage;
+import org.lasque.tusdkpulse.core.TuSdk;
+import org.lasque.tusdkpulse.core.TuSdkBundle;
+import org.lasque.tusdkpulse.core.TuSdkContext;
+import org.lasque.tusdkpulse.core.seles.SelesParameters;
+import org.lasque.tusdkpulse.core.utils.TLog;
+import org.lasque.tusdkpulse.core.utils.json.JsonHelper;
+import org.lasque.tusdkpulse.modules.view.widget.sticker.StickerGroup;
+import org.lasque.tusdkpulse.modules.view.widget.sticker.StickerLocalPackage;
 
 
 import java.io.File;
@@ -30,7 +31,7 @@ import java.util.List;
 public class PropsItemStickerCategory extends PropsItemCategory<PropsItemSticker>{
 
     public PropsItemStickerCategory(List<PropsItemSticker> stickerPropsItems) {
-        super(stickerPropsItems);
+        super(SelesParameters.FilterModel.StickerFace,stickerPropsItems);
     }
 
     /**

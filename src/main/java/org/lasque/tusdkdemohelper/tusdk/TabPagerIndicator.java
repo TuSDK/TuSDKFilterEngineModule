@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 import com.example.tusdkdemohelper.R;
 
-import org.lasque.tusdk.core.TuSdkContext;
+import org.lasque.tusdkpulse.core.TuSdkContext;
 
 import java.util.List;
 

@@ -21,7 +21,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.tusdkdemohelper.R;
 
-import org.lasque.tusdk.core.TuSdkContext;
+import org.lasque.tusdkpulse.core.TuSdkContext;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.BaseAdapter;
 
 import java.util.List;

@@ -22,7 +22,7 @@ import android.view.ViewGroup;
 
 import com.example.tusdkdemohelper.R;
 
-import org.lasque.tusdk.core.TuSdkContext;
+import org.lasque.tusdkpulse.core.TuSdkContext;
 import org.lasque.tusdkdemohelper.tusdk.model.PropsItemMonster;
 import org.lasque.tusdkdemohelper.tusdk.model.PropsItemMonsterCategory;
 

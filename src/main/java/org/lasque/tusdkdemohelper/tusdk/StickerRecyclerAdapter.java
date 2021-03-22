@@ -15,11 +15,11 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.example.tusdkdemohelper.R;
 
-import org.lasque.tusdk.core.TuSdkContext;
-import org.lasque.tusdk.core.secret.TuSDKOnlineStickerDownloader;
-import org.lasque.tusdk.core.type.DownloadTaskStatus;
-import org.lasque.tusdk.modules.view.widget.sticker.StickerGroup;
-import org.lasque.tusdk.modules.view.widget.sticker.StickerLocalPackage;
+import org.lasque.tusdkpulse.core.TuSdkContext;
+import org.lasque.tusdkpulse.core.secret.TuSDKOnlineStickerDownloader;
+import org.lasque.tusdkpulse.core.type.DownloadTaskStatus;
+import org.lasque.tusdkpulse.modules.view.widget.sticker.StickerGroup;
+import org.lasque.tusdkpulse.modules.view.widget.sticker.StickerLocalPackage;
 
 import java.util.ArrayList;
 import java.util.List;

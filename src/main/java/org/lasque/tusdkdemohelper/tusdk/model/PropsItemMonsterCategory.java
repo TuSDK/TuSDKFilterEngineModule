@@ -1,11 +1,13 @@
 package org.lasque.tusdkdemohelper.tusdk.model;
 
-import org.lasque.tusdk.core.TuSdkContext;
-import org.lasque.tusdk.cx.api.TuFilterCombo;
+import com.example.tusdkdemohelper.R;
+import com.tusdk.pulse.filter.filters.TusdkFaceMonsterFilter;
+
+import org.lasque.tusdkpulse.core.TuSdkContext;
+import org.lasque.tusdkpulse.core.seles.SelesParameters;
 
 import java.util.ArrayList;
 import java.util.List;
-import static org.lasque.tusdk.cx.api.TuFilterCombo.TuFaceMonsterMode.*;
 
 /******************************************************************
  * droid-sdk-video 
@@ -24,7 +26,7 @@ public class PropsItemMonsterCategory extends PropsItemCategory<PropsItemMonster
      * @param propsItemMonsters
      */
     public PropsItemMonsterCategory(List<PropsItemMonster> propsItemMonsters) {
-        super(propsItemMonsters);
+        super(SelesParameters.FilterModel.MonsterFace,propsItemMonsters);
     }
 
     /**
@@ -34,15 +36,16 @@ public class PropsItemMonsterCategory extends PropsItemCategory<PropsItemMonster
      */
     public static List<PropsItemMonsterCategory> allCategories() {
 
-        TuFilterCombo.TuFaceMonsterMode[] faceTypes =
+        String[] faceTypes =
                 {
-                        BigNose, // 大鼻子
-                        PapayaFace, // 木瓜脸
-                        PieFace, // 大饼脸
-                        SmallEyes, // 眯眯眼
-                        SnakeFace, // 蛇精脸
-                        SquareFace, // 国字脸
-                        ThickLips // 厚嘴唇
+                        TusdkFaceMonsterFilter.TYPE_BigNose, // 大鼻子
+                        TusdkFaceMonsterFilter.TYPE_PapayaFace, // 木瓜脸
+                        TusdkFaceMonsterFilter.TYPE_PieFace, // 大饼脸
+                        TusdkFaceMonsterFilter.TYPE_SnakeFace, // 蛇精脸
+                        TusdkFaceMonsterFilter.TYPE_SquareFace, // 国字脸
+                        TusdkFaceMonsterFilter.TYPE_ThickLips, // 厚嘴唇
+                        TusdkFaceMonsterFilter.TYPE_SmallEyes, // 眯眯眼
+
                 };
 
 
@@ -52,10 +55,10 @@ public class PropsItemMonsterCategory extends PropsItemCategory<PropsItemMonster
                         "bignose",
                         "papaya",
                         "pie",
-                        "smalleyes",
                         "snake",
                         "square",
-                        "thicklips"
+                        "thicklips",
+                        "smalleyes"
                 };
 
 
@@ -71,7 +74,7 @@ public class PropsItemMonsterCategory extends PropsItemCategory<PropsItemMonster
         }
 
         PropsItemMonsterCategory monsterCategory = new PropsItemMonsterCategory(monsters);
-        monsterCategory.setName(TuSdkContext.getString(TuSdkContext.getStringResId("lsq_face_monster")));
+        monsterCategory.setName(TuSdkContext.getString(R.string.lsq_face_monster));
         categories.add(monsterCategory);
 
         return categories;

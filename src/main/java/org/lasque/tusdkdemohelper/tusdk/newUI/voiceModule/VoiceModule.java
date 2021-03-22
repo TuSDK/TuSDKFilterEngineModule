@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tusdkdemohelper.R;
 
-import org.lasque.tusdk.core.media.codec.audio.processor.TuSdkAudioPitchEngine;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.BaseModule;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.FunctionsType;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.ModuleController;
@@ -45,7 +44,7 @@ public class VoiceModule extends BaseModule {
 
     private VoiceAdapter mVoiceAdapter;
 
-    private TuSdkAudioPitchEngine mAudioEngine;
+//    private TuSdkAudioPitchEngine mAudioEngine;
 
     private List<VoiceFunction> mVoiceFunctions = Arrays.asList(MONSTER,UNCLE,WOMAN,GIRL);
 
@@ -54,9 +53,9 @@ public class VoiceModule extends BaseModule {
         findViews();
     }
 
-    public void setAudioEngine(TuSdkAudioPitchEngine audioEngine) {
-        this.mAudioEngine = audioEngine;
-    }
+//    public void setAudioEngine(TuSdkAudioPitchEngine audioEngine) {
+//        this.mAudioEngine = audioEngine;
+//    }
 
     @Override
     protected View getView() {
@@ -84,7 +83,7 @@ public class VoiceModule extends BaseModule {
             @Override
             public void onItemClick(int pos, VoiceAdapter.VoiceViewHolder holder, VoiceFunction item) {
                 mVoiceAdapter.setCurrentPos(pos);
-                mAudioEngine.setSoundPitchType(item.type);
+//                mAudioEngine.setSoundPitchType(item.type);
             }
         });
         mVoiceList = mCurrentView.findViewById(R.id.lsq_voice_list);

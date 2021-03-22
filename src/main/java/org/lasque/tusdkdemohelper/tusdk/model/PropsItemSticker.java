@@ -1,7 +1,7 @@
 package org.lasque.tusdkdemohelper.tusdk.model;
 
-import org.lasque.tusdk.modules.view.widget.sticker.StickerGroup;
-import org.lasque.tusdk.modules.view.widget.sticker.StickerLocalPackage;
+import org.lasque.tusdkpulse.modules.view.widget.sticker.StickerGroup;
+import org.lasque.tusdkpulse.modules.view.widget.sticker.StickerLocalPackage;
 
 /******************************************************************
  * droid-sdk-video 

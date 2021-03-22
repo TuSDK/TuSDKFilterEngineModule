@@ -1,6 +1,5 @@
 package org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,7 +12,7 @@ import android.widget.RelativeLayout;
 
 import com.example.tusdkdemohelper.R;
 
-import org.lasque.tusdk.cx.api.TuFilterEngine;
+import org.lasque.tusdkpulse.core.seles.SelesParameters;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.BaseModule;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.ModuleController;
 import org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.panel.BasePanel;
@@ -146,14 +145,9 @@ public class CosmeticModule extends BaseModule {
 
     public CosmeticModule(ModuleController controller, Context context) {
         super(controller, COSMETIC, context);
+        mParameters = new SelesParameters();
         mCosmeticController = new CosmeticPanelController(this);
         findViews();
-    }
-
-    @Override
-    public void setFilterEngine(TuFilterEngine engine) {
-        super.setFilterEngine(engine);
-        mCosmeticController.setEngine(engine);
     }
 
     @Override

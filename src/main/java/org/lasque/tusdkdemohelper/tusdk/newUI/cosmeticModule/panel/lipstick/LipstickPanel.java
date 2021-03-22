@@ -10,9 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tusdkdemohelper.R;
 
-import org.lasque.tusdk.core.seles.SelesParameters;
-import org.lasque.tusdk.cx.api.TuFilterCombo;
-import org.lasque.tusdk.modules.view.widget.sticker.StickerLocalPackage;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.OnItemClickListener;
 import org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.CosmeticPanelController;
 import org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.CosmeticTypes;
@@ -45,6 +42,9 @@ public class LipstickPanel extends BasePanel {
         final ImageView stateIcon = panel.findViewById(R.id.lsq_lipstick_state_icon);
         final TextView stateTitle = panel.findViewById(R.id.lsq_lipstick_state_title);
         stateIcon.setOnClickListener(new View.OnClickListener() {
+            /**
+             * @param v
+             */
             @Override
             public void onClick(View v) {
                 switch (mCurrentState){
@@ -61,8 +61,8 @@ public class LipstickPanel extends BasePanel {
                 stateIcon.setImageResource(mCurrentState.mIconId);
                 stateTitle.setText(mCurrentState.mTitleId);
                 if (mCurrentType == null) return;
-                SelesParameters parameters = mController.getEngine().controller().changeCosmetic(TuFilterCombo.TuCosmeticMode.LipGloss, -1,mCurrentType.mColor, mCurrentState.type);
-                mController.setParameters(parameters);
+
+                mController.updateLips(mCurrentState.type,mCurrentType.mColor);
             }
         });
 
@@ -86,8 +86,7 @@ public class LipstickPanel extends BasePanel {
             @Override
             public void onItemClick(int pos, LipstickAdapter.LipstickViewHolder holder, CosmeticTypes.LipstickType item) {
                 mCurrentType = item;
-                SelesParameters parameters = mController.getEngine().controller().changeCosmetic(TuFilterCombo.TuCosmeticMode.LipGloss, -1,item.mColor, mCurrentState.type);
-                mController.setParameters(parameters);
+                mController.updateLips(mCurrentState.type,mCurrentType.mColor);
                 mAdapter.setCurrentPos(pos);
                 if (onPanelClickListener != null) onPanelClickListener.onClick(mType);
 
@@ -105,7 +104,7 @@ public class LipstickPanel extends BasePanel {
     @Override
     public void clear() {
         mCurrentType = null;
-        mController.getEngine().controller().closeLip();
+        mController.closeLips();
         mAdapter.setCurrentPos(-1);
         if (onPanelClickListener != null) onPanelClickListener.onClear(mType);
     }
