@@ -12,6 +12,7 @@ import org.lasque.tusdkdemohelper.tusdk.newUI.base.OnItemClickListener;
 import org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.CosmeticPanelController;
 import org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.CosmeticTypes;
 import org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.panel.BasePanel;
+import org.lasque.tusdkpulse.modules.view.widget.sticker.StickerLocalPackage;
 
 /**
  * TuSDK
@@ -56,7 +57,7 @@ public class EyelinerPanel extends BasePanel {
             @Override
             public void onItemClick(int pos, EyelinerAdapter.EyelinerViewHolder holder, CosmeticTypes.EyelinerType item) {
                 mCurrentType = item;
-                mController.updateEyeliner(item.mGroupId);
+                mController.updateEyeliner(StickerLocalPackage.shared().getStickerGroup(item.mGroupId).stickers.get(0).stickerId);
                 mAdapter.setCurrentPos(pos);
                 if (onPanelClickListener != null) onPanelClickListener.onClick(mType);
 

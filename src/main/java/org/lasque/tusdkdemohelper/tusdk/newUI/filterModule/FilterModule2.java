@@ -120,21 +120,26 @@ public class FilterModule2 extends BaseModule {
         mFilterGroupAdapter = new FilterGroupAdapter2(mContext, mFilterGroups, mColorList);
         mFilterGroupAdapter.setFilterItemClickListener(new OnItemClickListener<FilterItemAdapter.FilterItemViewHolder, FilterOption>() {
             @Override
-            public void onItemClick(int pos, FilterItemAdapter.FilterItemViewHolder holder, FilterOption item) {
-                mFilterGroupAdapter.setDefaultFilterCode(null);
-                FilterItemAdapter adapter = mFilterGroupAdapter.getItemAdapter(item.groupId);
-                if (adapter.getCurrentPos() == pos) {
-                    adapter.changeShowParameterState();
-                    adapter.notifyItemChanged(pos);
-                    mConfigView.setVisibility(adapter.isShowParameter() ? View.VISIBLE : View.GONE);
-                } else {
-                    if (adapter.getPosition() != mFilterGroupAdapter.getCurrentPos()){
-                        mFilterGroupAdapter.setCurrentPos(adapter.getPosition());
+            public void onItemClick(final int pos, FilterItemAdapter.FilterItemViewHolder holder, final FilterOption item) {
+                mFilterGroupList.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mFilterGroupAdapter.setDefaultFilterCode("");
+                        FilterItemAdapter adapter = mFilterGroupAdapter.getItemAdapter(item.groupId);
+                        if (adapter.getCurrentPos() == pos) {
+                            adapter.changeShowParameterState();
+                            adapter.notifyItemChanged(pos);
+                            mConfigView.setVisibility(adapter.isShowParameter() ? View.VISIBLE : View.GONE);
+                        } else {
+                            if (adapter.getPosition() != mFilterGroupAdapter.getCurrentPos()){
+                                mFilterGroupAdapter.setCurrentPos(adapter.getPosition());
+                            }
+                            adapter.setCurrentPos(pos);
+                            changeFilter(item.code);
+                        }
+                        mConfigView.setFilterArgs(mParameters);
                     }
-                    adapter.setCurrentPos(pos);
-                    changeFilter(item.code);
-                }
-                mConfigView.setFilterArgs(mParameters);
+                });
             }
         });
 
@@ -244,8 +249,13 @@ public class FilterModule2 extends BaseModule {
                         filter.setProperty(TusdkImageFilter.PROP_PARAM,builder.makeProperty());
                     }
                 });
+                mConfigView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mConfigView.setFilterArgs(mParameters);
+                    }
+                });
 
-                mConfigView.setFilterArgs(mParameters);
                 if (ret){
                     mController.getCurrentFilterMap().put(SelesParameters.FilterModel.Filter,filter);
                 }

@@ -2,6 +2,9 @@ package org.lasque.tusdkdemohelper.tusdk.utils;
 
 import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
+import android.opengl.Matrix;
+
+import androidx.annotation.NonNull;
 
 import com.tusdk.pulse.utils.gl.GLUtil;
 
@@ -40,9 +43,10 @@ public class TextureRender {
             "attribute vec3 aPosition;\n" +
                     "attribute vec2 aTextureCoord;\n" +
                     "varying vec2 vTextureCoord;\n" +
+                    "uniform mat4 uSTMatrix;\n" +
                     "void main() {\n" +
                     "  gl_Position = vec4(aPosition, 1);\n" +
-                    "  vTextureCoord = (vec4(aTextureCoord, 0, 1)).xy;\n" +
+                    "  vTextureCoord = (uSTMatrix * vec4(aTextureCoord, 0, 1)).xy;\n" +
                     "}\n";
 
     private static final String FRAGMENT_SHADER =
@@ -53,24 +57,44 @@ public class TextureRender {
                     "  gl_FragColor = texture2D(sTexture, vTextureCoord);\n" +
                     "}\n";
 
+    private static final String OES_FRAGMENT_SHADER =
+            "#extension GL_OES_EGL_image_external : require\n" +
+                    "precision mediump float;\n" +      // highp here doesn't seem to matter
+                    "varying vec2 vTextureCoord;\n" +
+                    "uniform samplerExternalOES sTexture;\n" +
+                    "void main() {\n" +
+                    "  gl_FragColor = texture2D(sTexture, vTextureCoord);\n" +
+                    "}\n";
+
     private int mProgram;
     private int mTextureID = -12345;
     private int mFBO = -1;
 
     private int maPositionHandle;
     private int maTextureHandle;
+    private int uSTMatrixHandle;
 
     private int sTexturePos;
 
     public int currentWidth;
     public int currentHeight;
 
+    private boolean isOES = false;
 
-    public TextureRender(){
+    private float[] mSTMatrix = new float[16];
+
+
+    public TextureRender(boolean isOES){
         mTriangleVertices = ByteBuffer.allocateDirect(
                 mTriangleVerticesData.length * FLOAT_SIZE_BYTES)
                 .order(ByteOrder.nativeOrder()).asFloatBuffer();
         mTriangleVertices.put(mTriangleVerticesData).position(0);
+        Matrix.setIdentityM(mSTMatrix, 0);
+        this.isOES = isOES;
+    }
+
+    public void setSTMatrix(@NonNull float[] matrix){
+        mSTMatrix = matrix;
     }
 
     public int getTextureID(){
@@ -80,7 +104,7 @@ public class TextureRender {
     public void create(int width,int height){
         currentWidth = width;
         currentHeight = height;
-        mProgram = GLUtil.buildProgram(VERTEX_SHADER,FRAGMENT_SHADER);
+        mProgram = GLUtil.buildProgram(VERTEX_SHADER,isOES ? OES_FRAGMENT_SHADER : FRAGMENT_SHADER);
         if (mProgram == 0){
             throw new RuntimeException("failed creating program");
         }
@@ -101,6 +125,12 @@ public class TextureRender {
         GLUtil.checkEglError("glGetUniformLocation sTexture");
         if (sTexturePos == -1) {
             throw new RuntimeException("Could not get attrib location for aTextureCoord");
+        }
+
+        uSTMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uSTMatrix");
+        GLUtil.checkEglError("glGetUniformLocation sTexture");
+        if (uSTMatrixHandle == -1) {
+            throw new RuntimeException("Could not get attrib location for uSTMatrix");
         }
 
         int[] textures = new int[1];
@@ -175,7 +205,12 @@ public class TextureRender {
         GLES20.glUseProgram(mProgram);
 
         GLES20.glActiveTexture(GLES20.GL_TEXTURE2);
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, tex);
+        if (isOES){
+            GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, tex);
+        } else {
+            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, tex);
+        }
+
         GLES20.glUniform1i(sTexturePos,2);
 
         mTriangleVertices.position(TRIANGLE_VERTICES_DATA_POS_OFFSET);
@@ -188,6 +223,8 @@ public class TextureRender {
                 TRIANGLE_VERTICES_DATA_STRIDE_BYTES, mTriangleVertices);
 
         GLES20.glEnableVertexAttribArray(maTextureHandle);
+
+        GLES20.glUniformMatrix4fv(uSTMatrixHandle, 1, false, mSTMatrix, 0);
 
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4);
         GLES20.glFinish();

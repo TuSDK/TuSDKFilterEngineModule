@@ -13,6 +13,7 @@ import org.lasque.tusdkdemohelper.tusdk.newUI.base.OnItemClickListener;
 import org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.CosmeticPanelController;
 import org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.CosmeticTypes;
 import org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.panel.BasePanel;
+import org.lasque.tusdkpulse.modules.view.widget.sticker.StickerLocalPackage;
 
 import static org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.CosmeticTypes.Types.Eyeshadow;
 
@@ -57,7 +58,7 @@ public class EyeshadowPanel extends BasePanel {
             @Override
             public void onItemClick(int pos, EyeshadowAdapter.EyeshadowViewHolder holder, CosmeticTypes.EyeshadowType item) {
                 mCurrentType = item;
-                mController.updateEyeshadow(item.mGroupId);
+                mController.updateEyeshadow(StickerLocalPackage.shared().getStickerGroup(item.mGroupId).stickers.get(0).stickerId);
                 mAdapter.setCurrentPos(pos);
                 if (onPanelClickListener != null) onPanelClickListener.onClick(mType);
 

@@ -38,7 +38,9 @@ public abstract class BaseAdapter<H extends RecyclerView.ViewHolder,Y> extends R
 
     public void setCurrentPos(int pos){
         int lastPos = mCurrentPos;
-        notifyItemChanged(lastPos);
+        if (lastPos != -1){
+            notifyItemChanged(lastPos);
+        }
         mCurrentPos = pos;
         if (mCurrentPos != -1){
             notifyItemChanged(mCurrentPos);

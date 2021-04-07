@@ -16,6 +16,7 @@
         app:layout_constraintRight_toRightOf="parent" />
 
     <ImageView
+        android:scaleType="fitCenter"
         android:id="@+id/lsq_monster_remove"
         android:layout_width="56dp"
         android:layout_height="56dp"
@@ -41,6 +42,7 @@
         app:layout_constraintTop_toBottomOf="@id/lsq_monster_remove" />
 
     <ImageView
+        android:scaleType="fitCenter"
         android:id="@+id/lsq_skin_mode_icon"
         android:layout_width="56dp"
         android:layout_height="56dp"
@@ -72,6 +74,7 @@
         app:layout_constraintTop_toTopOf="@id/lsq_monster_remove" />
 
     <ImageView
+        android:scaleType="fitCenter"
         android:layout_marginStart="20dp"
         android:id="@+id/lsq_skin_dermabrasion_icon"
         android:layout_width="56dp"
@@ -94,6 +97,7 @@
         app:layout_constraintTop_toTopOf="@id/lsq_skin_not_title" />
 
     <ImageView
+        android:scaleType="fitCenter"
         android:layout_marginLeft="16dp"
         android:id="@+id/lsq_skin_white_icon"
         android:layout_width="56dp"
@@ -119,6 +123,7 @@
 
 
     <ImageView
+        android:scaleType="fitCenter"
         android:id="@+id/lsq_skin_ruddy_icon"
         android:layout_width="56dp"
         android:layout_height="56dp"

@@ -13,6 +13,7 @@ import org.lasque.tusdkdemohelper.tusdk.newUI.base.OnItemClickListener;
 import org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.CosmeticPanelController;
 import org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.CosmeticTypes;
 import org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.panel.BasePanel;
+import org.lasque.tusdkpulse.modules.view.widget.sticker.StickerLocalPackage;
 
 import static org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.CosmeticTypes.EyebrowState.MistEyebrow;
 import static org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.CosmeticTypes.EyebrowState.MistyBrow;
@@ -68,7 +69,7 @@ public class EyebrowPanel extends BasePanel {
                         currentGroupId = item.mMistyGroupId;
                         break;
                 }
-                mController.updateEyebrow(currentGroupId);
+                mController.updateEyebrow(StickerLocalPackage.shared().getStickerGroup(currentGroupId).stickers.get(0).stickerId);
             }
         });
         ImageView putAway = panel.findViewById(R.id.lsq_eyebrow_put_away);
@@ -99,7 +100,7 @@ public class EyebrowPanel extends BasePanel {
                         currentGroupId = item.mMistyGroupId;
                         break;
                 }
-                mController.updateEyebrow(currentGroupId);
+                mController.updateEyebrow(StickerLocalPackage.shared().getStickerGroup(currentGroupId).stickers.get(0).stickerId);
                 mAdapter.setCurrentPos(pos);
                 if (onPanelClickListener != null) onPanelClickListener.onClick(mType);
 

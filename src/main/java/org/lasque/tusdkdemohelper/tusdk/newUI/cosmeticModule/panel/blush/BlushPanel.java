@@ -10,6 +10,7 @@ import org.lasque.tusdkdemohelper.tusdk.newUI.base.OnItemClickListener;
 import org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.CosmeticPanelController;
 import org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.CosmeticTypes;
 import org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.panel.BasePanel;
+import org.lasque.tusdkpulse.modules.view.widget.sticker.StickerLocalPackage;
 
 import com.example.tusdkdemohelper.R;
 
@@ -55,7 +56,7 @@ public class BlushPanel extends BasePanel {
             @Override
             public void onItemClick(int pos, BlushAdapter.BlushViewHolder holder, CosmeticTypes.BlushType item) {
                 mCurrentType = item;
-                mController.updateBlush(item.mGroupId);
+                mController.updateBlush(StickerLocalPackage.shared().getStickerGroup(item.mGroupId).stickers.get(0).stickerId);
                 mAdapter.setCurrentPos(pos);
                 if (onPanelClickListener != null) onPanelClickListener.onClick(mType);
             }

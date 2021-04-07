@@ -52,7 +52,7 @@ public class SkinModule extends BaseModule {
     private TextView mNotTitle,mSkinModeTitle,mSkinWhiteTitle,mSkinDermabrasionTitle,mSkinRuddyTitle;
     private ImageView mNotIcon,mSkinModeIcon,mSkinWhiteIcon,mSkinDermabrasionIcon,mSkinRuddyIcon;
 
-    private SkinMode mCurrentMode = SkinMode.BEAUTY;
+    private SkinMode mCurrentMode = SkinMode.EXTREME;
 
     private boolean isClear = false;
 
@@ -119,6 +119,12 @@ public class SkinModule extends BaseModule {
                 Glide.with(mContext).load(mCurrentMode.iconId).into(mSkinModeIcon);
                 mSkinModeTitle.setText(mCurrentMode.title);
                 showToast(mCurrentMode.title);
+
+                if (mCurrentMode == SkinMode.BEAUTY){
+                    Glide.with(mContext).load(R.drawable.ic_sharpen_norl).into(mSkinRuddyIcon);
+                } else {
+                    Glide.with(mContext).load(R.drawable.skin_red_ic).into(mSkinRuddyIcon);
+                }
             }
         });
         mSkinWhiteIcon.setOnClickListener(new View.OnClickListener() {
@@ -128,7 +134,11 @@ public class SkinModule extends BaseModule {
                 showConfigView("whitening");
                 Glide.with(mContext).load(R.drawable.skin_white_sel_ic).into(mSkinWhiteIcon);
                 Glide.with(mContext).load(R.drawable.skin_dermabrasion_ic).into(mSkinDermabrasionIcon);
-                Glide.with(mContext).load(R.drawable.skin_red_ic).into(mSkinRuddyIcon);
+                if (mCurrentMode == SkinMode.BEAUTY){
+                    Glide.with(mContext).load(R.drawable.ic_sharpen_norl).into(mSkinRuddyIcon);
+                } else {
+                    Glide.with(mContext).load(R.drawable.skin_red_ic).into(mSkinRuddyIcon);
+                }
 
                 mSkinWhiteTitle.setTextColor(Color.parseColor("#FFB602"));
                 mSkinDermabrasionTitle.setTextColor(Color.parseColor("#999999"));
@@ -147,18 +157,26 @@ public class SkinModule extends BaseModule {
 
                 mSkinWhiteTitle.setTextColor(Color.parseColor("#999999"));
                 mSkinDermabrasionTitle.setTextColor(Color.parseColor("#FFB602"));
-                mSkinRuddyTitle.setTextColor(Color.parseColor("#999999"));
+                if (mCurrentMode == SkinMode.BEAUTY){
+                    Glide.with(mContext).load(R.drawable.ic_sharpen_norl).into(mSkinRuddyIcon);
+                } else {
+                    Glide.with(mContext).load(R.drawable.skin_red_ic).into(mSkinRuddyIcon);
+                }
             }
         });
         mSkinRuddyIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isClear) switchConfigSkin(mCurrentMode);
-                showConfigView("ruddy");
+                showConfigView(mCurrentMode == SkinMode.BEAUTY ? "sharpen" : "ruddy");
 
                 Glide.with(mContext).load(R.drawable.skin_white_ic).into(mSkinWhiteIcon);
                 Glide.with(mContext).load(R.drawable.skin_dermabrasion_ic).into(mSkinDermabrasionIcon);
-                Glide.with(mContext).load(R.drawable.skin_red_sel_ic).into(mSkinRuddyIcon);
+                if (mCurrentMode == SkinMode.BEAUTY){
+                    Glide.with(mContext).load(R.drawable.ic_sharpen_select).into(mSkinRuddyIcon);
+                } else {
+                    Glide.with(mContext).load(R.drawable.skin_red_sel_ic).into(mSkinRuddyIcon);
+                }
 
                 mSkinWhiteTitle.setTextColor(Color.parseColor("#999999"));
                 mSkinDermabrasionTitle.setTextColor(Color.parseColor("#999999"));
