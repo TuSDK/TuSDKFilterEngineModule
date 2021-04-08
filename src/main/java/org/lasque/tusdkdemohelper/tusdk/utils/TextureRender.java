@@ -40,12 +40,13 @@ public class TextureRender {
     private FloatBuffer mTriangleVertices;
 
     private static final String VERTEX_SHADER =
+            "uniform mat4 uMVPMatrix;\n" +
             "attribute vec3 aPosition;\n" +
                     "attribute vec2 aTextureCoord;\n" +
                     "varying vec2 vTextureCoord;\n" +
                     "uniform mat4 uSTMatrix;\n" +
                     "void main() {\n" +
-                    "  gl_Position = vec4(aPosition, 1);\n" +
+                    "  gl_Position = uMVPMatrix * vec4(aPosition, 1);\n" +
                     "  vTextureCoord = (uSTMatrix * vec4(aTextureCoord, 0, 1)).xy;\n" +
                     "}\n";
 
@@ -73,6 +74,7 @@ public class TextureRender {
     private int maPositionHandle;
     private int maTextureHandle;
     private int uSTMatrixHandle;
+    private int muMVPMatrixHandle;
 
     private int sTexturePos;
 
@@ -82,6 +84,7 @@ public class TextureRender {
     private boolean isOES = false;
 
     private float[] mSTMatrix = new float[16];
+    private float[] mMVPMatrix = new float[16];
 
 
     public TextureRender(boolean isOES){
@@ -90,11 +93,16 @@ public class TextureRender {
                 .order(ByteOrder.nativeOrder()).asFloatBuffer();
         mTriangleVertices.put(mTriangleVerticesData).position(0);
         Matrix.setIdentityM(mSTMatrix, 0);
+        Matrix.setIdentityM(mMVPMatrix, 0);
         this.isOES = isOES;
     }
 
     public void setSTMatrix(@NonNull float[] matrix){
         mSTMatrix = matrix;
+    }
+
+    public void setMVPMatrix(@NonNull float[] matrix){
+        mMVPMatrix = matrix;
     }
 
     public int getTextureID(){
@@ -125,6 +133,12 @@ public class TextureRender {
         GLUtil.checkEglError("glGetUniformLocation sTexture");
         if (sTexturePos == -1) {
             throw new RuntimeException("Could not get attrib location for aTextureCoord");
+        }
+
+        muMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix");
+        GLUtil.checkEglError("glGetUniformLocation uMVPMatrix");
+        if (muMVPMatrixHandle == -1) {
+            throw new RuntimeException("Could not get attrib location for uMVPMatrix");
         }
 
         uSTMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uSTMatrix");
@@ -225,6 +239,7 @@ public class TextureRender {
         GLES20.glEnableVertexAttribArray(maTextureHandle);
 
         GLES20.glUniformMatrix4fv(uSTMatrixHandle, 1, false, mSTMatrix, 0);
+        GLES20.glUniformMatrix4fv(muMVPMatrixHandle, 1, false, mMVPMatrix, 0);
 
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4);
         GLES20.glFinish();
