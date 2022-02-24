@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import com.tusdk.pulse.Config;
 import com.tusdk.pulse.Engine;
 import com.tusdk.pulse.filter.Image;
+import com.tusdk.pulse.utils.gl.GLContext;
 
 /**
  * TuSDK
@@ -117,6 +118,11 @@ public class LivePipeMediator {
         mBeautyManager.release();
         mRenderPipe.release();
         isReady = false;
+    }
+
+    public GLContext getGLContext(){
+        if (mRenderPipe == null) return null;
+        return mRenderPipe.getContext();
     }
 
 
