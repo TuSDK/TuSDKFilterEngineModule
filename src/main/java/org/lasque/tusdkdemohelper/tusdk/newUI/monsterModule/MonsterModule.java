@@ -79,7 +79,6 @@ public class MonsterModule extends BaseModule {
             public void onClick(View v) {
                 clearMonsterFace();
                 showToast("哈哈镜移除");
-                mController.getPlasticModule().updateProperty();
             }
         });
 
@@ -105,29 +104,11 @@ public class MonsterModule extends BaseModule {
         if (mMonsterAdapter != null){
             mMonsterAdapter.setCurrentPos(-1);
         }
-        syncRun(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                FilterPipe fp = mController.getFilterPipe();
-                boolean res = fp.deleteFilter(ModuleController.mFilterMap.get(SelesParameters.FilterModel.MonsterFace));
-                return res;
-            }
-        });
+        mController.getBeautyManager().setMonsterFace("");
     }
 
     public boolean changeMonsterFace(final String code){
-        return syncRun(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                FilterPipe fp = mController.getFilterPipe();
-                fp.deleteFilter(ModuleController.mFilterMap.get(SelesParameters.FilterModel.MonsterFace));
-                Filter monsterFace = new Filter(fp.getContext(), TusdkFaceMonsterFilter.TYPE_NAME);
-                Config config = new Config();
-                config.setString(TusdkFaceMonsterFilter.CONFIG_TYPE,code);
-                monsterFace.setConfig(config);
-                boolean res = fp.addFilter(ModuleController.mFilterMap.get(SelesParameters.FilterModel.MonsterFace),monsterFace);
-                return res;
-            }
-        });
+        mController.getBeautyManager().setMonsterFace(code);
+        return true;
     }
 }

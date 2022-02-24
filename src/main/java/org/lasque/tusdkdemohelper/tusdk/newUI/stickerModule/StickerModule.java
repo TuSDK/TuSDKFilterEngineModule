@@ -16,7 +16,6 @@ import com.tusdk.pulse.Config;
 import com.tusdk.pulse.filter.Filter;
 import com.tusdk.pulse.filter.FilterPipe;
 import com.tusdk.pulse.filter.filters.TusdkLiveStickerFilter;
-import com.tusdk.pulse.filter.filters.TusdkStickerFilter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -179,16 +178,7 @@ public class StickerModule extends BaseModule {
     };
 
     private void clearSticker() {
-        syncRun(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                int index = ModuleController.mFilterMap.get(SelesParameters.FilterModel.StickerFace);
-                FilterPipe fp = mController.getFilterPipe();
-                boolean res = fp.deleteFilter(index);
-                if (res) mController.getCurrentFilterMap().remove(SelesParameters.FilterModel.StickerFace);
-                return res;
-            }
-        });
+        mController.getBeautyManager().setDynamicSticker(0);
         TabViewPagerAdapter.mStickerGroupId = 0;
         mStickerViewPager.getAdapter().notifyDataSetChanged();
         showToast("贴纸移除");
@@ -208,21 +198,7 @@ public class StickerModule extends BaseModule {
     }
 
     public boolean changeSticker(final long groupId){
-        return syncRun(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                boolean res = false;
-                int index = ModuleController.mFilterMap.get(SelesParameters.FilterModel.StickerFace);
-                FilterPipe fp = mController.getFilterPipe();
-                fp.deleteFilter(index);
-                Filter filter = new Filter(fp.getContext(), TusdkLiveStickerFilter.TYPE_NAME);
-                Config config = new Config();
-                config.setNumber(TusdkLiveStickerFilter.CONFIG_ID,groupId);
-                filter.setConfig(config);
-                res = fp.addFilter(index,filter);
-                mController.getCurrentFilterMap().put(SelesParameters.FilterModel.StickerFace,filter);
-                return res;
-            }
-        });
+        mController.getBeautyManager().setDynamicSticker(groupId);
+        return true;
     }
 }

@@ -18,13 +18,13 @@ import com.tusdk.pulse.filter.filters.TusdkImageFilter;
 import org.lasque.tusdkpulse.core.seles.SelesParameters;
 import org.lasque.tusdkpulse.core.seles.tusdk.FilterGroup;
 import org.lasque.tusdkpulse.core.seles.tusdk.FilterOption;
-import org.lasque.tusdkpulse.core.utils.ThreadHelper;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.BaseModule;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.FunctionsType;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.ModuleController;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.OnItemClickListener;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 /**
@@ -52,9 +52,6 @@ public class FilterModule extends BaseModule {
 
     private int mDefaultFilterGroupIndex = -1;
     private String mDefaultFilterCode;
-
-    private TusdkImageFilter.MapPropertyBuilder builder;
-
 
 
     public FilterModule(ModuleController controller, Context context, List<FilterGroup> filterGroups, List<String> colorList) {
@@ -139,40 +136,23 @@ public class FilterModule extends BaseModule {
     }
 
     public boolean changeFilter(final String code){
-        boolean res = syncRun(new Callable<Boolean>() {
+        mController.getBeautyManager().setFilter(code);
+        if (TextUtils.isEmpty(code)) return true;
+        mParameters = new SelesParameters();
+
+        Map<String,Double> args = mController.getBeautyManager().getCurrentFilterDefaultKeyValue();
+        for (String key : args.keySet()){
+            mParameters.appendFloatArg(key,args.get(key).floatValue());
+        }
+
+        mParameters.setListener(new SelesParameters.SelesParametersListener() {
             @Override
-            public Boolean call() throws Exception {
-                mController.getFilterPipe().deleteFilter(ModuleController.mFilterMap.get(SelesParameters.FilterModel.Filter));
-                if (TextUtils.isEmpty(code)) return true;
-                final Filter filter = new Filter(getPipeContext(), TusdkImageFilter.TYPE_NAME);
-                Config config = new Config();
-                config.setString(TusdkImageFilter.CONFIG_NAME,code);
-                filter.setConfig(config);
-                boolean ret = mController.getFilterPipe().addFilter(ModuleController.mFilterMap.get(SelesParameters.FilterModel.Filter),filter);
-
-                builder = new TusdkImageFilter.MapPropertyBuilder(filter.getProperty(TusdkImageFilter.PROP_PARAM));
-
-                mParameters = new SelesParameters();
-                for (String key : builder.pars.keySet()){
-                    mParameters.appendFloatArg(key,builder.pars.get(key).floatValue());
-                }
-                mController.getPropertyMap().put(SelesParameters.FilterModel.Filter,builder);
-                mParameters.setListener(new SelesParameters.SelesParametersListener() {
-                    @Override
-                    public void onUpdateParameters(SelesParameters.FilterModel filterModel, String s, SelesParameters.FilterArg filterArg) {
-                        builder.pars.put(filterArg.getKey(), (double) filterArg.getValue());
-                        filter.setProperty(TusdkImageFilter.PROP_PARAM,builder.makeProperty());
-                    }
-                });
-
-                mConfigView.setFilterArgs(mParameters);
-                if (ret){
-                    mController.getCurrentFilterMap().put(SelesParameters.FilterModel.Filter,filter);
-                }
-                return ret;
+            public void onUpdateParameters(SelesParameters.FilterModel filterModel, String s, SelesParameters.FilterArg filterArg) {
+                mController.getBeautyManager().setFilterValue(filterArg.getKey(),filterArg.getValue());
             }
         });
+        mConfigView.setFilterArgs(mParameters);
 
-        return res;
+        return true;
     }
 }

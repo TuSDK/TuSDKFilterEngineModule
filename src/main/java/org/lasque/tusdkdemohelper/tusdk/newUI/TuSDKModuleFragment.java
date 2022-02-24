@@ -5,18 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.tusdkdemohelper.R;
-import com.tusdk.pulse.filter.FilterPipe;
 
-import org.lasque.tusdkpulse.core.seles.SelesParameters;
+import org.lasque.tubeautysetting.LivePipeMediator;
 import org.lasque.tusdkpulse.core.seles.tusdk.FilterGroup;
-import org.lasque.tusdkpulse.core.utils.ThreadHelper;
 import org.lasque.tusdkdemohelper.tusdk.filter.FilterConfigView;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.FunctionsType;
 import org.lasque.tusdkdemohelper.tusdk.newUI.base.ModuleController;
@@ -25,7 +22,6 @@ import org.lasque.tusdkdemohelper.tusdk.newUI.mainModule.FunctionMenuItem;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 
 /**
  * TuSDK
@@ -67,9 +63,7 @@ public class TuSDKModuleFragment extends Fragment {
 
     // ----------------------------- FilterPipe ---------------------------------
 
-    private FilterPipe mFP;
-
-    private ExecutorService mRenderPool;
+    private LivePipeMediator mPipe;
 
     @Nullable
     @Override
@@ -111,10 +105,9 @@ public class TuSDKModuleFragment extends Fragment {
         mController.switchModule(FunctionsType.MAIN);
     }
 
-    public void setFilterPipe(FilterPipe fp,ExecutorService renderPool){
-        mFP = fp;
-        mRenderPool = renderPool;
-        mController.setFilterPipe(fp,renderPool);
+    public void setFilterPipe(LivePipeMediator pipe){
+        mPipe = pipe;
+        mController.setBeautyManager(pipe.getBeautyManager());
     }
 
 

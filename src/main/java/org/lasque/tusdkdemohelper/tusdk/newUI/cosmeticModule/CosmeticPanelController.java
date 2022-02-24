@@ -1,10 +1,7 @@
 package org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule;
 
 import android.content.Context;
-
-import com.tusdk.pulse.filter.Filter;
-import com.tusdk.pulse.filter.filters.TusdkCosmeticFilter;
-
+import org.lasque.tubeautysetting.Beauty;
 import org.lasque.tusdkpulse.core.seles.SelesParameters;
 import org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.panel.BasePanel;
 import org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.panel.blush.BlushPanel;
@@ -17,9 +14,6 @@ import org.lasque.tusdkdemohelper.tusdk.newUI.cosmeticModule.panel.lipstick.Lips
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 /**
  * TuSDK
@@ -87,30 +81,12 @@ public class CosmeticPanelController {
 
     private CosmeticModule mModule;
 
-    private TusdkCosmeticFilter.PropertyBuilder mProperty;
-
-    private Filter mCosmeticFilter;
-
     public SelesParameters getParameters() {
         return mModule.getParameters();
     }
 
     public CosmeticPanelController(CosmeticModule module) {
         this.mModule = module;
-
-        mProperty = new TusdkCosmeticFilter.PropertyBuilder();
-
-        mModule.syncRun(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                mCosmeticFilter = new Filter(mModule.getPipeContext(),TusdkCosmeticFilter.TYPE_NAME);
-
-                mModule.addFilter(SelesParameters.FilterModel.CosmeticFace,mCosmeticFilter);
-
-                mModule.setProperty(SelesParameters.FilterModel.CosmeticFace,mProperty);
-                return true;
-            }
-        });
 
         for (String key : mDefaultCosmeticPercentParams.keySet()){
             mModule.getParameters().appendFloatArg(key,mDefaultCosmeticPercentParams.get(key));
@@ -121,39 +97,30 @@ public class CosmeticPanelController {
         mModule.getParameters().setListener(new SelesParameters.SelesParametersListener() {
             @Override
             public void onUpdateParameters(SelesParameters.FilterModel filterModel, String s, SelesParameters.FilterArg filterArg) {
-                double value = filterArg.getValue();
+                float value = filterArg.getValue();
                 switch (filterArg.getKey()){
                     case "lipAlpha":
-                        mProperty.lipOpacity = value;
-                        mProperty.lipEnable = 1;
+                        mModule.getBeautyManager().setLipOpacity(value);
                         break;
                     case "blushAlpha":
-                        mProperty.blushOpacity = value;
-                        mProperty.blushEnable = 1;
+                        mModule.getBeautyManager().setBlushOpacity(value);
                         break;
                     case "eyebrowAlpha":
-                        mProperty.browOpacity = value;
-                        mProperty.browEnable = 1;
+                        mModule.getBeautyManager().setBrowOpacity(value);
                         break;
                     case "eyeshadowAlpha":
-                        mProperty.eyeshadowOpacity = value;
-                        mProperty.eyeshadowEnable = 1;
+                        mModule.getBeautyManager().setEyeshadowOpacity(value);
                         break;
                     case "eyelineAlpha":
-                        mProperty.eyelineOpacity = value;
-                        mProperty.eyelineEnable = 1;
+                        mModule.getBeautyManager().setEyelineOpacity(value);
                         break;
                     case "eyelashAlpha":
-                        mProperty.eyelashOpacity = value;
-                        mProperty.eyelashEnable = 1;
+                        mModule.getBeautyManager().setEyelashOpacity(value);
                         break;
                     case "facialAlpha":
-                        mProperty.facialOpacity = value;
-                        mProperty.facialEnable = 1;
+                        mModule.getBeautyManager().setFacialOpacity(value);
                         break;
                 }
-
-                updateProperty();
             }
         });
 
@@ -253,84 +220,52 @@ public class CosmeticPanelController {
         }
     }
 
-    public void updateProperty(){
-        mModule.syncRun(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                return mCosmeticFilter.setProperty(TusdkCosmeticFilter.PROP_PARAM,mProperty.makeProperty());
-            }
-        });
-    }
-
     public void updateBlush(long blushId){
-        mProperty.blushEnable = 1;
-        mProperty.blushId = blushId;
-        updateProperty();
+        mModule.getBeautyManager().setBlushStickerId(blushId);
     }
 
     public void closeBlush(){
-        mProperty.blushEnable = 0;
-        updateProperty();
+        mModule.getBeautyManager().setBlushEnable(false);
     }
 
     public void updateEyebrow(long eyebrowId){
-        mProperty.browEnable = 1;
-        mProperty.browId = eyebrowId;
-        updateProperty();
+        mModule.getBeautyManager().setBrowStickerId(eyebrowId);
     }
 
     public void closeEyebrow(){
-        mProperty.browEnable = 0;
-        updateProperty();
+        mModule.getBeautyManager().setBrowEnable(false);
     }
 
     public void updateEyelash(long eyelashId){
-        mProperty.eyelashEnable = 1;
-        mProperty.eyelashId = eyelashId;
-        updateProperty();
+        mModule.getBeautyManager().setEyelashStickerId(eyelashId);
     }
 
     public void closeEyelash(){
-        mProperty.eyelashEnable = 0;
-        updateProperty();
+        mModule.getBeautyManager().setEyelashEnable(false);
     }
 
     public void updateEyeliner(long eyelinerId){
-        mProperty.eyelineEnable = 1;
-        mProperty.eyelineId = eyelinerId;
-        updateProperty();
+        mModule.getBeautyManager().setEyelineStickerId(eyelinerId);
     }
 
     public void closeEyeliner(){
-        mProperty.eyelineEnable = 0;
-        updateProperty();
+        mModule.getBeautyManager().setEyelineEnable(false);
     }
 
     public void updateEyeshadow(long eyeshadowId){
-        mProperty.eyeshadowEnable = 1;
-        mProperty.eyeshadowId = eyeshadowId;
-        updateProperty();
+        mModule.getBeautyManager().setEyeshadowStickerId(eyeshadowId);
     }
 
     public void closeEyeshadow(){
-        mProperty.eyeshadowEnable = 0;
-        updateProperty();
+        mModule.getBeautyManager().setEyeshadowEnable(false);
     }
 
     public void updateLips(int type,int color){
-        mProperty.lipEnable = 1;
-        mProperty.lipStyle = type;
-        mProperty.lipColor = color;
-        updateProperty();
+        mModule.getBeautyManager().setLipColor(color);
+        mModule.getBeautyManager().setLipStyle(Beauty.BeautyLipstickStyle.getStyleFromValue(type));
     }
 
     public void closeLips(){
-        mProperty.lipEnable = 0;
-        updateProperty();
+        mModule.getBeautyManager().setLipEnable(false);
     }
-
-    public TusdkCosmeticFilter.PropertyBuilder getProperty(){
-        return mProperty;
-    }
-
 }

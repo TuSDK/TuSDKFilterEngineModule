@@ -98,14 +98,6 @@ public class PlasticModule extends BaseModule {
 
     private PlasticAdapter mPlasticAdapter;
 
-    private Filter mPlasticFilter;
-
-    private Filter mReshapeFilter;
-
-    private TusdkFacePlasticFilter.PropertyBuilder mPlasticProperty = new TusdkFacePlasticFilter.PropertyBuilder();
-
-    private TusdkReshapeFilter.PropertyBuilder mReshapeProperty = new TusdkReshapeFilter.PropertyBuilder();
-
     private List<PlasticFunction> mPlasticFunctions = Arrays.asList(EYESIZE, CHINSIZE, NOSESIZE, MOUTHWIDTH, LIPS, ARCHEYEBROW, BROWPOSITION, JAWSIZE, EYEANGLE, EYEDIS, FOREHEAD);
 
     public PlasticModule(ModuleController controller, Context context) {
@@ -119,85 +111,85 @@ public class PlasticModule extends BaseModule {
             if (mReshapePlastics.contains(key)){
                 switch (key){
                     case "eyelidAlpha":
-                        mReshapeProperty.eyelidOpacity = value;
+                        mController.getBeautyManager().setEyelidLevel(value);
                         break;
                     case "eyemazingAlpha":
-                        mReshapeProperty.eyemazingOpacity = value;
+                        mController.getBeautyManager().setEyemazingLevel(value);
                         break;
                     case "whitenTeethAlpha":
-                        mReshapeProperty.whitenTeethOpacity = value;
+                        mController.getBeautyManager().setWhitenTeethLevel(value);
                         break;
                     case "eyeDetailAlpha":
-                        mReshapeProperty.eyeDetailOpacity = value;
+                        mController.getBeautyManager().setEyeDetailLevel(value);
                         break;
                     case "removePouchAlpha":
-                        mReshapeProperty.removePouchOpacity = value;
+                        mController.getBeautyManager().setRemovePouchLevel(value);
                         break;
                     case "removeWrinklesAlpha":
-                        mReshapeProperty.removeWrinklesOpacity = value;
+                        mController.getBeautyManager().setRemoveWrinklesLevel(value);
                         break;
                 }
             } else {
                 switch (key) {
                     case "eyeSize":
-                        mPlasticProperty.eyeEnlarge = value;
+                        mController.getBeautyManager().setEyeEnlargeLevel(value);
                         break;
                     case "chinSize":
-                        mPlasticProperty.cheekThin = value;
+                        mController.getBeautyManager().setCheekThinLevel(value);
                         break;
                     case "cheekNarrow":
-                        mPlasticProperty.cheekNarrow = value;
+                        mController.getBeautyManager().setCheekNarrowLevel(value);
                         break;
                     case "smallFace":
-                        mPlasticProperty.faceSmall = value;
+                        mController.getBeautyManager().setFaceSmallLevel(value);
                         break;
                     case "noseSize":
-                        mPlasticProperty.noseWidth = value;
+                        mController.getBeautyManager().setNoseWidthLevel(value);
                         break;
                     case "noseHeight":
-                        mPlasticProperty.noseHeight = value;
+                        mController.getBeautyManager().setNoseHeightLevel(value);
                         break;
                     case "mouthWidth":
-                        mPlasticProperty.mouthWidth = value;
+                        mController.getBeautyManager().setMouthWidthLevel(value);
                         break;
                     case "lips":
-                        mPlasticProperty.lipsThickness = value;
+                        mController.getBeautyManager().setLipsThicknessLevel(value);
                         break;
                     case "philterum":
-                        mPlasticProperty.philterumThickness = value;
+                        mController.getBeautyManager().setPhilterumThicknessLevel(value);
                         break;
                     case "archEyebrow":
-                        mPlasticProperty.browThickness = value;
+                        mController.getBeautyManager().setBrowThicknessLevel(value);
                         break;
                     case "browPosition":
-                        mPlasticProperty.browHeight = value;
+                        mController.getBeautyManager().setBrowHeightLevel(value);
                         break;
                     case "jawSize":
-                        mPlasticProperty.chinThickness = value;
+                        mController.getBeautyManager().setChinThicknessLevel(value);
                         break;
                     case "cheekLowBoneNarrow":
-                        mPlasticProperty.cheekLowBoneNarrow = value;
+                        mController.getBeautyManager().setCheekLowBoneNarrowLevel(value);
                         break;
                     case "eyeAngle":
-                        mPlasticProperty.eyeAngle = value;
+                        mController.getBeautyManager().setEyeAngleLevel(value);
                         break;
                     case "eyeInnerConer":
-                        mPlasticProperty.eyeInnerConer = value;
+                        mController.getBeautyManager().setEyeInnerConerLevel(value);
                         break;
                     case "eyeOuterConer":
-                        mPlasticProperty.eyeOuterConer = value;
+                        mController.getBeautyManager().setEyeOuterConerLevel(value);
                         break;
                     case "eyeDis":
-                        mPlasticProperty.eyeDistance = value;
+                        mController.getBeautyManager().setEyeDistanceLevel(value);
                         break;
                     case "eyeHeight":
-                        mPlasticProperty.eyeHeight = value;
+                        mController.getBeautyManager().setEyeHeightLevel(value);
                         break;
                     case "forehead":
-                        mPlasticProperty.foreheadHeight = value;
+                        mController.getBeautyManager().setForeheadHeightLevel(value);
                         break;
                     case "cheekBoneNarrow":
-                        mPlasticProperty.cheekBoneNarrow = value;
+                        mController.getBeautyManager().setCheekBoneNarrowLevel(value);
                         break;
 
                 }
@@ -212,96 +204,92 @@ public class PlasticModule extends BaseModule {
                 if (mReshapePlastics.contains(key)){
                     switch (key){
                         case "eyelidAlpha":
-                            mReshapeProperty.eyelidOpacity = value;
+                            mController.getBeautyManager().setEyelidLevel(value);
                             break;
                         case "eyemazingAlpha":
-                            mReshapeProperty.eyemazingOpacity = value;
+                            mController.getBeautyManager().setEyemazingLevel(value);
                             break;
                         case "whitenTeethAlpha":
-                            mReshapeProperty.whitenTeethOpacity = value;
+                            mController.getBeautyManager().setWhitenTeethLevel(value);
                             break;
                         case "eyeDetailAlpha":
-                            mReshapeProperty.eyeDetailOpacity = value;
+                            mController.getBeautyManager().setEyeDetailLevel(value);
                             break;
                         case "removePouchAlpha":
-                            mReshapeProperty.removePouchOpacity = value;
+                            mController.getBeautyManager().setRemovePouchLevel(value);
                             break;
                         case "removeWrinklesAlpha":
-                            mReshapeProperty.removeWrinklesOpacity = value;
+                            mController.getBeautyManager().setRemoveWrinklesLevel(value);
                             break;
                     }
                 }
                 else {
                     switch (key) {
                         case "eyeSize":
-                            mPlasticProperty.eyeEnlarge = value;
+                            mController.getBeautyManager().setEyeEnlargeLevel(value);
                             break;
                         case "chinSize":
-                            mPlasticProperty.cheekThin = value;
+                            mController.getBeautyManager().setCheekThinLevel(value);
                             break;
                         case "cheekNarrow":
-                            mPlasticProperty.cheekNarrow = value;
+                            mController.getBeautyManager().setCheekNarrowLevel(value);
                             break;
                         case "smallFace":
-                            mPlasticProperty.faceSmall = value;
+                            mController.getBeautyManager().setFaceSmallLevel(value);
                             break;
                         case "noseSize":
-                            mPlasticProperty.noseWidth = value;
+                            mController.getBeautyManager().setNoseWidthLevel(value);
                             break;
                         case "noseHeight":
-                            mPlasticProperty.noseHeight = value;
+                            mController.getBeautyManager().setNoseHeightLevel(value);
                             break;
                         case "mouthWidth":
-                            mPlasticProperty.mouthWidth = value;
+                            mController.getBeautyManager().setMouthWidthLevel(value);
                             break;
                         case "lips":
-                            mPlasticProperty.lipsThickness = value;
+                            mController.getBeautyManager().setLipsThicknessLevel(value);
                             break;
                         case "philterum":
-                            mPlasticProperty.philterumThickness = value;
+                            mController.getBeautyManager().setPhilterumThicknessLevel(value);
                             break;
                         case "archEyebrow":
-                            mPlasticProperty.browThickness = value;
+                            mController.getBeautyManager().setBrowThicknessLevel(value);
                             break;
                         case "browPosition":
-                            mPlasticProperty.browHeight = value;
+                            mController.getBeautyManager().setBrowHeightLevel(value);
                             break;
                         case "jawSize":
-                            mPlasticProperty.chinThickness = value;
+                            mController.getBeautyManager().setChinThicknessLevel(value);
                             break;
                         case "cheekLowBoneNarrow":
-                            mPlasticProperty.cheekLowBoneNarrow = value;
+                            mController.getBeautyManager().setCheekLowBoneNarrowLevel(value);
                             break;
                         case "eyeAngle":
-                            mPlasticProperty.eyeAngle = value;
+                            mController.getBeautyManager().setEyeAngleLevel(value);
                             break;
                         case "eyeInnerConer":
-                            mPlasticProperty.eyeInnerConer = value;
+                            mController.getBeautyManager().setEyeInnerConerLevel(value);
                             break;
                         case "eyeOuterConer":
-                            mPlasticProperty.eyeOuterConer = value;
+                            mController.getBeautyManager().setEyeOuterConerLevel(value);
                             break;
                         case "eyeDis":
-                            mPlasticProperty.eyeDistance = value;
+                            mController.getBeautyManager().setEyeDistanceLevel(value);
                             break;
                         case "eyeHeight":
-                            mPlasticProperty.eyeHeight = value;
+                            mController.getBeautyManager().setEyeHeightLevel(value);
                             break;
                         case "forehead":
-                            mPlasticProperty.foreheadHeight = value;
+                            mController.getBeautyManager().setForeheadHeightLevel(value);
                             break;
                         case "cheekBoneNarrow":
-                            mPlasticProperty.cheekBoneNarrow = value;
+                            mController.getBeautyManager().setCheekBoneNarrowLevel(value);
                             break;
 
                     }
                 }
-
-                updateProperty();
             }
         });
-
-        updateProperty();
     }
 
     @Override
@@ -311,15 +299,7 @@ public class PlasticModule extends BaseModule {
 
     public void clearPlastic(){
         mParameters = null;
-        syncRun(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                FilterPipe fp = mController.getFilterPipe();
-                boolean plasticRes = fp.deleteFilter(ModuleController.mFilterMap.get(SelesParameters.FilterModel.PlasticFace));
-                boolean reshapeRes = fp.deleteFilter(ModuleController.mFilterMap.get(SelesParameters.FilterModel.Reshape));
-                return plasticRes && reshapeRes;
-            }
-        });
+        mController.getBeautyManager().closePlastic();
     }
 
     @Override
@@ -374,28 +354,6 @@ public class PlasticModule extends BaseModule {
     @Override
     public void attach(ViewGroup parent) {
         super.attach(parent);
-    }
-
-    public boolean updateProperty(){
-        return syncRun(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                FilterPipe fp = mController.getFilterPipe();
-                if (fp.getFilter(ModuleController.mFilterMap.get(SelesParameters.FilterModel.PlasticFace)) == null){
-                    mPlasticFilter = new Filter(fp.getContext(),TusdkFacePlasticFilter.TYPE_NAME);
-                    fp.addFilter(ModuleController.mFilterMap.get(SelesParameters.FilterModel.PlasticFace),mPlasticFilter);
-                }
-                boolean plasticRes = mPlasticFilter.setProperty(TusdkFacePlasticFilter.PROP_PARAM,mPlasticProperty.makeProperty());
-
-                if (fp.getFilter(ModuleController.mFilterMap.get(SelesParameters.FilterModel.Reshape)) == null){
-                    mReshapeFilter = new Filter(fp.getContext(),TusdkReshapeFilter.TYPE_NAME);
-                    fp.addFilter(ModuleController.mFilterMap.get(SelesParameters.FilterModel.Reshape),mReshapeFilter);
-                }
-
-                boolean reshapeRes = mReshapeFilter.setProperty(TusdkReshapeFilter.PROP_PARAM,mReshapeProperty.makeProperty());
-                return plasticRes && reshapeRes;
-            }
-        });
     }
 
 

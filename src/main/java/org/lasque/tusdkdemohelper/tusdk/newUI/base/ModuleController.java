@@ -11,6 +11,8 @@ import androidx.lifecycle.Lifecycle;
 
 import com.tusdk.pulse.filter.Filter;
 import com.tusdk.pulse.filter.FilterPipe;
+
+import org.lasque.tubeautysetting.Beauty;
 import org.lasque.tusdkpulse.core.seles.SelesParameters;
 import org.lasque.tusdkpulse.core.seles.tusdk.FilterGroup;
 import org.lasque.tusdkpulse.core.utils.ThreadHelper;
@@ -100,9 +102,7 @@ final public class ModuleController {
 
     /**  --------------------- FilterPipe -------------------------- */
 
-    private FilterPipe mFP;
-
-    private ExecutorService mRenderPool;
+    private Beauty mBeautyManager;
 
     private HashMap<SelesParameters.FilterModel, Filter> mCurrentFilterMap = new HashMap<>();
 
@@ -128,19 +128,15 @@ final public class ModuleController {
         this.mFilterColorList = filterColors;
     }
 
-    public void setFilterPipe(FilterPipe filterPipe, ExecutorService renderPool){
-        mFP = filterPipe;
-        mRenderPool = renderPool;
-
+    public void setBeautyManager(Beauty beauty){
+        mBeautyManager = beauty;
         getSkinModule().switchConfigSkin(SkinModule.SkinMode.BEAUTY);
-
-        getPlasticModule().updateProperty();
 
         getCosmeticModule();
     }
 
-    public FilterPipe getFilterPipe(){
-        return mFP;
+    public Beauty getBeautyManager(){
+        return mBeautyManager;
     }
 
 //    public void setAudioEngine(TuSdkAudioPitchEngine engine){
@@ -379,22 +375,6 @@ final public class ModuleController {
 
     public Map<SelesParameters.FilterModel, Object> getPropertyMap(){
         return mPropertyMap;
-    }
-
-    public <T>T syncRun(Callable<T> callable){
-        Future<T> res = mRenderPool.submit(callable);
-        try {
-            return res.get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public void asyncRun(Runnable runnable){
-        mRenderPool.execute(runnable);
     }
 
 }

@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle;
 import com.tusdk.pulse.filter.Filter;
 import com.tusdk.pulse.filter.FilterContext;
 
+import org.lasque.tubeautysetting.Beauty;
 import org.lasque.tusdkpulse.core.seles.SelesParameters;
 import org.lasque.tusdkdemohelper.tusdk.filter.FilterConfigView;
 
@@ -123,42 +124,7 @@ public abstract class BaseModule {
         return mContext;
     }
 
-    public FilterContext getPipeContext(){
-        return mController.getFilterPipe().getContext();
-    }
-
-    public <T> T syncRun(Callable<T> callable) {
-        return mController.syncRun(callable);
-    }
-
-    public void asyncRun(Runnable runnable) {
-        mController.asyncRun(runnable);
-    }
-
-    public boolean addFilter(final SelesParameters.FilterModel model, final Filter filter) {
-
-        boolean res = mController.getFilterPipe().addFilter(ModuleController.mFilterMap.get(model), filter);
-        if (res) {
-            mController.getCurrentFilterMap().put(model, filter);
-        }
-
-        return res;
-    }
-
-    public boolean deleteFilter(final SelesParameters.FilterModel model) {
-        boolean res = syncRun(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                return mController.getFilterPipe().deleteFilter((ModuleController.mFilterMap.get(model)));
-            }
-        });
-        if (res) {
-            mController.getCurrentFilterMap().remove(model);
-        }
-        return res;
-    }
-
-    public void setProperty(SelesParameters.FilterModel model,Object property){
-        mController.getPropertyMap().put(model, property);
+    public Beauty getBeautyManager(){
+        return mController.getBeautyManager();
     }
 }
