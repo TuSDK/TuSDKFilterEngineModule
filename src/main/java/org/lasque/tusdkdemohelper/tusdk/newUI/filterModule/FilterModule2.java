@@ -133,7 +133,6 @@ public class FilterModule2 extends BaseModule {
                             adapter.setCurrentPos(pos);
                             changeFilter(item.code);
                         }
-                        mConfigView.setFilterArgs(mParameters);
                     }
                 });
             }

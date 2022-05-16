@@ -90,6 +90,9 @@ public class TuSDKModuleFragment extends Fragment {
         mController = new ModuleController(getContext(), getChildFragmentManager(), getLifecycle(), mParentView, menuItems);
         mController.setFilters(mFilterGroups, mColorList);
         mController.setConfigView(mConfigView);
+        if (mPipe != null){
+            mController.setBeautyManager(mPipe.getBeautyManager());
+        }
         return parentView;
     }
 
@@ -107,7 +110,9 @@ public class TuSDKModuleFragment extends Fragment {
 
     public void setFilterPipe(LivePipeMediator pipe){
         mPipe = pipe;
-        mController.setBeautyManager(pipe.getBeautyManager());
+        if (mController != null){
+            mController.setBeautyManager(pipe.getBeautyManager());
+        }
     }
 
 
